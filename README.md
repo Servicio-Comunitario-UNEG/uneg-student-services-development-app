@@ -1,1 +1,1 @@
-# uneg-student-services-development-app
+# UNEG Student Services Development App
