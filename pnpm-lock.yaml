@@ -11,6 +11,9 @@ devDependencies:
   '@inertiajs/react':
     specifier: ^1.0.0
     version: 1.0.11(react@18.2.0)
+  '@prettier/plugin-php':
+    specifier: ^0.20.1
+    version: 0.20.1(prettier@3.0.3)
   '@tailwindcss/forms':
     specifier: ^0.5.3
     version: 0.5.6(tailwindcss@3.3.3)
@@ -62,6 +65,12 @@ devDependencies:
   postcss:
     specifier: ^8.4.18
     version: 8.4.29
+  prettier:
+    specifier: ^3.0.3
+    version: 3.0.3
+  prettier-plugin-tailwindcss:
+    specifier: ^0.5.4
+    version: 0.5.4(prettier@3.0.3)
   react:
     specifier: ^18.2.0
     version: 18.2.0
@@ -653,6 +662,17 @@ packages:
     dependencies:
       '@nodelib/fs.scandir': 2.1.5
       fastq: 1.15.0
+    dev: true
+
+  /@prettier/plugin-php@0.20.1(prettier@3.0.3):
+    resolution: {integrity: sha512-CFn+NH44jb0buvg8D/DvLjeetadmNBMRq3yrgL8I+tXioDZlhQ+eBLLRILPEBIQ6jBmOjzm/Q7Qin8KD7raiFw==}
+    peerDependencies:
+      prettier: ^3.0.0
+    dependencies:
+      linguist-languages: 7.26.1
+      mem: 9.0.2
+      php-parser: 3.1.5
+      prettier: 3.0.3
     dev: true
 
   /@tailwindcss/forms@0.5.6(tailwindcss@3.3.3):
@@ -1665,6 +1685,10 @@ packages:
     resolution: {integrity: sha512-7ylylesZQ/PV29jhEDl3Ufjo6ZX7gCqJr5F7PKrqc93v7fzSymt1BpwEU8nAUXs8qzzvqhbjhK5QZg6Mt/HkBg==}
     dev: true
 
+  /linguist-languages@7.26.1:
+    resolution: {integrity: sha512-B9O5pDocOkfswmA0qKrqdfeua1TxeQ5PPWdsuo5QRXFv2N0tB3plY+DVWvSWiGkjdqKNU3KBjJYHs/jRXG0adw==}
+    dev: true
+
   /locate-path@6.0.0:
     resolution: {integrity: sha512-iPZK6eYjbxRu3uB4/WZ3EsEIMJFMqAoopl3R+zuq0UjcAm/MO6KCweDgPfP3elTztoKP3KtnVHxTn2NHBSDVUw==}
     engines: {node: '>=10'}
@@ -1700,6 +1724,21 @@ packages:
       yallist: 4.0.0
     dev: true
 
+  /map-age-cleaner@0.1.3:
+    resolution: {integrity: sha512-bJzx6nMoP6PDLPBFmg7+xRKeFZvFboMrGlxmNj9ClvX53KrmvM5bXFXEWjbz4cz1AFn+jWJ9z/DJSz7hrs0w3w==}
+    engines: {node: '>=6'}
+    dependencies:
+      p-defer: 1.0.0
+    dev: true
+
+  /mem@9.0.2:
+    resolution: {integrity: sha512-F2t4YIv9XQUBHt6AOJ0y7lSmP1+cY7Fm1DRh9GClTGzKST7UWLMx6ly9WZdLH/G/ppM5RL4MlQfRT71ri9t19A==}
+    engines: {node: '>=12.20'}
+    dependencies:
+      map-age-cleaner: 0.1.3
+      mimic-fn: 4.0.0
+    dev: true
+
   /merge2@1.4.1:
     resolution: {integrity: sha512-8q7VEgMJW4J8tcfVPy8g09NcQwZdbwFEqhe/WZkoIzjn/3TGDwtOCYtXGxA3O8tPzpczCCDgv+P2P5y00ZJOOg==}
     engines: {node: '>= 8'}
@@ -1723,6 +1762,11 @@ packages:
     engines: {node: '>= 0.6'}
     dependencies:
       mime-db: 1.52.0
+    dev: true
+
+  /mimic-fn@4.0.0:
+    resolution: {integrity: sha512-vqiC06CuhBTUdZH+RYl8sFrL096vA45Ok5ISO6sE/Mr1jRbGH4Csnhi8f3wKVl7x8mO4Au7Ir9D3Oyv1VYMFJw==}
+    engines: {node: '>=12'}
     dev: true
 
   /mini-svg-data-uri@1.4.4:
@@ -1808,6 +1852,11 @@ packages:
       type-check: 0.4.0
     dev: true
 
+  /p-defer@1.0.0:
+    resolution: {integrity: sha512-wB3wfAxZpk2AzOfUMJNL+d36xothRSyj8EXOa4f6GMqYDN9BJaaSISbsk+wS9abmnebVw95C2Kb5t85UmpCxuw==}
+    engines: {node: '>=4'}
+    dev: true
+
   /p-limit@3.1.0:
     resolution: {integrity: sha512-TYOanM3wGwNGsZN2cVTYPArw454xnXj5qmWF1bEoAc4+cU/ol7GVh7odevjp1FNHduHc3KZMcFduxU5Xc6uJRQ==}
     engines: {node: '>=10'}
@@ -1851,6 +1900,10 @@ packages:
   /path-type@4.0.0:
     resolution: {integrity: sha512-gDKb8aZMDeD/tZWs9P6+q0J9Mwkdl6xMV8TjnGP3qJVJ06bdMgkbBlLU8IdfOsIsFz2BW1rNVT3XuNEl8zPAvw==}
     engines: {node: '>=8'}
+    dev: true
+
+  /php-parser@3.1.5:
+    resolution: {integrity: sha512-jEY2DcbgCm5aclzBdfW86GM6VEIWcSlhTBSHN1qhJguVePlYe28GhwS0yoeLYXpM2K8y6wzLwrbq814n2PHSoQ==}
     dev: true
 
   /picocolors@1.0.0:
@@ -1945,6 +1998,67 @@ packages:
   /prelude-ls@1.2.1:
     resolution: {integrity: sha512-vkcDPrRZo1QZLbn5RLGPpg/WmIQ65qoWWhcGKf/b5eplkkarX0m9z8ppCat4mlOqUsWpyNuYgO3VRyrYHSzX5g==}
     engines: {node: '>= 0.8.0'}
+    dev: true
+
+  /prettier-plugin-tailwindcss@0.5.4(prettier@3.0.3):
+    resolution: {integrity: sha512-QZzzB1bID6qPsKHTeA9qPo1APmmxfFrA5DD3LQ+vbTmAnY40eJI7t9Q1ocqel2EKMWNPLJqdTDWZj1hKYgqSgg==}
+    engines: {node: '>=14.21.3'}
+    peerDependencies:
+      '@ianvs/prettier-plugin-sort-imports': '*'
+      '@prettier/plugin-pug': '*'
+      '@shopify/prettier-plugin-liquid': '*'
+      '@shufo/prettier-plugin-blade': '*'
+      '@trivago/prettier-plugin-sort-imports': '*'
+      prettier: ^3.0
+      prettier-plugin-astro: '*'
+      prettier-plugin-css-order: '*'
+      prettier-plugin-import-sort: '*'
+      prettier-plugin-jsdoc: '*'
+      prettier-plugin-marko: '*'
+      prettier-plugin-organize-attributes: '*'
+      prettier-plugin-organize-imports: '*'
+      prettier-plugin-style-order: '*'
+      prettier-plugin-svelte: '*'
+      prettier-plugin-twig-melody: '*'
+    peerDependenciesMeta:
+      '@ianvs/prettier-plugin-sort-imports':
+        optional: true
+      '@prettier/plugin-pug':
+        optional: true
+      '@shopify/prettier-plugin-liquid':
+        optional: true
+      '@shufo/prettier-plugin-blade':
+        optional: true
+      '@trivago/prettier-plugin-sort-imports':
+        optional: true
+      prettier-plugin-astro:
+        optional: true
+      prettier-plugin-css-order:
+        optional: true
+      prettier-plugin-import-sort:
+        optional: true
+      prettier-plugin-jsdoc:
+        optional: true
+      prettier-plugin-marko:
+        optional: true
+      prettier-plugin-organize-attributes:
+        optional: true
+      prettier-plugin-organize-imports:
+        optional: true
+      prettier-plugin-style-order:
+        optional: true
+      prettier-plugin-svelte:
+        optional: true
+      prettier-plugin-twig-melody:
+        optional: true
+    dependencies:
+      prettier: 3.0.3
+    dev: true
+
+  /prettier@3.0.3:
+    resolution: {integrity: sha512-L/4pUDMxcNa8R/EthV08Zt42WBO4h1rarVtK0K+QJG0X187OLo7l699jWw0GKuwzkPQ//jMFA/8Xm6Fh3J/DAg==}
+    engines: {node: '>=14'}
+    hasBin: true
     dev: true
 
   /proxy-from-env@1.1.0:
