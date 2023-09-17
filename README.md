@@ -2,7 +2,7 @@
 
 ## Requirements
 
--   PHP `^8.0`
+-   PHP `^8.2`
 -   [Node.js](https://nodejs.org/es)
 
 ## Run the Project
