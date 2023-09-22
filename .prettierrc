@@ -1,8 +1,8 @@
 {
-    "tabWidth": 4,
-    "useTabs": true,
-    "phpVersion": "8.2",
-    "tailwindFunctions": ["cn"],
-    "braceStyle": "1tbs",
-    "plugins": ["@prettier/plugin-php", "prettier-plugin-tailwindcss"]
+	"tabWidth": 4,
+	"useTabs": true,
+	"phpVersion": "8.1",
+	"tailwindFunctions": ["cn"],
+	"braceStyle": "1tbs",
+	"plugins": ["@prettier/plugin-php", "prettier-plugin-tailwindcss"]
 }
