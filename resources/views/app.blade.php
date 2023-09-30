@@ -8,6 +8,18 @@
         name="viewport"
     >
 
+    <link
+        href="favicon-light.ico"
+        media="(prefers-color-scheme: light)"
+        rel="icon"
+    />
+
+    <link
+        href="favicon-dark.ico"
+        media="(prefers-color-scheme: dark)"
+        rel="icon"
+    />
+
     <title inertia>{{ config('app.name', 'Laravel') }}</title>
 
     <!-- Scripts -->
