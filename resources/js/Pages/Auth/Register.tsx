@@ -1,10 +1,10 @@
 import { useEffect, FormEventHandler } from "react";
 import GuestLayout from "@/Layouts/GuestLayout";
-import InputError from "@/Components/InputError";
-import InputLabel from "@/Components/InputLabel";
-import PrimaryButton from "@/Components/PrimaryButton";
-import TextInput from "@/Components/TextInput";
 import { Head, Link, useForm } from "@inertiajs/react";
+import TextField from "@/Components/TextField";
+import PasswordField from "@/Components/PasswordField";
+import { Button } from "@/Components/ui/button";
+import { Loader2 } from "lucide-react";
 
 export default function Register() {
 	const { data, setData, post, processing, errors, reset } = useForm({
@@ -27,98 +27,94 @@ export default function Register() {
 	};
 
 	return (
-		<GuestLayout>
-			<Head title="Register" />
+		<GuestLayout title="Crea tu Cuenta">
+			<Head title="Registro" />
 
-			<form onSubmit={submit}>
-				<div>
-					<InputLabel htmlFor="name" value="Name" />
+			<Button
+				variant="ghost"
+				className="absolute right-4 top-4 md:right-6 md:top-6"
+				asChild
+			>
+				<Link href={route("login")}>Iniciar Sesión</Link>
+			</Button>
 
-					<TextInput
+			<form onSubmit={submit} className="space-y-6">
+				<div className="space-y-4">
+					<TextField
 						id="name"
-						name="name"
-						value={data.name}
-						className="mt-1 block w-full"
-						autoComplete="name"
-						isFocused={true}
-						onChange={(e) => setData("name", e.target.value)}
-						required
+						labelProps={{
+							children: "Nombre",
+						}}
+						inputProps={{
+							placeholder: "ej: John Doe",
+							value: data.name,
+							autoComplete: "name",
+							autoFocus: true,
+							onChange: (e) => setData("name", e.target.value),
+							required: true,
+						}}
+						errorMessage={errors.name}
 					/>
 
-					<InputError message={errors.name} className="mt-2" />
-				</div>
-
-				<div className="mt-4">
-					<InputLabel htmlFor="email" value="Email" />
-
-					<TextInput
+					<TextField
 						id="email"
-						type="email"
-						name="email"
-						value={data.email}
-						className="mt-1 block w-full"
-						autoComplete="username"
-						onChange={(e) => setData("email", e.target.value)}
-						required
+						labelProps={{
+							children: "Email",
+						}}
+						inputProps={{
+							type: "email",
+							placeholder: "ej: johndoe@gmail.com",
+							value: data.email,
+							autoComplete: "username",
+							onChange: (e) => setData("email", e.target.value),
+							required: true,
+						}}
+						errorMessage={errors.email}
 					/>
 
-					<InputError message={errors.email} className="mt-2" />
-				</div>
-
-				<div className="mt-4">
-					<InputLabel htmlFor="password" value="Password" />
-
-					<TextInput
+					<PasswordField
 						id="password"
-						type="password"
-						name="password"
-						value={data.password}
-						className="mt-1 block w-full"
-						autoComplete="new-password"
-						onChange={(e) => setData("password", e.target.value)}
-						required
+						labelProps={{
+							children: "Contraseña",
+						}}
+						inputProps={{
+							value: data.password,
+							autoComplete: "new-password",
+							onChange: (e) => {
+								setData("password", e.target.value);
+							},
+							required: true,
+						}}
+						errorMessage={errors.password}
 					/>
 
-					<InputError message={errors.password} className="mt-2" />
-				</div>
-
-				<div className="mt-4">
-					<InputLabel
-						htmlFor="password_confirmation"
-						value="Confirm Password"
-					/>
-
-					<TextInput
+					<PasswordField
 						id="password_confirmation"
-						type="password"
-						name="password_confirmation"
-						value={data.password_confirmation}
-						className="mt-1 block w-full"
-						autoComplete="new-password"
-						onChange={(e) =>
-							setData("password_confirmation", e.target.value)
-						}
-						required
-					/>
-
-					<InputError
-						message={errors.password_confirmation}
-						className="mt-2"
+						labelProps={{
+							children: "Confirma tu Contraseña",
+						}}
+						inputProps={{
+							value: data.password_confirmation,
+							autoComplete: "new-password",
+							onChange: (e) => {
+								setData(
+									"password_confirmation",
+									e.target.value,
+								);
+							},
+							required: true,
+						}}
+						errorMessage={errors.password_confirmation}
 					/>
 				</div>
 
-				<div className="mt-4 flex items-center justify-end">
-					<Link
-						href={route("login")}
-						className="rounded-md text-sm text-gray-600 underline hover:text-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
-					>
-						Already registered?
-					</Link>
+				<Button className="w-full" disabled={processing}>
+					{processing ? (
+						<Loader2 className="mr-2 h-4 w-4 animate-spin" />
+					) : null}
 
-					<PrimaryButton className="ml-4" disabled={processing}>
-						Register
-					</PrimaryButton>
-				</div>
+					<span>Crear Cuenta</span>
+				</Button>
 			</form>
 		</GuestLayout>
 	);

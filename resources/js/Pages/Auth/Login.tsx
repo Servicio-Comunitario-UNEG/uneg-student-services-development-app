@@ -63,6 +63,7 @@ export default function Login({
 							value: data.email,
 							autoComplete: "username",
 							autoFocus: true,
+							required: true,
 							onChange: (e) => setData("email", e.target.value),
 						}}
 						errorMessage={errors.email}
@@ -77,6 +78,7 @@ export default function Login({
 						inputProps={{
 							value: data.password,
 							autoComplete: "current-password",
+							required: true,
 							onChange: (e) => {
 								setData("password", e.target.value);
 							},
