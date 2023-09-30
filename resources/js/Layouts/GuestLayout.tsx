@@ -1,19 +1,47 @@
 import ApplicationLogo from "@/Components/ApplicationLogo";
+import {
+	Card,
+	CardContent,
+	CardDescription,
+	CardHeader,
+} from "@/Components/ui/card";
+import { cn } from "@/lib/utils";
 import { Link } from "@inertiajs/react";
 import { PropsWithChildren } from "react";
 
-export default function Guest({ children }: PropsWithChildren) {
+export default function Guest({
+	children,
+	title,
+	description,
+}: PropsWithChildren<{
+	title?: string;
+	description?: string;
+}>) {
 	return (
-		<div className="flex min-h-screen flex-col items-center bg-gray-100 pt-6 sm:justify-center sm:pt-0">
-			<div>
-				<Link href="/">
-					<ApplicationLogo className="h-20 w-20 fill-current text-gray-500" />
+		<div className="container flex min-h-screen flex-col items-center justify-center space-y-6">
+			<div className="space-y-4">
+				<Link href="/" className="flex justify-center">
+					<ApplicationLogo
+						height={64}
+						width={64}
+						className="object-contain"
+					/>
 				</Link>
+
+				<h1 className="text-center text-3xl font-bold">{title}</h1>
 			</div>
 
-			<div className="mt-6 w-full overflow-hidden bg-white px-6 py-4 shadow-md sm:max-w-md sm:rounded-lg">
-				{children}
-			</div>
+			<Card className="w-full max-w-lg">
+				{description ? (
+					<CardHeader>
+						<CardDescription>{description}</CardDescription>
+					</CardHeader>
+				) : null}
+
+				<CardContent className={cn(description || "p-6")}>
+					{children}
+				</CardContent>
+			</Card>
 		</div>
 	);
 }

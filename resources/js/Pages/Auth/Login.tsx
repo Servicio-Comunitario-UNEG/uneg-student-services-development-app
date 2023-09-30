@@ -1,11 +1,10 @@
 import { useEffect, FormEventHandler } from "react";
-import Checkbox from "@/Components/Checkbox";
 import GuestLayout from "@/Layouts/GuestLayout";
-import InputError from "@/Components/InputError";
-import InputLabel from "@/Components/InputLabel";
-import PrimaryButton from "@/Components/PrimaryButton";
-import TextInput from "@/Components/TextInput";
 import { Head, Link, useForm } from "@inertiajs/react";
+import TextField from "@/Components/TextField";
+import { CheckboxField } from "@/Components/CheckboxField";
+import { Button } from "@/Components/ui/button";
+import { Loader2 } from "lucide-react";
 
 export default function Login({
 	status,
@@ -33,7 +32,7 @@ export default function Login({
 	};
 
 	return (
-		<GuestLayout>
+		<GuestLayout title="Inicio de Sesión">
 			<Head title="Log in" />
 
 			{status && (
@@ -42,69 +41,85 @@ export default function Login({
 				</div>
 			)}
 
-			<form onSubmit={submit}>
-				<div>
-					<InputLabel htmlFor="email" value="Email" />
-
-					<TextInput
+			<form onSubmit={submit} className="space-y-6">
+				<div className="space-y-4">
+					<TextField
 						id="email"
-						type="email"
-						name="email"
-						value={data.email}
-						className="mt-1 block w-full"
-						autoComplete="username"
-						isFocused={true}
-						onChange={(e) => setData("email", e.target.value)}
+						labelProps={{
+							children: "Email",
+						}}
+						inputProps={{
+							type: "email",
+							placeholder: "ej: johndoe@gmail.com",
+							value: data.email,
+							autoComplete: "username",
+							autoFocus: true,
+							onChange: (e) => setData("email", e.target.value),
+						}}
+						errorMessage={errors.email}
 					/>
 
-					<InputError message={errors.email} className="mt-2" />
-				</div>
-
-				<div className="mt-4">
-					<InputLabel htmlFor="password" value="Password" />
-
-					<TextInput
+					<TextField
 						id="password"
-						type="password"
-						name="password"
-						value={data.password}
-						className="mt-1 block w-full"
-						autoComplete="current-password"
-						onChange={(e) => setData("password", e.target.value)}
+						labelProps={{
+							children: "Contraseña",
+						}}
+						inputProps={{
+							type: "password",
+							value: data.password,
+							autoComplete: "current-password",
+							onChange: (e) => {
+								setData("password", e.target.value);
+							},
+						}}
+						errorMessage={errors.password}
 					/>
 
-					<InputError message={errors.password} className="mt-2" />
-				</div>
-
-				<div className="mt-4 block">
-					<label className="flex items-center">
-						<Checkbox
-							name="remember"
-							checked={data.remember}
-							onChange={(e) =>
-								setData("remember", e.target.checked)
-							}
+					<div className="flex justify-between">
+						<CheckboxField
+							id="remember"
+							checkboxProps={{
+								checked: data.remember,
+								onCheckedChange: (checked) => {
+									setData("remember", Boolean(checked));
+								},
+							}}
+							labelProps={{
+								children: "Recuérdame",
+							}}
 						/>
-						<span className="ml-2 text-sm text-gray-600">
-							Remember me
-						</span>
-					</label>
+
+						{canResetPassword ? (
+							<div className="hidden sm:block">
+								<Button asChild variant="link">
+									<Link href={route("password.request")}>
+										Recuperar contraseña
+									</Link>
+								</Button>
+							</div>
+						) : null}
+					</div>
 				</div>
 
-				<div className="mt-4 flex items-center justify-end">
-					{canResetPassword && (
-						<Link
-							href={route("password.request")}
-							className="rounded-md text-sm text-gray-600 underline hover:text-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
-						>
-							Forgot your password?
-						</Link>
-					)}
+				<Button className="w-full" disabled={processing}>
+					{processing ? (
+						<Loader2 className="mr-2 h-4 w-4 animate-spin" />
+					) : null}
 
-					<PrimaryButton className="ml-4" disabled={processing}>
-						Log in
-					</PrimaryButton>
-				</div>
+					<span>Iniciar Sesión</span>
+				</Button>
+
+				{canResetPassword ? (
+					<div className="sm:hidden">
+						<div className="flex justify-center">
+							<Button asChild variant="link">
+								<Link href={route("password.request")}>
+									Recuperar contraseña
+								</Link>
+							</Button>
+						</div>
+					</div>
+				) : null}
 			</form>
 		</GuestLayout>
 	);
