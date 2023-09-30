@@ -18,15 +18,17 @@ export default function Guest({
 	description?: string;
 }>) {
 	return (
-		<div className="container flex min-h-screen flex-col items-center justify-center space-y-6">
+		<div className="flex min-h-screen flex-col items-center justify-center space-y-6 px-4 sm:container">
 			<div className="space-y-4">
-				<Link href="/" className="flex justify-center">
-					<ApplicationLogo
-						height={64}
-						width={64}
-						className="object-contain"
-					/>
-				</Link>
+				<div className="flex justify-center">
+					<Link href="/">
+						<ApplicationLogo
+							height={64}
+							width={64}
+							className="object-contain"
+						/>
+					</Link>
+				</div>
 
 				<h1 className="text-center text-3xl font-bold">{title}</h1>
 			</div>
