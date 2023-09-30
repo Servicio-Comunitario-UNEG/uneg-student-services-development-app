@@ -18,7 +18,7 @@ export default function Guest({
 	description?: string;
 }>) {
 	return (
-		<div className="flex min-h-screen flex-col items-center justify-center space-y-6 px-4 sm:container">
+		<div className="relative flex min-h-screen flex-col items-center justify-center space-y-6 px-4 sm:container">
 			<div className="space-y-4">
 				<div className="flex justify-center">
 					<Link href="/">

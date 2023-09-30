@@ -36,6 +36,14 @@ export default function Login({
 		<GuestLayout title="Inicio de Sesión">
 			<Head title="Inicio de Sesión" />
 
+			<Button
+				variant="ghost"
+				className="absolute right-4 top-4 md:right-6 md:top-6"
+				asChild
+			>
+				<Link href={route("register")}>Registro</Link>
+			</Button>
+
 			{status && (
 				<div className="mb-4 text-sm font-medium text-green-600">
 					{status}
@@ -65,6 +73,7 @@ export default function Login({
 						labelProps={{
 							children: "Contraseña",
 						}}
+						canResetPassword={canResetPassword}
 						inputProps={{
 							value: data.password,
 							autoComplete: "current-password",
@@ -75,30 +84,18 @@ export default function Login({
 						errorMessage={errors.password}
 					/>
 
-					<div className="flex justify-between">
-						<CheckboxField
-							id="remember"
-							checkboxProps={{
-								checked: data.remember,
-								onCheckedChange: (checked) => {
-									setData("remember", Boolean(checked));
-								},
-							}}
-							labelProps={{
-								children: "Recuérdame",
-							}}
-						/>
-
-						{canResetPassword ? (
-							<div className="hidden sm:block">
-								<Button asChild variant="link">
-									<Link href={route("password.request")}>
-										Recuperar contraseña
-									</Link>
-								</Button>
-							</div>
-						) : null}
-					</div>
+					<CheckboxField
+						id="remember"
+						checkboxProps={{
+							checked: data.remember,
+							onCheckedChange: (checked) => {
+								setData("remember", Boolean(checked));
+							},
+						}}
+						labelProps={{
+							children: "Recuérdame",
+						}}
+					/>
 				</div>
 
 				<Button className="w-full" disabled={processing}>
@@ -108,18 +105,6 @@ export default function Login({
 
 					<span>Iniciar Sesión</span>
 				</Button>
-
-				{canResetPassword ? (
-					<div className="sm:hidden">
-						<div className="flex justify-center">
-							<Button asChild variant="link">
-								<Link href={route("password.request")}>
-									Recuperar contraseña
-								</Link>
-							</Button>
-						</div>
-					</div>
-				) : null}
 			</form>
 		</GuestLayout>
 	);

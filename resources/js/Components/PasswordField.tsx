@@ -5,6 +5,7 @@ import { Input } from "./ui/input";
 import { Button } from "./ui/button";
 import { Eye, EyeOff } from "lucide-react";
 import { useState } from "react";
+import { Link } from "@inertiajs/react";
 
 interface Props {
 	id: string;
@@ -19,6 +20,7 @@ interface Props {
 	errorMessage?: string;
 	className?: string;
 	description?: string;
+	canResetPassword?: boolean;
 }
 
 export default function PasswordField({
@@ -28,12 +30,23 @@ export default function PasswordField({
 	description,
 	errorMessage,
 	className,
+	canResetPassword,
 }: Props) {
 	const [canShowPassword, setCanShowPassword] = useState(false);
 
 	return (
 		<div className={cn("space-y-2", className)}>
-			<Label htmlFor={id} {...labelProps}></Label>
+			<div className="flex items-center justify-between">
+				<Label htmlFor={id} {...labelProps}></Label>
+
+				{canResetPassword ? (
+					<Button asChild className="h-full p-0" variant="link">
+						<Link href={route("password.request")}>
+							Recuperar contraseña
+						</Link>
+					</Button>
+				) : null}
+			</div>
 
 			<p className="text-sm text-muted-foreground">{description}</p>
 
