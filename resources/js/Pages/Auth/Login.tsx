@@ -5,6 +5,7 @@ import TextField from "@/Components/TextField";
 import { CheckboxField } from "@/Components/CheckboxField";
 import { Button } from "@/Components/ui/button";
 import { Loader2 } from "lucide-react";
+import PasswordField from "@/Components/PasswordField";
 
 export default function Login({
 	status,
@@ -59,13 +60,12 @@ export default function Login({
 						errorMessage={errors.email}
 					/>
 
-					<TextField
+					<PasswordField
 						id="password"
 						labelProps={{
 							children: "Contraseña",
 						}}
 						inputProps={{
-							type: "password",
 							value: data.password,
 							autoComplete: "current-password",
 							onChange: (e) => {
