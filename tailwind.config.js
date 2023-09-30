@@ -1,5 +1,5 @@
-import forms from "@tailwindcss/forms";
 import defaultTheme from "tailwindcss/defaultTheme";
+import tailwindCssAnimate from "tailwindcss-animate";
 
 /** @type {import('tailwindcss').Config} */
 export default {
@@ -60,7 +60,7 @@ export default {
 				sm: "calc(var(--radius) - 4px)",
 			},
 			fontFamily: {
-				sans: ["Figtree", ...defaultTheme.fontFamily.sans],
+				heading: ["DM Sans Variable", ...defaultTheme.fontFamily.sans],
 			},
 			keyframes: {
 				"accordion-down": {
@@ -78,5 +78,5 @@ export default {
 			},
 		},
 	},
-	plugins: [forms, require("tailwindcss-animate")],
+	plugins: [tailwindCssAnimate],
 };
