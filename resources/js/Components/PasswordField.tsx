@@ -42,7 +42,7 @@ export default function PasswordField({
 				{canResetPassword ? (
 					<Button asChild className="h-full p-0" variant="link">
 						<Link href={route("password.request")}>
-							Recuperar contraseña
+							Olvidé mi contraseña
 						</Link>
 					</Button>
 				) : null}

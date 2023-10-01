@@ -6,6 +6,7 @@ import { CheckboxField } from "@/Components/CheckboxField";
 import { Button } from "@/Components/ui/button";
 import { Loader2 } from "lucide-react";
 import PasswordField from "@/Components/PasswordField";
+import { useToast } from "@/Components/ui/use-toast";
 
 export default function Login({
 	status,
@@ -14,6 +15,8 @@ export default function Login({
 	status?: string;
 	canResetPassword: boolean;
 }) {
+	const { toast } = useToast();
+
 	const { data, setData, post, processing, errors, reset } = useForm({
 		email: "",
 		password: "",
@@ -21,10 +24,16 @@ export default function Login({
 	});
 
 	useEffect(() => {
+		if (status) {
+			toast({
+				description: status,
+			});
+		}
+
 		return () => {
 			reset("password");
 		};
-	}, []);
+	}, [toast, status]);
 
 	const submit: FormEventHandler = (e) => {
 		e.preventDefault();
@@ -44,18 +53,12 @@ export default function Login({
 				<Link href={route("register")}>Registro</Link>
 			</Button>
 
-			{status && (
-				<div className="mb-4 text-sm font-medium text-green-600">
-					{status}
-				</div>
-			)}
-
 			<form onSubmit={submit} className="space-y-6">
 				<div className="space-y-4">
 					<TextField
 						id="email"
 						labelProps={{
-							children: "Email",
+							children: "Correo electrónico",
 						}}
 						inputProps={{
 							type: "email",
@@ -63,6 +66,7 @@ export default function Login({
 							value: data.email,
 							autoComplete: "username",
 							autoFocus: true,
+							required: true,
 							onChange: (e) => setData("email", e.target.value),
 						}}
 						errorMessage={errors.email}
@@ -77,6 +81,7 @@ export default function Login({
 						inputProps={{
 							value: data.password,
 							autoComplete: "current-password",
+							required: true,
 							onChange: (e) => {
 								setData("password", e.target.value);
 							},
