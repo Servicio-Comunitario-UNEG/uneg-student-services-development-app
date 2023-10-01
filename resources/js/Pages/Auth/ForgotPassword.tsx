@@ -32,7 +32,7 @@ export default function ForgotPassword({ status }: { status?: string }) {
 				<TextField
 					id="email"
 					labelProps={{
-						children: "Email",
+						children: "Correo electrónico",
 					}}
 					inputProps={{
 						type: "email",

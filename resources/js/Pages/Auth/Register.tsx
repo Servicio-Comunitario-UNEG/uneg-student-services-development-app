@@ -59,7 +59,7 @@ export default function Register() {
 					<TextField
 						id="email"
 						labelProps={{
-							children: "Email",
+							children: "Correo electrónico",
 						}}
 						inputProps={{
 							type: "email",
@@ -91,7 +91,7 @@ export default function Register() {
 					<PasswordField
 						id="password_confirmation"
 						labelProps={{
-							children: "Confirma tu Contraseña",
+							children: "Confirma tu contraseña",
 						}}
 						inputProps={{
 							value: data.password_confirmation,

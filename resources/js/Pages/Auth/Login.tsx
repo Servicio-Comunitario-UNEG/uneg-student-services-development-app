@@ -55,7 +55,7 @@ export default function Login({
 					<TextField
 						id="email"
 						labelProps={{
-							children: "Email",
+							children: "Correo electrónico",
 						}}
 						inputProps={{
 							type: "email",

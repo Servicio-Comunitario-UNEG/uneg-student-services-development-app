@@ -1,10 +1,13 @@
 import GuestLayout from "@/Layouts/GuestLayout";
-import PrimaryButton from "@/Components/PrimaryButton";
 import { Head, Link, useForm } from "@inertiajs/react";
-import { FormEventHandler } from "react";
+import { FormEventHandler, useEffect } from "react";
+import { useToast } from "@/Components/ui/use-toast";
+import { Button } from "@/Components/ui/button";
+import { Loader2 } from "lucide-react";
 
 export default function VerifyEmail({ status }: { status?: string }) {
 	const { post, processing } = useForm({});
+	const { toast } = useToast();
 
 	const submit: FormEventHandler = (e) => {
 		e.preventDefault();
@@ -12,38 +15,38 @@ export default function VerifyEmail({ status }: { status?: string }) {
 		post(route("verification.send"));
 	};
 
+	useEffect(() => {
+		if (status === "verification-link-sent") {
+			toast({
+				title: "Reenviado",
+				description:
+					"Un nuevo enlace de verificación ha sido enviado al correo electrónico que has registrado.",
+			});
+		}
+	}, [status, toast]);
+
 	return (
-		<GuestLayout>
-			<Head title="Email Verification" />
-
-			<div className="mb-4 text-sm text-gray-600">
-				Thanks for signing up! Before getting started, could you verify
-				your email address by clicking on the link we just emailed to
-				you? If you didn't receive the email, we will gladly send you
-				another.
-			</div>
-
-			{status === "verification-link-sent" && (
-				<div className="mb-4 text-sm font-medium text-green-600">
-					A new verification link has been sent to the email address
-					you provided during registration.
-				</div>
-			)}
+		<GuestLayout
+			title="Verificación de Correo"
+			description="Para comenzar a utilizar la aplicación, confirma tu dirección de correo electrónico abriendo el enlace que te hemos enviado."
+		>
+			<Head title="Verificación de Correo" />
 
 			<form onSubmit={submit}>
-				<div className="mt-4 flex items-center justify-between">
-					<PrimaryButton disabled={processing}>
-						Resend Verification Email
-					</PrimaryButton>
+				<div className="flex justify-between">
+					<Button disabled={processing}>
+						{processing ? (
+							<Loader2 className="mr-2 h-4 w-4 animate-spin" />
+						) : null}
 
-					<Link
-						href={route("logout")}
-						method="post"
-						as="button"
-						className="rounded-md text-sm text-gray-600 underline hover:text-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
-					>
-						Log Out
-					</Link>
+						<span>Reenviar correo</span>
+					</Button>
+
+					<Button asChild variant="ghost">
+						<Link href={route("logout")} method="post" as="button">
+							Cerrar Sesión
+						</Link>
+					</Button>
 				</div>
 			</form>
 		</GuestLayout>
