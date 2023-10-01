@@ -1,10 +1,13 @@
 import GuestLayout from "@/Layouts/GuestLayout";
 import { Head, useForm } from "@inertiajs/react";
-import { FormEventHandler } from "react";
+import { FormEventHandler, useEffect } from "react";
 import TextField from "@/Components/TextField";
 import { Button } from "@/Components/ui/button";
+import { useToast } from "@/Components/ui/use-toast";
 
 export default function ForgotPassword({ status }: { status?: string }) {
+	const { toast } = useToast();
+
 	const { data, setData, post, errors } = useForm({
 		email: "",
 	});
@@ -15,18 +18,20 @@ export default function ForgotPassword({ status }: { status?: string }) {
 		post(route("password.email"));
 	};
 
+	useEffect(() => {
+		if (status) {
+			toast({
+				description: status,
+			});
+		}
+	}, [status, toast]);
+
 	return (
 		<GuestLayout
 			title="¿Olvidaste tu Contraseña?"
 			subtitle="Te enviaremos las instrucciones para que lo reestablezcas"
 		>
 			<Head title="Olvidé mi Contraseña" />
-
-			{status && (
-				<div className="mb-4 text-sm font-medium text-green-600">
-					{status}
-				</div>
-			)}
 
 			<form className="space-y-6" onSubmit={submit}>
 				<TextField
