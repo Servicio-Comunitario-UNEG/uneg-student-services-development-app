@@ -1,10 +1,10 @@
 import { useEffect, FormEventHandler } from "react";
 import GuestLayout from "@/Layouts/GuestLayout";
-import InputError from "@/Components/InputError";
-import InputLabel from "@/Components/InputLabel";
-import PrimaryButton from "@/Components/PrimaryButton";
-import TextInput from "@/Components/TextInput";
 import { Head, useForm } from "@inertiajs/react";
+import TextField from "@/Components/TextField";
+import PasswordField from "@/Components/PasswordField";
+import { Button } from "@/Components/ui/button";
+import { Loader2 } from "lucide-react";
 
 export default function ResetPassword({
 	token,
@@ -33,71 +33,71 @@ export default function ResetPassword({
 	};
 
 	return (
-		<GuestLayout>
-			<Head title="Reset Password" />
+		<GuestLayout title="Reestablece tu Contraseña">
+			<Head title="Reestablecer Contraseña" />
 
-			<form onSubmit={submit}>
-				<div>
-					<InputLabel htmlFor="email" value="Email" />
-
-					<TextInput
+			<form onSubmit={submit} className="space-y-6">
+				<div className="space-y-4">
+					<TextField
 						id="email"
-						type="email"
-						name="email"
-						value={data.email}
-						className="mt-1 block w-full"
-						autoComplete="username"
-						onChange={(e) => setData("email", e.target.value)}
+						labelProps={{
+							children: "Correo electrónico",
+						}}
+						inputProps={{
+							type: "email",
+							placeholder: "ej: johndoe@gmail.com",
+							value: data.email,
+							autoComplete: "username",
+							autoFocus: true,
+							required: true,
+							onChange: (e) => setData("email", e.target.value),
+						}}
+						errorMessage={errors.email}
 					/>
 
-					<InputError message={errors.email} className="mt-2" />
-				</div>
-
-				<div className="mt-4">
-					<InputLabel htmlFor="password" value="Password" />
-
-					<TextInput
+					<PasswordField
 						id="password"
-						type="password"
-						name="password"
-						value={data.password}
-						className="mt-1 block w-full"
-						autoComplete="new-password"
-						isFocused={true}
-						onChange={(e) => setData("password", e.target.value)}
+						labelProps={{
+							children: "Contraseña",
+						}}
+						inputProps={{
+							value: data.password,
+							autoComplete: "new-password",
+							required: true,
+							onChange: (e) => {
+								setData("password", e.target.value);
+							},
+						}}
+						errorMessage={errors.password}
 					/>
 
-					<InputError message={errors.password} className="mt-2" />
+					<PasswordField
+						id="password_confirmation"
+						labelProps={{
+							children: "Confirmar contraseña",
+						}}
+						inputProps={{
+							value: data.password_confirmation,
+							autoComplete: "new-password",
+							required: true,
+							onChange: (e) => {
+								setData(
+									"password_confirmation",
+									e.target.value,
+								);
+							},
+						}}
+						errorMessage={errors.password_confirmation}
+					/>
 				</div>
 
-				<div className="mt-4">
-					<InputLabel
-						htmlFor="password_confirmation"
-						value="Confirm Password"
-					/>
+				<Button className="w-full" disabled={processing}>
+					{processing ? (
+						<Loader2 className="mr-2 h-4 w-4 animate-spin" />
+					) : null}
 
-					<TextInput
-						type="password"
-						name="password_confirmation"
-						value={data.password_confirmation}
-						className="mt-1 block w-full"
-						autoComplete="new-password"
-						onChange={(e) =>
-							setData("password_confirmation", e.target.value)
-						}
-					/>
-
-					<InputError
-						message={errors.password_confirmation}
-						className="mt-2"
-					/>
-				</div>
-
-				<div className="mt-4 flex items-center justify-end">
-					<PrimaryButton className="ml-4" disabled={processing}>
-						Reset Password
-					</PrimaryButton>
-				</div>
+					<span>Reestablecer contraseña</span>
+				</Button>
 			</form>
 		</GuestLayout>
 	);

@@ -91,7 +91,7 @@ export default function Register() {
 					<PasswordField
 						id="password_confirmation"
 						labelProps={{
-							children: "Confirma tu contraseña",
+							children: "Confirmar contraseña",
 						}}
 						inputProps={{
 							value: data.password_confirmation,
