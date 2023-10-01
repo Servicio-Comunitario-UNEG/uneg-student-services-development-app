@@ -12,9 +12,11 @@ import { PropsWithChildren } from "react";
 export default function Guest({
 	children,
 	title,
+	subtitle,
 	description,
 }: PropsWithChildren<{
 	title?: string;
+	subtitle?: string;
 	description?: string;
 }>) {
 	return (
@@ -30,7 +32,13 @@ export default function Guest({
 					</Link>
 				</div>
 
-				<h1 className="text-center text-3xl font-bold">{title}</h1>
+				<div className="w-full max-w-lg space-y-2 text-center">
+					<h1 className="text-3xl font-bold">{title}</h1>
+
+					{subtitle ? (
+						<p className="text-muted-foreground">{subtitle}</p>
+					) : null}
+				</div>
 			</div>
 
 			<Card className="w-full max-w-lg">
