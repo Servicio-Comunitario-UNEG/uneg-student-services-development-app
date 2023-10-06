@@ -63,7 +63,7 @@ function MobileLink({
 
 	return (
 		<Link
-			href={to}
+			href={route(to)}
 			className={cn(
 				"flex w-full items-start border-l-4 py-2 pl-3 pr-4 hover:bg-accent",
 				"text-base font-medium transition duration-150 ease-in-out focus:outline-none",
