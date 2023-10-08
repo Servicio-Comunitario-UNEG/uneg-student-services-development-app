@@ -44,14 +44,8 @@ Route::middleware("auth")->group(function () {
 	);
 });
 
-Route::middleware(["auth", "verified"])->group(function () {
-	Route::get("/headquarters", [HeadquarterController::class, "index"])->name(
-		"headquarters.index",
-	);
-
-	Route::post("/headquarters", [HeadquarterController::class, "store"])->name(
-		"headquarters.store",
-	);
-});
+Route::resource("headquarters", HeadquarterController::class)
+	->only(["index", "store", "destroy"])
+	->middleware(["auth", "verified"]);
 
 require __DIR__ . "/auth.php";

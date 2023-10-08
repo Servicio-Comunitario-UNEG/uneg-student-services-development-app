@@ -1,6 +1,7 @@
 import { DataTableColumnHeader } from "@/Components/DataTableColumnHeader";
 import { Headquarter } from "@/types";
 import type { ColumnDef } from "@tanstack/react-table";
+import HeadquarterCellAction from "./Partials/HeadquartersCellAction";
 
 export const columns: ColumnDef<Headquarter>[] = [
 	{
@@ -20,5 +21,9 @@ export const columns: ColumnDef<Headquarter>[] = [
 		cell: ({ row }) => row.getValue("address"),
 		enableHiding: false,
 		enableSorting: false,
+	},
+	{
+		id: "actions",
+		cell: (cell) => <HeadquarterCellAction {...cell} />,
 	},
 ];

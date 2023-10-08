@@ -61,7 +61,9 @@ class HeadquarterController extends Controller {
 	/**
 	 * Remove the specified resource from storage.
 	 */
-	public function destroy(Headquarter $headquarter) {
-		//
+	public function destroy(int $id) {
+		Headquarter::destroy($id);
+
+		return redirect(route("headquarters.index"));
 	}
 }
