@@ -2,6 +2,8 @@ import { AuthenticatedLayout } from "@/Layouts/AuthenticatedLayout";
 import type { Headquarter, PageProps } from "@/types";
 import { Head } from "@inertiajs/react";
 import CreateHeadquarterFormDialog from "./Partials/CreateHeadquarterFormDialog";
+import { DataTable } from "@/Components/DataTable";
+import { columns } from "./columns";
 
 export default function Index({
 	auth,
@@ -19,9 +21,7 @@ export default function Index({
 		>
 			<Head title="Sedes" />
 
-			<pre className="whitespace-break-spaces">
-				{JSON.stringify(headquarters, null, 2)}
-			</pre>
+			<DataTable columns={columns} data={headquarters} />
 		</AuthenticatedLayout>
 	);
 }

@@ -12,7 +12,7 @@ class HeadquarterController extends Controller {
 	 */
 	public function index() {
 		return Inertia::render("Headquarters/Index", [
-			"headquarters" => Headquarter::all(),
+			"headquarters" => Headquarter::orderBy("name")->get(),
 		]);
 	}
 
