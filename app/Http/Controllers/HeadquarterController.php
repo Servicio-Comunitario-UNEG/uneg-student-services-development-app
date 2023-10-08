@@ -8,6 +8,14 @@ use Inertia\Inertia;
 
 class HeadquarterController extends Controller {
 	/**
+	 * The validation rules for this resource.
+	 */
+	private $validationRules = [
+		"name" => "required|string|unique:headquarters|max:255",
+		"address" => "nullable|string|max:255",
+	];
+
+	/**
 	 * Display a listing of the resource.
 	 */
 	public function index() {
@@ -27,10 +35,7 @@ class HeadquarterController extends Controller {
 	 * Store a newly created resource in storage.
 	 */
 	public function store(Request $request) {
-		$validated = $request->validate([
-			"name" => "required|string|unique:headquarters|max:255",
-			"address" => "nullable|string|max:255",
-		]);
+		$validated = $request->validate($this->validationRules);
 
 		Headquarter::create($validated);
 
@@ -54,8 +59,16 @@ class HeadquarterController extends Controller {
 	/**
 	 * Update the specified resource in storage.
 	 */
-	public function update(Request $request, Headquarter $headquarter) {
-		//
+	public function update(Request $request, int $id) {
+		$validated = $request->validate($this->validationRules);
+
+		$headquarter = Headquarter::find($id);
+
+		if ($headquarter instanceof Headquarter) {
+			$headquarter->update($validated);
+		}
+
+		return redirect(route("headquarters.index"));
 	}
 
 	/**

@@ -17,13 +17,23 @@ export default function CreateOrEditHeadquarterForm({
 	isUpdate?: boolean;
 	callToAction: string;
 }) {
-	const { data, setData, errors, processing, post } = useForm(initialValues);
+	const { data, setData, errors, processing, post, put } =
+		useForm(initialValues);
 
 	const onSubmit: FormEventHandler = (e) => {
 		e.preventDefault();
 
+		// The id must be provided on update.
+		if (isUpdate && !initialValues.id) return;
+
 		// Update the headquarter.
-		if (isUpdate) return;
+		if (isUpdate) {
+			put(route("headquarters.update", initialValues.id), {
+				onSuccess,
+			});
+
+			return;
+		}
 
 		// Create the headquarter.
 		post(route("headquarters.store"), {
