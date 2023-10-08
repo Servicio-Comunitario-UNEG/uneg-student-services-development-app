@@ -48,6 +48,10 @@ Route::middleware(["auth", "verified"])->group(function () {
 	Route::get("/headquarters", [HeadquarterController::class, "index"])->name(
 		"headquarters.index",
 	);
+
+	Route::post("/headquarters", [HeadquarterController::class, "store"])->name(
+		"headquarters.store",
+	);
 });
 
 require __DIR__ . "/auth.php";

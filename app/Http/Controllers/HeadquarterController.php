@@ -11,7 +11,9 @@ class HeadquarterController extends Controller {
 	 * Display a listing of the resource.
 	 */
 	public function index() {
-		return Inertia::render("Headquarters/Index");
+		return Inertia::render("Headquarters/Index", [
+			"headquarters" => Headquarter::all(),
+		]);
 	}
 
 	/**
@@ -25,7 +27,14 @@ class HeadquarterController extends Controller {
 	 * Store a newly created resource in storage.
 	 */
 	public function store(Request $request) {
-		//
+		$validated = $request->validate([
+			"name" => "required|string|unique:headquarters|max:255",
+			"address" => "nullable|string|max:255",
+		]);
+
+		Headquarter::create($validated);
+
+		return redirect(route("headquarters.index"));
 	}
 
 	/**
