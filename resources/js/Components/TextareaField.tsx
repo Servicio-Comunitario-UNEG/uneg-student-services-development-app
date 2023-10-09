@@ -9,7 +9,7 @@ interface Props {
 		React.LabelHTMLAttributes<HTMLLabelElement>,
 		"className" | "htmlFor"
 	>;
-	textareaProps: Omit<TextareaProps, "className" | "id" | "name">;
+	textareaProps: Omit<TextareaProps, "id" | "name">;
 	errorMessage?: string;
 	className?: string;
 	description?: string;

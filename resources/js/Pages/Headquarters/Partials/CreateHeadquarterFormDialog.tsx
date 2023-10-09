@@ -8,7 +8,7 @@ import {
 } from "@/Components/ui/dialog";
 import CreateOrEditHeadquarterForm from "./CreateOrEditHeadquarterForm";
 import { useState } from "react";
-import { Building2 } from "lucide-react";
+import { Plus } from "lucide-react";
 
 export default function CreateHeadquarterFormDialog() {
 	const [open, setOpen] = useState(false);
@@ -17,15 +17,15 @@ export default function CreateHeadquarterFormDialog() {
 		<Dialog open={open} onOpenChange={setOpen}>
 			<DialogTrigger asChild>
 				<Button type="button">
-					<Building2 className="mr-2 h-4 w-4" />
+					<Plus className="mr-2 h-4 w-4" />
 
-					<span>Crear Sede</span>
+					<span>Agregar sede</span>
 				</Button>
 			</DialogTrigger>
 
 			<DialogContent className="sm:max-w-md">
 				<DialogHeader>
-					<DialogTitle>Crear Sede</DialogTitle>
+					<DialogTitle>Crea una nueva sede</DialogTitle>
 				</DialogHeader>
 
 				<CreateOrEditHeadquarterForm
@@ -34,7 +34,7 @@ export default function CreateHeadquarterFormDialog() {
 						address: "",
 					}}
 					onSuccess={() => setOpen(false)}
-					callToAction="Crear"
+					callToAction="Agregar sede"
 				/>
 			</DialogContent>
 		</Dialog>

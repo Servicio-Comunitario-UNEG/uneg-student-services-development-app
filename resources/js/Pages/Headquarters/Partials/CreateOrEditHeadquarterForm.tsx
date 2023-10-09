@@ -45,7 +45,7 @@ export default function CreateOrEditHeadquarterForm({
 		<form className="space-y-6" onSubmit={onSubmit}>
 			<div className="space-y-4">
 				<TextField
-					id="name"
+					id="headquarter-name"
 					labelProps={{
 						children: "Nombre",
 					}}
@@ -65,22 +65,27 @@ export default function CreateOrEditHeadquarterForm({
 						children: "Dirección",
 					}}
 					textareaProps={{
+						autoComplete: "street-address",
+						className: "min-h-[130px]",
 						placeholder: "ej: Avenida Atlántico",
 						value: data.address ?? "",
 						onChange: (e) => setData("address", e.target.value),
+						maxLength: 255,
 					}}
 					errorMessage={errors.address}
 					isOptional
 				/>
 			</div>
 
-			<Button disabled={processing}>
-				{processing ? (
-					<Loader2 className="mr-2 h-4 w-4 animate-spin" />
-				) : null}
+			<div className="flex justify-end">
+				<Button disabled={processing}>
+					{processing ? (
+						<Loader2 className="mr-2 h-4 w-4 animate-spin" />
+					) : null}
 
-				<span>{callToAction}</span>
-			</Button>
+					<span>{callToAction}</span>
+				</Button>
+			</div>
 		</form>
 	);
 }
