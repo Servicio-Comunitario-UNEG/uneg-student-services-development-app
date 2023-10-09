@@ -69,7 +69,7 @@ export default function HeadquarterCellAction({
 
 				<DialogContent className="sm:max-w-md">
 					<DialogHeader>
-						<DialogTitle>Editar Evaporación</DialogTitle>
+						<DialogTitle>Editar sede</DialogTitle>
 					</DialogHeader>
 
 					<EditHeadquarterForm
