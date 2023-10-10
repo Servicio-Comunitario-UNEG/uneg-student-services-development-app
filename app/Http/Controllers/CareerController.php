@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Career;
 use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
 use Inertia\Inertia;
 
 class CareerController extends Controller {
@@ -54,7 +55,18 @@ class CareerController extends Controller {
 	 * Update the specified resource in storage.
 	 */
 	public function update(Request $request, Career $career) {
-		//
+		$validated = $request->validate([
+			"name" => [
+				"required",
+				"string",
+				Rule::unique("careers")->ignore($career->id),
+				"max:255",
+			],
+		]);
+
+		$career->update($validated);
+
+		return redirect(route("careers.index"));
 	}
 
 	/**

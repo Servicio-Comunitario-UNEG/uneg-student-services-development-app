@@ -17,6 +17,7 @@ import {
 	DialogTitle,
 	DialogTrigger,
 } from "@/Components/ui/dialog";
+import EditCareerForm from "./EditCareerForm";
 
 export default function CareerCellAction({
 	row,
@@ -69,6 +70,11 @@ export default function CareerCellAction({
 					<DialogHeader>
 						<DialogTitle>Editar carrera</DialogTitle>
 					</DialogHeader>
+
+					<EditCareerForm
+						initialValues={career}
+						onSuccess={() => setOpen(false)}
+					/>
 				</DialogContent>
 			</Dialog>
 		</div>
