@@ -17,7 +17,7 @@ class PermissionSeeder extends Seeder {
 		]->forgetCachedPermissions();
 
 		// Create the roles.
-		$roles = ["coordinator", "representative"];
+		$roles = ["admin", "coordinator", "representative"];
 
 		foreach ($roles as $role) {
 			Role::create(["name" => $role]);
