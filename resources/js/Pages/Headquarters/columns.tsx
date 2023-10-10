@@ -18,7 +18,9 @@ export const columns: ColumnDef<Headquarter>[] = [
 		header: ({ column }) => (
 			<DataTableColumnHeader column={column} title="Dirección" />
 		),
-		cell: ({ row }) => row.getValue("address"),
+		cell: ({ row }) => (
+			<div className="max-w-2xl truncate">{row.getValue("address")}</div>
+		),
 		enableHiding: false,
 		enableSorting: false,
 	},
