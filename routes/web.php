@@ -3,6 +3,7 @@
 use App\Http\Controllers\CareerController;
 use App\Http\Controllers\HeadquarterController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\UserController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -51,6 +52,10 @@ Route::resource("headquarters", HeadquarterController::class)
 
 Route::resource("careers", CareerController::class)
 	->only(["index", "store", "destroy", "update"])
+	->middleware(["auth", "verified"]);
+
+Route::resource("users", UserController::class)
+	->only(["index"])
 	->middleware(["auth", "verified"]);
 
 require __DIR__ . "/auth.php";

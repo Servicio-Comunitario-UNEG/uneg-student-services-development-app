@@ -18,6 +18,10 @@ const links: {
 		to: "dashboard",
 	},
 	{
+		title: "Usuarios",
+		to: "users.index",
+	},
+	{
 		title: "Carreras",
 		to: "careers.index",
 	},
