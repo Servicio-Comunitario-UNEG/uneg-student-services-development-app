@@ -12,7 +12,6 @@ return new class extends Migration {
 		Schema::create("headquarters", function (Blueprint $table) {
 			$table->id();
 			$table->string("name")->unique();
-			$table->string("address")->nullable();
 			$table->timestamps();
 		});
 	}

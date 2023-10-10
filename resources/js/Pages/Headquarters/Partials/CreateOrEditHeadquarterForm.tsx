@@ -1,5 +1,4 @@
 import TextField from "@/Components/TextField";
-import TextareaField from "@/Components/TextareaField";
 import { Button } from "@/Components/ui/button";
 import { Headquarter } from "@/types";
 import { useForm } from "@inertiajs/react";
@@ -43,39 +42,20 @@ export default function CreateOrEditHeadquarterForm({
 
 	return (
 		<form className="space-y-6" onSubmit={onSubmit}>
-			<div className="space-y-4">
-				<TextField
-					id="headquarter-name"
-					labelProps={{
-						children: "Nombre",
-					}}
-					inputProps={{
-						placeholder: "ej: Ciudad Universitaria",
-						required: true,
-						autoFocus: true,
-						value: data.name,
-						onChange: (e) => setData("name", e.target.value),
-					}}
-					errorMessage={errors.name}
-				/>
-
-				<TextareaField
-					id="address"
-					labelProps={{
-						children: "Dirección",
-					}}
-					textareaProps={{
-						autoComplete: "street-address",
-						className: "min-h-[130px]",
-						placeholder: "ej: Avenida Atlántico",
-						value: data.address ?? "",
-						onChange: (e) => setData("address", e.target.value),
-						maxLength: 255,
-					}}
-					errorMessage={errors.address}
-					isOptional
-				/>
-			</div>
+			<TextField
+				id="headquarter-name"
+				labelProps={{
+					children: "Nombre",
+				}}
+				inputProps={{
+					placeholder: "ej: Puerto Ordaz",
+					required: true,
+					autoFocus: true,
+					value: data.name,
+					onChange: (e) => setData("name", e.target.value),
+				}}
+				errorMessage={errors.name}
+			/>
 
 			<div className="flex justify-end">
 				<Button disabled={processing}>
