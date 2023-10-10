@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\HeadquarterController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
@@ -42,5 +43,9 @@ Route::middleware("auth")->group(function () {
 		"profile.destroy",
 	);
 });
+
+Route::resource("headquarters", HeadquarterController::class)
+	->only(["index", "store", "destroy", "update"])
+	->middleware(["auth", "verified"]);
 
 require __DIR__ . "/auth.php";

@@ -18,6 +18,10 @@ const links: {
 		to: "dashboard",
 	},
 	{
+		title: "Sedes",
+		to: "headquarters.index",
+	},
+	{
 		title: "Perfil",
 		to: "profile.edit",
 		isMobileOnly: true,
