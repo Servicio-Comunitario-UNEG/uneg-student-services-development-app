@@ -19,7 +19,7 @@ export default function CreateHeadquarterFormDialog() {
 				<Button type="button">
 					<Plus className="mr-2 h-4 w-4" />
 
-					<span>Agregar sede</span>
+					<span className="whitespace-nowrap">Agregar sede</span>
 				</Button>
 			</DialogTrigger>
 
