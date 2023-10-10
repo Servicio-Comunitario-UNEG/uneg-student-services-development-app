@@ -2,6 +2,8 @@ import type { Career, PageProps } from "@/types";
 import { AuthenticatedLayout } from "@/Layouts/AuthenticatedLayout";
 import { Head } from "@inertiajs/react";
 import CreateCareerFormDialog from "./Partials/CreateCareerFormDialog";
+import { DataTable } from "@/Components/DataTable";
+import { columns } from "./columns";
 
 export default function Index({
 	auth,
@@ -18,7 +20,7 @@ export default function Index({
 		>
 			<Head title="Carreras" />
 
-			<pre>{JSON.stringify(careers, undefined, 2)}</pre>
+			<DataTable columns={columns} data={careers} />
 		</AuthenticatedLayout>
 	);
 }
