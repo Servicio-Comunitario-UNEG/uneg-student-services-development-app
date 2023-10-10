@@ -13,5 +13,5 @@ class Headquarter extends Model {
 	 *
 	 * @var array<int, string>
 	 */
-	protected $fillable = ["name", "address"];
+	protected $fillable = ["name"];
 }

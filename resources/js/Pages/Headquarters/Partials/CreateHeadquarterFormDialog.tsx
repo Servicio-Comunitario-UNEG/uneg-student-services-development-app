@@ -31,7 +31,6 @@ export default function CreateHeadquarterFormDialog() {
 				<CreateOrEditHeadquarterForm
 					initialValues={{
 						name: "",
-						address: "",
 					}}
 					onSuccess={() => setOpen(false)}
 					callToAction="Agregar sede"

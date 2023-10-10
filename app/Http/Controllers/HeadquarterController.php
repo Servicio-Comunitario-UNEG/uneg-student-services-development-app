@@ -30,7 +30,6 @@ class HeadquarterController extends Controller {
 	public function store(Request $request) {
 		$validated = $request->validate([
 			"name" => "required|string|unique:headquarters|max:255",
-			"address" => "nullable|string|max:255",
 		]);
 
 		Headquarter::create($validated);
@@ -63,7 +62,6 @@ class HeadquarterController extends Controller {
 				Rule::unique("headquarters")->ignore($id),
 				"max:255",
 			],
-			"address" => "nullable|string|max:255",
 		]);
 
 		$headquarter = Headquarter::find($id);

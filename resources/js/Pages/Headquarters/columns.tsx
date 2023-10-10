@@ -14,17 +14,6 @@ export const columns: ColumnDef<Headquarter>[] = [
 		enableSorting: false,
 	},
 	{
-		accessorKey: "address",
-		header: ({ column }) => (
-			<DataTableColumnHeader column={column} title="Dirección" />
-		),
-		cell: ({ row }) => (
-			<div className="max-w-2xl truncate">{row.getValue("address")}</div>
-		),
-		enableHiding: false,
-		enableSorting: false,
-	},
-	{
 		id: "actions",
 		cell: (cell) => <HeadquarterCellAction {...cell} />,
 	},
