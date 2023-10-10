@@ -4,17 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Models\Headquarter;
 use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
 use Inertia\Inertia;
 
 class HeadquarterController extends Controller {
-	/**
-	 * The validation rules for this resource.
-	 */
-	private $validationRules = [
-		"name" => "required|string|unique:headquarters|max:255",
-		"address" => "nullable|string|max:255",
-	];
-
 	/**
 	 * Display a listing of the resource.
 	 */
@@ -35,7 +28,10 @@ class HeadquarterController extends Controller {
 	 * Store a newly created resource in storage.
 	 */
 	public function store(Request $request) {
-		$validated = $request->validate($this->validationRules);
+		$validated = $request->validate([
+			"name" => "required|string|unique:headquarters|max:255",
+			"address" => "nullable|string|max:255",
+		]);
 
 		Headquarter::create($validated);
 
@@ -60,7 +56,15 @@ class HeadquarterController extends Controller {
 	 * Update the specified resource in storage.
 	 */
 	public function update(Request $request, int $id) {
-		$validated = $request->validate($this->validationRules);
+		$validated = $request->validate([
+			"name" => [
+				"required",
+				"string",
+				Rule::unique("headquarters")->ignore($id),
+				"max:255",
+			],
+			"address" => "nullable|string|max:255",
+		]);
 
 		$headquarter = Headquarter::find($id);
 
