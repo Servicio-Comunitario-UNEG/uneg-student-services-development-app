@@ -61,6 +61,8 @@ class CareerController extends Controller {
 	 * Remove the specified resource from storage.
 	 */
 	public function destroy(Career $career) {
-		//
+		$career->delete();
+
+		return redirect(route("careers.index"));
 	}
 }
