@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\CareerController;
 use App\Http\Controllers\HeadquarterController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Foundation\Application;
@@ -45,6 +46,10 @@ Route::middleware("auth")->group(function () {
 });
 
 Route::resource("headquarters", HeadquarterController::class)
+	->only(["index", "store", "destroy", "update"])
+	->middleware(["auth", "verified"]);
+
+Route::resource("careers", CareerController::class)
 	->only(["index", "store", "destroy", "update"])
 	->middleware(["auth", "verified"]);
 

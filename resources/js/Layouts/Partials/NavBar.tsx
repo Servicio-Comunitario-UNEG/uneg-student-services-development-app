@@ -18,6 +18,10 @@ const links: {
 		to: "dashboard",
 	},
 	{
+		title: "Carreras",
+		to: "careers.index",
+	},
+	{
 		title: "Sedes",
 		to: "headquarters.index",
 	},
