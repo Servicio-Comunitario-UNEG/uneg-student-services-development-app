@@ -50,7 +50,7 @@ Route::resource("headquarters", HeadquarterController::class)
 	->middleware(["auth", "verified"]);
 
 Route::resource("careers", CareerController::class)
-	->only(["index"])
+	->only(["index", "store"])
 	->middleware(["auth", "verified"]);
 
 require __DIR__ . "/auth.php";

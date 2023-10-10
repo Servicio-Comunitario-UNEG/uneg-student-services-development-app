@@ -11,7 +11,9 @@ class CareerController extends Controller {
 	 * Display a listing of the resource.
 	 */
 	public function index() {
-		return Inertia::render("Careers/Index");
+		return Inertia::render("Careers/Index", [
+			"careers" => Career::orderBy("name")->get(),
+		]);
 	}
 
 	/**
@@ -25,7 +27,13 @@ class CareerController extends Controller {
 	 * Store a newly created resource in storage.
 	 */
 	public function store(Request $request) {
-		//
+		$validated = $request->validate([
+			"name" => "required|string|unique:headquarters|max:255",
+		]);
+
+		Career::create($validated);
+
+		return redirect(route("careers.index"));
 	}
 
 	/**
