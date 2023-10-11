@@ -32,13 +32,14 @@ class HandleInertiaRequests extends Middleware {
 			"auth" => [
 				"user" => $request
 					->user()
-					->only(
+					?->only([
 						"id",
-						"name",
 						"email",
+						"name",
+						"permission_names",
 						"role_name",
 						"email_verified_at",
-					),
+					]),
 			],
 			"ziggy" => fn() => [
 				...(new Ziggy())->toArray(),

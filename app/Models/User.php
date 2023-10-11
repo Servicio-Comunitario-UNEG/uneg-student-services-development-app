@@ -33,7 +33,7 @@ class User extends Authenticatable {
 	 *
 	 * @var array
 	 */
-	protected $appends = ["role_name"];
+	protected $appends = ["role_name", "permission_names"];
 
 	/**
 	 * The attributes that should be cast.
@@ -52,6 +52,15 @@ class User extends Authenticatable {
 		$roles = $this->getRoleNames();
 
 		return new Attribute(get: fn() => empty($roles) ? null : $roles[0]);
+	}
+
+	/**
+	 * Get the permissions the user has.
+	 */
+	protected function permissionNames(): Attribute {
+		return new Attribute(
+			get: fn() => $this->getPermissionsViaRoles()->pluck("name"),
+		);
 	}
 
 	/**
