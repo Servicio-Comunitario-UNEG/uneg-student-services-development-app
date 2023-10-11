@@ -106,7 +106,7 @@ export default function CreateOrEditUserForm({
 					}}
 					cardRadioGroupProps={{
 						name: "role",
-						value: data.role_name,
+						value: data.role_name ?? "",
 						onValueChange: (value) => {
 							setData("role_name", value as User["role_name"]);
 						},

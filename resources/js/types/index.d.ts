@@ -3,7 +3,8 @@ export interface User {
 	name: string;
 	email: string;
 	email_verified_at: string;
-	role_name: "admin" | "coordinator" | "representative";
+	role_name: "admin" | "coordinator" | "representative" | null;
+	permission_names: string[];
 }
 
 export type PageProps<
