@@ -14,7 +14,6 @@ class UserController extends Controller {
 	 * Display a listing of the resource.
 	 */
 	public function index(Request $request) {
-		/** @var \Illuminate\Database\Eloquent\Collection */
 		$users = User::orderBy("name")
 			->get()
 			->except($request->user()->id);
@@ -43,12 +42,6 @@ class UserController extends Controller {
 			"email" => "required|string|email|max:255|unique:" . User::class,
 			"password" => ["required", Rules\Password::defaults()],
 			"role_name" => "required|exists:roles,name",
-
-			// Only when the user role is representative.
-			"headquarter_id" => [
-				"required_if:role_name,representative",
-				"exists:headquarters,id",
-			],
 		]);
 
 		// Create the user and assign its role.
@@ -59,15 +52,6 @@ class UserController extends Controller {
 		]);
 
 		$user->assignRole($validated["role_name"]);
-
-		// Update the headquarter representative.
-		if ($validated["role_name"] == "representative") {
-			$headquarter = Headquarter::find($validated["headquarter_id"]);
-
-			$headquarter->update([
-				"user_id" => $validated["headquarter_id"],
-			]);
-		}
 
 		return redirect(route("users.index"));
 	}

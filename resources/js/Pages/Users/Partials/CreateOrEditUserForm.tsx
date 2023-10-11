@@ -1,5 +1,4 @@
 import CardRadioGroupField from "@/Components/CardRadioGroupField";
-import ComboboxField from "@/Components/ComboboxField";
 import PasswordField from "@/Components/PasswordField";
 import TextField from "@/Components/TextField";
 import { Button } from "@/Components/ui/button";
@@ -13,12 +12,10 @@ export default function CreateOrEditUserForm({
 	onSuccess,
 	isUpdate = false,
 	callToAction,
-	headquarters,
 }: {
 	initialValues: Partial<
 		User & {
 			password: string;
-			headquarter_id: string;
 		}
 	>;
 	onSuccess?: () => void;
@@ -130,30 +127,6 @@ export default function CreateOrEditUserForm({
 					}}
 					errorMessage={errors.role_name}
 				/>
-
-				{data.role_name === "representative" ? (
-					<ComboboxField
-						id="headquarter-id"
-						labelProps={{
-							children: "Sede",
-						}}
-						comboboxProps={{
-							emptyTitle: "No se encontraron sedes.",
-							options: headquarters.map((headquarter) => {
-								return {
-									label: headquarter.name,
-									value: String(headquarter.id),
-								};
-							}),
-							placeholder: "Seleccione una sede",
-							setValue: (value) => {
-								setData("headquarter_id", value);
-							},
-							value: data.headquarter_id ?? "",
-						}}
-						errorMessage={errors.headquarter_id}
-					/>
-				) : null}
 			</div>
 
 			<div className="flex justify-end">
