@@ -3,6 +3,7 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -28,6 +29,13 @@ class User extends Authenticatable {
 	protected $hidden = ["password", "remember_token"];
 
 	/**
+	 * The role name the user has.
+	 *
+	 * @var array
+	 */
+	protected $appends = ["role_name"];
+
+	/**
 	 * The attributes that should be cast.
 	 *
 	 * @var array<string, string>
@@ -36,6 +44,15 @@ class User extends Authenticatable {
 		"email_verified_at" => "datetime",
 		"password" => "hashed",
 	];
+
+	/**
+	 * Get the role name the user has.
+	 */
+	protected function roleName(): Attribute {
+		$roles = $this->getRoleNames();
+
+		return new Attribute(get: fn() => empty($roles) ? null : $roles[0]);
+	}
 
 	/**
 	 * Get the headquarter that this user represents.
