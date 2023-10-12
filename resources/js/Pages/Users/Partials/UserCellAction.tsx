@@ -7,9 +7,9 @@ import {
 	DropdownMenuTrigger,
 } from "@/Components/ui/dropdown-menu";
 import { type User } from "@/types";
-import { Link, usePage } from "@inertiajs/react";
+import { Link } from "@inertiajs/react";
 import { MoreHorizontal, Pencil, Trash } from "lucide-react";
-import { ComponentProps, useState } from "react";
+import { useState } from "react";
 import {
 	Dialog,
 	DialogContent,
@@ -18,12 +18,9 @@ import {
 	DialogTrigger,
 } from "@/Components/ui/dialog";
 import { useGate } from "@/hooks/useGate";
-import Index from "../Index";
-import EditUserForm from "./EditUserForm";
+import CreateOrEditUserForm from "./CreateOrEditUserForm";
 
 export default function UserCellAction({ row }: CellContext<User, unknown>) {
-	const { headquarters, roles } =
-		usePage<ComponentProps<typeof Index>>().props;
 	const [open, setOpen] = useState(false);
 	const gate = useGate();
 	const user = row.original;
@@ -85,11 +82,11 @@ export default function UserCellAction({ row }: CellContext<User, unknown>) {
 						<DialogTitle>Editar usuario</DialogTitle>
 					</DialogHeader>
 
-					<EditUserForm
+					<CreateOrEditUserForm
 						initialValues={user}
-						headquarters={headquarters}
-						roles={roles}
 						onSuccess={() => setOpen(false)}
+						callToAction="Editar"
+						isUpdate
 					/>
 				</DialogContent>
 			</Dialog>

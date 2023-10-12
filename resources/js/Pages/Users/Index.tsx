@@ -1,4 +1,4 @@
-import type { Headquarter, PageProps, Role, User } from "@/types";
+import type { PageProps, Role, User } from "@/types";
 import type { ColumnDef } from "@tanstack/react-table";
 import { AuthenticatedLayout } from "@/Layouts/AuthenticatedLayout";
 import { Head } from "@inertiajs/react";
@@ -46,12 +46,11 @@ const columns: ColumnDef<User>[] = [
 ];
 
 export type UserPageProps = PageProps<{
-	headquarters: Headquarter[];
 	users: User[];
 	roles: Role[];
 }>;
 
-export default function Index({ headquarters, users, roles }: UserPageProps) {
+export default function Index({ users }: UserPageProps) {
 	const gate = useGate();
 
 	return (
@@ -63,10 +62,7 @@ export default function Index({ headquarters, users, roles }: UserPageProps) {
 					"create users",
 					"create non admin users",
 				]) ? (
-					<CreateUserFormDialog
-						headquarters={headquarters}
-						roles={roles}
-					/>
+					<CreateUserFormDialog />
 				) : null,
 			}}
 		>

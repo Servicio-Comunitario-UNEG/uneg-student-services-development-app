@@ -9,15 +9,8 @@ import {
 import { useState } from "react";
 import { Plus } from "lucide-react";
 import CreateOrEditUserForm from "./CreateOrEditUserForm";
-import { Headquarter, Role } from "@/types";
 
-export default function CreateUserFormDialog({
-	headquarters,
-	roles,
-}: {
-	headquarters: Headquarter[];
-	roles: Role[];
-}) {
+export default function CreateUserFormDialog() {
 	const [open, setOpen] = useState(false);
 
 	return (
@@ -44,8 +37,6 @@ export default function CreateUserFormDialog({
 					}}
 					onSuccess={() => setOpen(false)}
 					callToAction="Crear"
-					headquarters={headquarters}
-					roles={roles}
 				/>
 			</DialogContent>
 		</Dialog>

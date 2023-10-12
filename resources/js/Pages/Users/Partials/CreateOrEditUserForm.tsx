@@ -1,18 +1,18 @@
 import type { FormEventHandler } from "react";
-import type { Headquarter, Role, User } from "@/types";
+import type { User } from "@/types";
 import CardRadioGroupField from "@/Components/CardRadioGroupField";
 import PasswordField from "@/Components/PasswordField";
 import TextField from "@/Components/TextField";
 import { Button } from "@/Components/ui/button";
-import { useForm } from "@inertiajs/react";
+import { useForm, usePage } from "@inertiajs/react";
 import { Loader2 } from "lucide-react";
+import { UserPageProps } from "../Index";
 
 export default function CreateOrEditUserForm({
 	initialValues,
 	onSuccess,
 	isUpdate = false,
 	callToAction,
-	roles,
 }: {
 	initialValues: Partial<
 		User & {
@@ -23,9 +23,10 @@ export default function CreateOrEditUserForm({
 	onSuccess?: () => void;
 	isUpdate?: boolean;
 	callToAction: string;
-	headquarters: Headquarter[];
-	roles: Role[];
 }) {
+	// Get the roles the user can select.
+	const { roles } = usePage<UserPageProps>().props;
+
 	const { data, setData, errors, processing, post, put } = useForm({
 		...initialValues,
 		role_name: initialValues.role?.name || initialValues.role_name,
@@ -37,7 +38,7 @@ export default function CreateOrEditUserForm({
 		// The id must be provided on update.
 		if (isUpdate && !initialValues.id) return;
 
-		// Update the headquarter.
+		// Update the user.
 		if (isUpdate) {
 			put(route("users.update", initialValues.id), {
 				onSuccess,
@@ -46,7 +47,7 @@ export default function CreateOrEditUserForm({
 			return;
 		}
 
-		// Create the headquarter.
+		// Create the user.
 		post(route("users.store"), {
 			onSuccess,
 		});

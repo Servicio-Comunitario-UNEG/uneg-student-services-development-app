@@ -44,7 +44,6 @@ class UserController extends Controller {
 		}
 
 		return Inertia::render("Users/Index", [
-			"headquarters" => Headquarter::orderBy("name")->get(),
 			"users" => $users,
 			"roles" => $roles,
 		]);
