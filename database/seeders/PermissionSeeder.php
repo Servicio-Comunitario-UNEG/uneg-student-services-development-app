@@ -21,6 +21,7 @@ class PermissionSeeder extends Seeder {
 		$permissionNames = [
 			// Users.
 			"create users",
+			"create non admin users",
 			"view users",
 			"edit users",
 			"delete users",
@@ -38,26 +39,46 @@ class PermissionSeeder extends Seeder {
 			"delete careers",
 		];
 
-		$permissions = collect($permissionNames)->map(function ($permission) {
-			return ["name" => $permission, "guard_name" => "web"];
-		});
+		foreach ($permissionNames as $permission) {
+			Permission::firstOrCreate([
+				"name" => $permission,
+				"guard_name" => "web",
+			]);
+		}
 
-		Permission::insert($permissions->toArray());
+		// Returns all the permissions but the skipped ones.
+		$skipPermissions = function (array $permissionsToSkip) use (
+			$permissionNames,
+		) {
+			return array_filter(
+				$permissionNames,
+				fn($permission) => !in_array($permission, $permissionsToSkip),
+			);
+		};
 
-		// Create the roles.
-		Role::create([
-			"name" => "admin",
-			"description" => "Administrador",
-		])->givePermissionTo($permissionNames);
+		// Create or update the roles.
+		Role::updateOrCreate(
+			["name" => "admin"],
+			[
+				"name" => "admin",
+				"description" => "Administrador",
+			],
+		)->syncPermissions($skipPermissions(["create non admin users"]));
 
-		Role::create([
-			"name" => "coordinator",
-			"description" => "Coordinador",
-		])->givePermissionTo($permissionNames);
+		Role::updateOrCreate(
+			["name" => "coordinator"],
+			[
+				"name" => "coordinator",
+				"description" => "Coordinador",
+			],
+		)->syncPermissions($skipPermissions(["create users"]));
 
-		Role::create([
-			"name" => "representative",
-			"description" => "Representante",
-		])->givePermissionTo([]);
+		Role::updateOrCreate(
+			["name" => "representative"],
+			[
+				"name" => "representative",
+				"description" => "Representante",
+			],
+		)->syncPermissions([]);
 	}
 }

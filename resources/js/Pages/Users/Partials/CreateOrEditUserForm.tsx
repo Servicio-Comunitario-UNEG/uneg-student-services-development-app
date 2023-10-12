@@ -1,30 +1,35 @@
+import type { FormEventHandler } from "react";
+import type { Headquarter, Role, User } from "@/types";
 import CardRadioGroupField from "@/Components/CardRadioGroupField";
 import PasswordField from "@/Components/PasswordField";
 import TextField from "@/Components/TextField";
 import { Button } from "@/Components/ui/button";
-import { Headquarter, User } from "@/types";
 import { useForm } from "@inertiajs/react";
 import { Loader2 } from "lucide-react";
-import { FormEventHandler } from "react";
 
 export default function CreateOrEditUserForm({
 	initialValues,
 	onSuccess,
 	isUpdate = false,
 	callToAction,
+	roles,
 }: {
 	initialValues: Partial<
 		User & {
 			password: string;
+			role_name: string;
 		}
 	>;
 	onSuccess?: () => void;
 	isUpdate?: boolean;
 	callToAction: string;
 	headquarters: Headquarter[];
+	roles: Role[];
 }) {
-	const { data, setData, errors, processing, post, put } =
-		useForm(initialValues);
+	const { data, setData, errors, processing, post, put } = useForm({
+		...initialValues,
+		role_name: initialValues.role?.name || initialValues.role_name,
+	});
 
 	const onSubmit: FormEventHandler = (e) => {
 		e.preventDefault();
@@ -56,12 +61,12 @@ export default function CreateOrEditUserForm({
 						children: "Nombre",
 					}}
 					inputProps={{
-						placeholder: "ej: John Doe",
 						autoComplete: "name",
-						required: true,
 						autoFocus: true,
-						value: data.name,
 						onChange: (e) => setData("name", e.target.value),
+						placeholder: "ej: John Doe",
+						required: true,
+						value: data.name,
 					}}
 					errorMessage={errors.name}
 				/>
@@ -72,12 +77,12 @@ export default function CreateOrEditUserForm({
 						children: "Correo electrónico",
 					}}
 					inputProps={{
-						type: "email",
-						placeholder: "ej: johndoe@gmail.com",
-						value: data.email,
 						autoComplete: "username",
 						onChange: (e) => setData("email", e.target.value),
+						placeholder: "ej: johndoe@gmail.com",
 						required: true,
+						type: "email",
+						value: data.email,
 					}}
 					errorMessage={errors.email}
 				/>
@@ -105,25 +110,16 @@ export default function CreateOrEditUserForm({
 						children: "Rol",
 					}}
 					cardRadioGroupProps={{
+						style: {
+							gridTemplateColumns: `repeat(${roles.length}, minmax(0, 1fr))`,
+						},
 						name: "role",
 						value: data.role_name ?? "",
-						onValueChange: (value) => {
-							setData("role_name", value as User["role_name"]);
-						},
-						options: [
-							{
-								label: "Administrador",
-								value: "admin",
-							},
-							{
-								label: "Coordinador",
-								value: "coordinator",
-							},
-							{
-								label: "Representante",
-								value: "representative",
-							},
-						],
+						onValueChange: (value) => setData("role_name", value),
+						options: roles.map((role) => ({
+							label: role.description,
+							value: role.name,
+						})),
 					}}
 					errorMessage={errors.role_name}
 				/>

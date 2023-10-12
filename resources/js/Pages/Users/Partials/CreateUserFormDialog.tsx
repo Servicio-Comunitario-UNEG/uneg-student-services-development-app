@@ -9,12 +9,14 @@ import {
 import { useState } from "react";
 import { Plus } from "lucide-react";
 import CreateOrEditUserForm from "./CreateOrEditUserForm";
-import { Headquarter } from "@/types";
+import { Headquarter, Role } from "@/types";
 
 export default function CreateUserFormDialog({
 	headquarters,
+	roles,
 }: {
 	headquarters: Headquarter[];
+	roles: Role[];
 }) {
 	const [open, setOpen] = useState(false);
 
@@ -36,10 +38,14 @@ export default function CreateUserFormDialog({
 				<CreateOrEditUserForm
 					initialValues={{
 						name: "",
+						email: "",
+						password: "",
+						role_name: "",
 					}}
 					onSuccess={() => setOpen(false)}
 					callToAction="Crear"
 					headquarters={headquarters}
+					roles={roles}
 				/>
 			</DialogContent>
 		</Dialog>

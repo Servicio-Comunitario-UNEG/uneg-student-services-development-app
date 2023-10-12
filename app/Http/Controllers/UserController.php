@@ -8,21 +8,38 @@ use Hash;
 use Illuminate\Validation\Rules;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
+use Spatie\Permission\Models\Role;
 
 class UserController extends Controller {
 	/**
 	 * Display a listing of the resource.
 	 */
 	public function index(Request $request) {
+		/** @var User */
+		$user = $request->user();
+
+		// Get all users.
 		$users = User::orderBy("name")
 			->get()
 			->except($request->user()->id);
 
-		$users = $users->setVisible(["id", "name", "email", "role_name"]);
+		$users = $users->setVisible(["id", "name", "email", "role"]);
+
+		// Get the roles the user can create.
+		$roles = [];
+
+		if ($user->hasPermissionTo("create users")) {
+			$roles = Role::all();
+		}
+
+		if ($user->hasPermissionTo("create non admin users")) {
+			$roles = Role::where("name", "!=", "admin")->get();
+		}
 
 		return Inertia::render("Users/Index", [
 			"headquarters" => Headquarter::orderBy("name")->get(),
 			"users" => $users,
+			"roles" => $roles,
 		]);
 	}
 

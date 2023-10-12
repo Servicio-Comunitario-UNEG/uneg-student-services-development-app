@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
+use Spatie\Permission\Models\Role;
 use Spatie\Permission\Traits\HasRoles;
 
 class User extends Authenticatable {
@@ -33,7 +34,7 @@ class User extends Authenticatable {
 	 *
 	 * @var array
 	 */
-	protected $appends = ["role_name", "permission_names"];
+	protected $appends = ["role", "permission_names"];
 
 	/**
 	 * The attributes that should be cast.
@@ -46,12 +47,22 @@ class User extends Authenticatable {
 	];
 
 	/**
-	 * Get the role name the user has.
+	 * Get the role name user has.
 	 */
-	protected function roleName(): Attribute {
-		$roles = $this->getRoleNames();
+	protected function role(): Attribute {
+		$role = null;
+		$roleName = $this->getRoleNames()->first();
 
-		return new Attribute(get: fn() => empty($roles) ? null : $roles[0]);
+		if (is_string($roleName)) {
+			// As it will be used only a single role per user, then take the first one.
+			$role = Role::findByName($roleName)->setVisible([
+				"id",
+				"name",
+				"description",
+			]);
+		}
+
+		return new Attribute(get: fn() => $role);
 	}
 
 	/**

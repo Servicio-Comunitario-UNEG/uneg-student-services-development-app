@@ -3,7 +3,7 @@ export interface User {
 	name: string;
 	email: string;
 	email_verified_at: string;
-	role_name: "admin" | "coordinator" | "representative" | null;
+	role: Role;
 	permission_names: string[];
 }
 
@@ -27,4 +27,10 @@ export interface Career {
 	name: string;
 	created_at: string;
 	updated_at: string;
+}
+
+export interface Role {
+	id: number;
+	name: "admin" | "coordinator" | "representative";
+	description: string;
 }

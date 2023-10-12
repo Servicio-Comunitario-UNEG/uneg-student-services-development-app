@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use App\Models\User;
+use Exception;
 use Hash;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
@@ -20,10 +21,12 @@ class UserSeeder extends Seeder {
 			],
 		];
 
-		// Create admin users
+		// Create the admin users.
 		foreach ($users as $user) {
-			$user = User::create($user);
-			$user->assignRole("admin");
+			try {
+				User::firstOrCreate($user)->assignRole("admin");
+			} catch (Exception $e) {
+			}
 		}
 	}
 }
