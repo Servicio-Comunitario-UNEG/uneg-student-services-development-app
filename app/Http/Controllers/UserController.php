@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Headquarter;
 use App\Models\User;
 use Hash;
+use Illuminate\Contracts\Database\Eloquent\Builder;
 use Illuminate\Validation\Rule;
 use Illuminate\Validation\Rules;
 use Illuminate\Http\Request;
@@ -25,13 +26,6 @@ class UserController extends Controller {
 		/** @var User */
 		$user = $request->user();
 
-		// Get all users.
-		$users = User::orderBy("name")
-			->get()
-			->except($request->user()->id);
-
-		$users = $users->setVisible(["id", "name", "email", "role"]);
-
 		// Get the roles the user can create.
 		$roles = [];
 
@@ -43,9 +37,29 @@ class UserController extends Controller {
 			$roles = Role::where("name", "!=", "admin")->get();
 		}
 
+		// Get the search query.
+		$search = $request->query("search", "");
+
+		// Get all users.
+		$users = User::query()
+			->when($search, function (Builder $query, string $search) {
+				// Filter by name and email.
+				$query
+					->where("name", "like", "%$search%")
+					->orWhere("email", "like", "%$search%");
+			})
+			->orderBy("name")
+			->get()
+			->except($user->id);
+
+		$users = $users->setVisible(["id", "name", "email", "role"]);
+
 		return Inertia::render("Users/Index", [
 			"users" => $users,
 			"roles" => $roles,
+			"filters" => [
+				"search" => $search,
+			],
 		]);
 	}
 

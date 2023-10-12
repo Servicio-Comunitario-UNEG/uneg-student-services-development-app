@@ -7,6 +7,7 @@ import { DataTableColumnHeader } from "@/Components/DataTableColumnHeader";
 import { DataTable } from "@/Components/DataTable";
 import UserCellAction from "./Partials/UserCellAction";
 import { useGate } from "@/hooks/useGate";
+import { DataTableToolbar } from "./Partials/DataTableToolbar";
 
 const columns: ColumnDef<User>[] = [
 	{
@@ -20,7 +21,7 @@ const columns: ColumnDef<User>[] = [
 	{
 		accessorKey: "email",
 		header: ({ column }) => (
-			<DataTableColumnHeader column={column} title="Email" />
+			<DataTableColumnHeader column={column} title="Correo" />
 		),
 		cell: ({ row }) => row.getValue("email"),
 		enableHiding: false,
@@ -48,6 +49,9 @@ const columns: ColumnDef<User>[] = [
 export type UserPageProps = PageProps<{
 	users: User[];
 	roles: Role[];
+	filters: {
+		search: string;
+	};
 }>;
 
 export default function Index({ users }: UserPageProps) {
@@ -68,7 +72,11 @@ export default function Index({ users }: UserPageProps) {
 		>
 			<Head title="Usuarios" />
 
-			<DataTable columns={columns} data={users} />
+			<div className="space-y-2">
+				<DataTableToolbar />
+
+				<DataTable columns={columns} data={users} />
+			</div>
 		</AuthenticatedLayout>
 	);
 }
