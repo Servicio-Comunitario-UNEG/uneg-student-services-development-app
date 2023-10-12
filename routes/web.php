@@ -55,7 +55,7 @@ Route::resource("careers", CareerController::class)
 	->middleware(["auth", "verified"]);
 
 Route::resource("users", UserController::class)
-	->only(["index", "store"])
+	->only(["index", "store", "destroy"])
 	->middleware(["auth", "verified"]);
 
 require __DIR__ . "/auth.php";

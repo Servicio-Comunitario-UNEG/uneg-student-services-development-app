@@ -5,6 +5,8 @@ import { Head } from "@inertiajs/react";
 import CreateUserFormDialog from "./Partials/CreateUserFormDialog";
 import { DataTableColumnHeader } from "@/Components/DataTableColumnHeader";
 import { DataTable } from "@/Components/DataTable";
+import UserCellAction from "./Partials/UserCellAction";
+import { useGate } from "@/hooks/useGate";
 
 const columns: ColumnDef<User>[] = [
 	{
@@ -37,6 +39,10 @@ const columns: ColumnDef<User>[] = [
 		enableHiding: false,
 		enableSorting: false,
 	},
+	{
+		id: "actions",
+		cell: (cell) => <UserCellAction {...cell} />,
+	},
 ];
 
 export default function Index({
@@ -49,18 +55,23 @@ export default function Index({
 	users: User[];
 	roles: Role[];
 }>) {
+	const gate = useGate();
+
 	return (
 		<AuthenticatedLayout
 			user={auth.user}
 			headerProps={{
 				title: "Usuarios",
 				description: "Administra los usuarios que acceden al sistema.",
-				actions: (
+				actions: gate.any([
+					"create users",
+					"create non admin users",
+				]) ? (
 					<CreateUserFormDialog
 						headquarters={headquarters}
 						roles={roles}
 					/>
-				),
+				) : null,
 			}}
 		>
 			<Head title="Usuarios" />

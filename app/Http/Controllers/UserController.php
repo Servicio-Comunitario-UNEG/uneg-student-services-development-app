@@ -97,7 +97,18 @@ class UserController extends Controller {
 	/**
 	 * Remove the specified resource from storage.
 	 */
-	public function destroy(User $user) {
-		//
+	public function destroy(Request $request, User $user) {
+		/** @var User */
+		$currentUser = $request->user();
+
+		// Only delete if the user has the permission and it's not itself.
+		if (
+			$currentUser->hasPermissionTo("delete users") &&
+			$currentUser->id != $user->id
+		) {
+			$user->delete();
+		}
+
+		return redirect(route("users.index"));
 	}
 }

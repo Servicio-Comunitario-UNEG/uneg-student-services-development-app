@@ -71,7 +71,9 @@ class PermissionSeeder extends Seeder {
 				"name" => "coordinator",
 				"description" => "Coordinador",
 			],
-		)->syncPermissions($skipPermissions(["create users"]));
+		)->syncPermissions(
+			$skipPermissions(["create users", "edit users", "delete users"]),
+		);
 
 		Role::updateOrCreate(
 			["name" => "representative"],
