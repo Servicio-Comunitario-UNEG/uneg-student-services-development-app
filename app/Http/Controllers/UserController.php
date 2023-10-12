@@ -11,10 +11,16 @@ use Inertia\Inertia;
 use Spatie\Permission\Models\Role;
 
 class UserController extends Controller {
+	public function __construct() {
+		$this->middleware(["auth", "verified"]);
+	}
+
 	/**
 	 * Display a listing of the resource.
 	 */
 	public function index(Request $request) {
+		$this->authorize("viewAny", User::class);
+
 		/** @var User */
 		$user = $request->user();
 
@@ -47,13 +53,15 @@ class UserController extends Controller {
 	 * Show the form for creating a new resource.
 	 */
 	public function create() {
-		//
+		$this->authorize("create", User::class);
 	}
 
 	/**
 	 * Store a newly created resource in storage.
 	 */
 	public function store(Request $request) {
+		$this->authorize("create", User::class);
+
 		$validated = $request->validate([
 			"name" => "required|string|max:255",
 			"email" => "required|string|email|max:255|unique:" . User::class,
@@ -77,37 +85,30 @@ class UserController extends Controller {
 	 * Display the specified resource.
 	 */
 	public function show(User $user) {
-		//
+		$this->authorize("view", $user);
 	}
 
 	/**
 	 * Show the form for editing the specified resource.
 	 */
 	public function edit(User $user) {
-		//
+		$this->authorize("update", $user);
 	}
 
 	/**
 	 * Update the specified resource in storage.
 	 */
 	public function update(Request $request, User $user) {
-		//
+		$this->authorize("update", $user);
 	}
 
 	/**
 	 * Remove the specified resource from storage.
 	 */
 	public function destroy(Request $request, User $user) {
-		/** @var User */
-		$currentUser = $request->user();
+		$this->authorize("delete", $user);
 
-		// Only delete if the user has the permission and it's not itself.
-		if (
-			$currentUser->hasPermissionTo("delete users") &&
-			$currentUser->id != $user->id
-		) {
-			$user->delete();
-		}
+		$user->delete();
 
 		return redirect(route("users.index"));
 	}
