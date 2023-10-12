@@ -6,13 +6,11 @@ import { PageProps } from "@/types";
 import { AuthenticatedLayout } from "@/Layouts/AuthenticatedLayout";
 
 export default function Edit({
-	auth,
 	mustVerifyEmail,
 	status,
 }: PageProps<{ mustVerifyEmail: boolean; status?: string }>) {
 	return (
 		<AuthenticatedLayout
-			user={auth.user}
 			headerProps={{
 				title: "Perfil",
 			}}

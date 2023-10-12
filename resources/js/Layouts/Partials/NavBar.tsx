@@ -1,9 +1,9 @@
 import { Menu as MenuIcon, X } from "lucide-react";
 import { useState } from "react";
 
-import { Link } from "@inertiajs/react";
+import { Link, usePage } from "@inertiajs/react";
 import { cn } from "@/lib/utils";
-import { User } from "@/types";
+import { PageProps } from "@/types";
 import { Button } from "@/Components/ui/button";
 import ApplicationLogo from "@/Components/ApplicationLogo";
 import UserNavigation from "@/Components/UserNavigation";
@@ -99,12 +99,11 @@ function MobileLink({
 }
 
 function MobileMenu({
-	user,
 	className,
 	...props
-}: React.ComponentPropsWithoutRef<"div"> & {
-	user: User;
-}) {
+}: React.ComponentPropsWithoutRef<"div">) {
+	const user = usePage<PageProps>().props.auth.user;
+
 	const gate = useGate();
 
 	return (
@@ -146,11 +145,8 @@ function MobileMenu({
 
 export default function NavBar({
 	className,
-	user,
 	...props
-}: React.ComponentPropsWithoutRef<"nav"> & {
-	user: User;
-}) {
+}: React.ComponentPropsWithoutRef<"nav">) {
 	const [showingNavigationDropdown, setShowingNavigationDropdown] =
 		useState(false);
 
@@ -174,7 +170,7 @@ export default function NavBar({
 				</div>
 
 				<div className="hidden space-x-2 lg:ml-6 lg:flex lg:items-center">
-					<UserNavigation user={user} />
+					<UserNavigation />
 				</div>
 
 				<div className="flex items-center gap-2 lg:hidden">
@@ -202,7 +198,7 @@ export default function NavBar({
 					"lg:hidden",
 				)}
 			>
-				<MobileMenu user={user} />
+				<MobileMenu />
 			</div>
 		</nav>
 	);

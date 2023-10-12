@@ -1,11 +1,9 @@
 import { Head } from "@inertiajs/react";
-import { PageProps } from "@/types";
 import { AuthenticatedLayout } from "@/Layouts/AuthenticatedLayout";
 
-export default function Dashboard({ auth }: PageProps) {
+export default function Dashboard() {
 	return (
 		<AuthenticatedLayout
-			user={auth.user}
 			headerProps={{
 				title: "Dashboard",
 			}}

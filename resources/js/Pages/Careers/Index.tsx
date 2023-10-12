@@ -5,13 +5,9 @@ import CreateCareerFormDialog from "./Partials/CreateCareerFormDialog";
 import { DataTable } from "@/Components/DataTable";
 import { columns } from "./columns";
 
-export default function Index({
-	auth,
-	careers,
-}: PageProps<{ careers: Career[] }>) {
+export default function Index({ careers }: PageProps<{ careers: Career[] }>) {
 	return (
 		<AuthenticatedLayout
-			user={auth.user}
 			headerProps={{
 				title: "Carreras",
 				description: "Las carreras que los estudiantes pueden cursar.",

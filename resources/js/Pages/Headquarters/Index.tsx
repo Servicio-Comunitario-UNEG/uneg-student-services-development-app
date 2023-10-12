@@ -6,12 +6,10 @@ import { DataTable } from "@/Components/DataTable";
 import { columns } from "./columns";
 
 export default function Index({
-	auth,
 	headquarters,
 }: PageProps<{ headquarters: Headquarter[] }>) {
 	return (
 		<AuthenticatedLayout
-			user={auth.user}
 			headerProps={{
 				title: "Sedes",
 				description:

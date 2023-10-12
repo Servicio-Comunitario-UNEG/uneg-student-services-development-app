@@ -45,21 +45,17 @@ const columns: ColumnDef<User>[] = [
 	},
 ];
 
-export default function Index({
-	auth,
-	headquarters,
-	users,
-	roles,
-}: PageProps<{
+export type UserPageProps = PageProps<{
 	headquarters: Headquarter[];
 	users: User[];
 	roles: Role[];
-}>) {
+}>;
+
+export default function Index({ headquarters, users, roles }: UserPageProps) {
 	const gate = useGate();
 
 	return (
 		<AuthenticatedLayout
-			user={auth.user}
 			headerProps={{
 				title: "Usuarios",
 				description: "Administra los usuarios que acceden al sistema.",
