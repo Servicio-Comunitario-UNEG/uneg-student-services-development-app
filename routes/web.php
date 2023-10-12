@@ -58,6 +58,7 @@ Route::resource("users", UserController::class)->only([
 	"index",
 	"store",
 	"destroy",
+	"update",
 ]);
 
 require __DIR__ . "/auth.php";

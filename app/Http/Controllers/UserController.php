@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Headquarter;
 use App\Models\User;
 use Hash;
+use Illuminate\Validation\Rule;
 use Illuminate\Validation\Rules;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
@@ -100,6 +101,28 @@ class UserController extends Controller {
 	 */
 	public function update(Request $request, User $user) {
 		$this->authorize("update", $user);
+
+		$validated = $request->validate([
+			"name" => "required|string|max:255",
+			"email" => [
+				"required",
+				"string",
+				"email",
+				"max:255",
+				Rule::unique(User::class)->ignore($user->id),
+			],
+			"role_name" => "required|exists:roles,name",
+		]);
+
+		// Update the user and sync the roles.
+		$user->update([
+			"name" => $validated["name"],
+			"email" => $validated["email"],
+		]);
+
+		$user->syncRoles([$validated["role_name"]]);
+
+		return redirect(route("users.index"));
 	}
 
 	/**

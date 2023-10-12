@@ -51,10 +51,11 @@ class User extends Authenticatable {
 	 */
 	protected function role(): Attribute {
 		$role = null;
-		$roleName = $this->getRoleNames()->first();
+
+		// As it will be used only a single role per user, then take the first one.
+		$roleName = $this->getRoleNames()?->first();
 
 		if (is_string($roleName)) {
-			// As it will be used only a single role per user, then take the first one.
 			$role = Role::findByName($roleName)->setVisible([
 				"id",
 				"name",
