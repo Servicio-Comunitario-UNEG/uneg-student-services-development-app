@@ -31,12 +31,14 @@ interface DataTableProps<TData, TValue> {
 	columns: ColumnDef<TData, TValue>[];
 	initialState?: InitialTableState;
 	data: TData[];
+	toolbar?: JSX.Element;
 }
 
 export function DataTable<TData, TValue>({
 	columns,
 	data,
 	initialState,
+	toolbar,
 }: DataTableProps<TData, TValue>) {
 	const [columnVisibility, setColumnVisibility] = useState<VisibilityState>(
 		{},
@@ -71,6 +73,8 @@ export function DataTable<TData, TValue>({
 
 	return (
 		<div className="space-y-4">
+			{toolbar ? toolbar : null}
+
 			<div className="rounded-md border">
 				<Table className="relative">
 					<TableHeader>

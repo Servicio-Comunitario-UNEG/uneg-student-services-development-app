@@ -72,11 +72,11 @@ export default function Index({ users }: UserPageProps) {
 		>
 			<Head title="Usuarios" />
 
-			<div className="space-y-2">
-				<DataTableToolbar />
-
-				<DataTable columns={columns} data={users} />
-			</div>
+			<DataTable
+				toolbar={<DataTableToolbar />}
+				columns={columns}
+				data={users}
+			/>
 		</AuthenticatedLayout>
 	);
 }
