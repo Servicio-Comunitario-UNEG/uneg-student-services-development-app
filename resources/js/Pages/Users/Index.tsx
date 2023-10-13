@@ -8,6 +8,7 @@ import { DataTable } from "@/Components/DataTable";
 import UserCellAction from "./Partials/UserCellAction";
 import { useGate } from "@/hooks/useGate";
 import { DataTableToolbar } from "./Partials/DataTableToolbar";
+import PageLayout from "@/Layouts/PageLayout";
 
 const columns: ColumnDef<User>[] = [
 	{
@@ -58,7 +59,7 @@ export default function Index({ users }: UserPageProps) {
 	const gate = useGate();
 
 	return (
-		<AuthenticatedLayout
+		<PageLayout
 			headerProps={{
 				title: "Usuarios",
 				description: "Administra los usuarios que acceden al sistema.",
@@ -77,6 +78,8 @@ export default function Index({ users }: UserPageProps) {
 				columns={columns}
 				data={users}
 			/>
-		</AuthenticatedLayout>
+		</PageLayout>
 	);
 }
+
+Index.layout = (page: JSX.Element) => <AuthenticatedLayout children={page} />;

@@ -1,14 +1,19 @@
 import { Head } from "@inertiajs/react";
 import { AuthenticatedLayout } from "@/Layouts/AuthenticatedLayout";
+import PageLayout from "@/Layouts/PageLayout";
 
 export default function Dashboard() {
 	return (
-		<AuthenticatedLayout
+		<PageLayout
 			headerProps={{
 				title: "Dashboard",
 			}}
 		>
 			<Head title="Dashboard" />
-		</AuthenticatedLayout>
+		</PageLayout>
 	);
 }
+
+Dashboard.layout = (page: JSX.Element) => (
+	<AuthenticatedLayout children={page} />
+);
