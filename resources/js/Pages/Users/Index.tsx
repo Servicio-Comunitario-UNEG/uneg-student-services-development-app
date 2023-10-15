@@ -50,8 +50,10 @@ const columns: ColumnDef<User>[] = [
 export type UserPageProps = PageProps<{
 	users: User[];
 	roles: Role[];
+	assignableRoles: Role[];
 	filters: {
 		search: string;
+		roles: string[];
 	};
 }>;
 

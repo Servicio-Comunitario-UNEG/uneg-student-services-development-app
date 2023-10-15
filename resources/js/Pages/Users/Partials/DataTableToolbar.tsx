@@ -1,11 +1,12 @@
 import { Input } from "@/Components/ui/input";
 import { router, usePage } from "@inertiajs/react";
-import { useEffect, type ChangeEvent } from "react";
+import { useEffect, type ChangeEvent, useMemo } from "react";
 import { UserPageProps } from "../Index";
 import debounce from "lodash.debounce";
+import { DataTableFacetedFilter } from "@/Components/DataTableFacetedFilter";
 
 export function DataTableToolbar() {
-	const { filters } = usePage<UserPageProps>().props;
+	const { filters, roles } = usePage<UserPageProps>().props;
 
 	const onSearchTermChange = debounce((e: ChangeEvent<HTMLInputElement>) => {
 		router.get(
@@ -16,25 +17,56 @@ export function DataTableToolbar() {
 			{
 				preserveState: true,
 				replace: true,
+				only: ["users"],
 			},
 		);
 	}, 500);
 
+	const onSelectRoleChange = useMemo(
+		() =>
+			debounce((selectedValues: string[]) => {
+				router.get(
+					route("users.index"),
+					{
+						roles: selectedValues,
+					},
+					{
+						preserveState: true,
+						replace: true,
+						only: ["users"],
+					},
+				);
+			}, 500),
+		[],
+	);
+
 	useEffect(() => {
 		return () => {
 			onSearchTermChange.cancel();
+			onSelectRoleChange.cancel();
 		};
-	}, [onSearchTermChange]);
+	}, [onSearchTermChange, onSelectRoleChange]);
 
 	return (
 		<div className="flex items-center justify-between">
 			<div className="flex flex-1 items-center space-x-2">
 				<Input
+					id="users-search"
 					defaultValue={filters.search}
 					type="search"
 					placeholder="Buscar por nombre o correo"
 					onChange={onSearchTermChange}
 					className="h-8 w-full sm:max-w-xs"
+				/>
+
+				<DataTableFacetedFilter
+					defaultValues={filters.roles}
+					onChange={onSelectRoleChange}
+					title="Roles"
+					options={roles.map((role) => ({
+						label: role.description,
+						value: role.name,
+					}))}
 				/>
 			</div>
 		</div>

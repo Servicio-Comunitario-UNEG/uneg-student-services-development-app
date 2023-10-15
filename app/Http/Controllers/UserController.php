@@ -26,19 +26,20 @@ class UserController extends Controller {
 		/** @var User */
 		$user = $request->user();
 
-		// Get the roles the user can create.
-		$roles = [];
+		// Get the roles the user can assign.
+		$assignableRoles = [];
 
 		if ($user->hasPermissionTo("create users")) {
-			$roles = Role::all();
+			$assignableRoles = Role::all();
 		}
 
 		if ($user->hasPermissionTo("create non admin users")) {
-			$roles = Role::where("name", "!=", "admin")->get();
+			$assignableRoles = Role::where("name", "!=", "admin")->get();
 		}
 
-		// Get the search query.
+		// Get the search queries.
 		$search = $request->query("search", "");
+		$selectedRoles = $request->query("roles", []);
 
 		// Get all users.
 		$users = User::query()
@@ -52,13 +53,24 @@ class UserController extends Controller {
 			->get()
 			->except($user->id);
 
-		$users = $users->setVisible(["id", "name", "email", "role"]);
+		if (!empty($selectedRoles)) {
+			$users = $users
+				->filter(
+					fn(User $user) => in_array(
+						$user->role->name,
+						$selectedRoles,
+					),
+				)
+				->values();
+		}
 
 		return Inertia::render("Users/Index", [
 			"users" => $users,
-			"roles" => $roles,
+			"roles" => Role::all(),
+			"assignableRoles" => $assignableRoles,
 			"filters" => [
 				"search" => $search,
+				"roles" => $selectedRoles,
 			],
 		]);
 	}

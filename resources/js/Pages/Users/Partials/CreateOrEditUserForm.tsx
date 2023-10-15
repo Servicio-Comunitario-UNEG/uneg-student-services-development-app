@@ -25,7 +25,7 @@ export default function CreateOrEditUserForm({
 	callToAction: string;
 }) {
 	// Get the roles the user can select.
-	const { roles } = usePage<UserPageProps>().props;
+	const { assignableRoles } = usePage<UserPageProps>().props;
 
 	const { data, setData, errors, processing, post, put } = useForm({
 		...initialValues,
@@ -112,12 +112,12 @@ export default function CreateOrEditUserForm({
 					}}
 					cardRadioGroupProps={{
 						style: {
-							gridTemplateColumns: `repeat(${roles.length}, minmax(0, 1fr))`,
+							gridTemplateColumns: `repeat(${assignableRoles.length}, minmax(0, 1fr))`,
 						},
 						name: "role",
 						value: data.role_name ?? "",
 						onValueChange: (value) => setData("role_name", value),
-						options: roles.map((role) => ({
+						options: assignableRoles.map((role) => ({
 							label: role.description,
 							value: role.name,
 						})),
