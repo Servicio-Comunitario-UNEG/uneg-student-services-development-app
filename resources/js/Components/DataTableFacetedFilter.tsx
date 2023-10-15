@@ -1,5 +1,5 @@
+import { type ComponentType } from "react";
 import { CheckIcon, PlusCircleIcon } from "lucide-react";
-
 import { cn } from "@/lib/utils";
 import { Badge } from "./ui/badge";
 import { Button } from "./ui/button";
@@ -14,11 +14,11 @@ import {
 } from "./ui/command";
 import { Popover, PopoverContent, PopoverTrigger } from "./ui/popover";
 import { Separator } from "./ui/separator";
-import { type ComponentType, useState, useEffect } from "react";
+import { useSet } from "@uidotdev/usehooks";
 
 interface DataTableFacetedFilterProps {
 	defaultValues?: string[];
-	onChange?: (selectedValues: string[]) => void;
+	onChange?: (selectedValues: Set<string>) => void;
 	title?: string;
 	options: {
 		label: string;
@@ -33,12 +33,7 @@ export function DataTableFacetedFilter({
 	options,
 	defaultValues = [],
 }: DataTableFacetedFilterProps) {
-	const [selectedValues, setSelectedValues] =
-		useState<string[]>(defaultValues);
-
-	useEffect(() => {
-		if (onChange) onChange(selectedValues);
-	}, [selectedValues, onChange]);
+	const selectedValues = useSet<string>(defaultValues);
 
 	return (
 		<Popover>
@@ -52,7 +47,7 @@ export function DataTableFacetedFilter({
 
 					{title}
 
-					{selectedValues?.length > 0 && (
+					{selectedValues.size > 0 && (
 						<>
 							<Separator
 								orientation="vertical"
@@ -63,23 +58,21 @@ export function DataTableFacetedFilter({
 								variant="secondary"
 								className="rounded-sm px-1 font-normal lg:hidden"
 							>
-								{selectedValues.length}
+								{selectedValues.size}
 							</Badge>
 
 							<div className="hidden space-x-1 lg:flex">
-								{selectedValues.length > 2 ? (
+								{selectedValues.size > 2 ? (
 									<Badge
 										variant="secondary"
 										className="rounded-sm px-1 font-normal"
 									>
-										{selectedValues.length} seleccionados
+										{selectedValues.size} seleccionados
 									</Badge>
 								) : (
 									options
 										.filter((option) =>
-											selectedValues.includes(
-												option.value,
-											),
+											selectedValues.has(option.value),
 										)
 										.map((option) => (
 											<Badge
@@ -106,7 +99,7 @@ export function DataTableFacetedFilter({
 
 						<CommandGroup>
 							{options.map((option) => {
-								const isSelected = selectedValues.includes(
+								const isSelected = selectedValues.has(
 									option.value,
 								);
 
@@ -114,21 +107,18 @@ export function DataTableFacetedFilter({
 									<CommandItem
 										key={option.value}
 										onSelect={() => {
-											setSelectedValues(
-												(selectedValues) => {
-													if (isSelected) {
-														return selectedValues.filter(
-															(selected) =>
-																selected !==
-																option.value,
-														);
-													}
+											if (isSelected) {
+												selectedValues.delete(
+													option.value,
+												);
+											} else {
+												selectedValues.add(
+													option.value,
+												);
+											}
 
-													return selectedValues.concat(
-														option.value,
-													);
-												},
-											);
+											if (onChange)
+												onChange(selectedValues);
 										}}
 									>
 										<div
@@ -154,14 +144,17 @@ export function DataTableFacetedFilter({
 							})}
 						</CommandGroup>
 
-						{selectedValues.length > 0 && (
+						{selectedValues.size > 0 && (
 							<>
 								<CommandSeparator />
 								<CommandGroup>
 									<CommandItem
-										onSelect={() =>
-											setSelectedValues(() => [])
-										}
+										onSelect={() => {
+											selectedValues.clear();
+
+											if (onChange)
+												onChange(selectedValues);
+										}}
 										className="justify-center text-center"
 									>
 										Remover filtros

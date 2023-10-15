@@ -8,36 +8,42 @@ import { DataTableFacetedFilter } from "@/Components/DataTableFacetedFilter";
 export function DataTableToolbar() {
 	const { filters, roles } = usePage<UserPageProps>().props;
 
-	const onSearchTermChange = debounce((e: ChangeEvent<HTMLInputElement>) => {
-		router.get(
-			route("users.index"),
-			{
-				search: e.target.value,
-			},
-			{
-				preserveState: true,
-				replace: true,
-				only: ["users"],
-			},
-		);
-	}, 500);
-
-	const onSelectRoleChange = useMemo(
+	const onSearchTermChange = useMemo(
 		() =>
-			debounce((selectedValues: string[]) => {
+			debounce((e: ChangeEvent<HTMLInputElement>) => {
 				router.get(
 					route("users.index"),
 					{
-						roles: selectedValues,
+						search: e.target.value,
+						roles: filters.roles,
 					},
 					{
 						preserveState: true,
 						replace: true,
-						only: ["users"],
+						only: ["users", "filters"],
 					},
 				);
 			}, 500),
-		[],
+		[filters.roles],
+	);
+
+	const onSelectRoleChange = useMemo(
+		() =>
+			debounce((selectedValues: Set<string>) => {
+				router.get(
+					route("users.index"),
+					{
+						search: filters.search,
+						roles: Array.from(selectedValues),
+					},
+					{
+						preserveState: true,
+						replace: true,
+						only: ["users", "filters"],
+					},
+				);
+			}, 500),
+		[filters.search],
 	);
 
 	useEffect(() => {
