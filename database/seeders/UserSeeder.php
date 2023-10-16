@@ -18,6 +18,7 @@ class UserSeeder extends Seeder {
 				"email" => "alvarojrr79@gmail.com",
 				"password" => Hash::make("12345678"),
 				"name" => "Alvaro Resplandor",
+				"identity_card" => "V28385587",
 			],
 		];
 

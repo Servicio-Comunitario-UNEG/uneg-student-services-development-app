@@ -62,7 +62,7 @@ export function DataTableToolbar() {
 					id="users-search"
 					defaultValue={filters.search}
 					type="search"
-					placeholder="Buscar por nombre o correo"
+					placeholder="Buscar por nombre, cédula o correo"
 					onChange={onSearchTermChange}
 					className="h-8 w-full sm:max-w-xs"
 				/>

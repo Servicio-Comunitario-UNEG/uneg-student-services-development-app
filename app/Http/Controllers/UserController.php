@@ -18,6 +18,25 @@ class UserController extends Controller {
 	}
 
 	/**
+	 * Returns the identity card from the nationality and serial.
+	 */
+	private function toIdentityCard(array $identity_card): string {
+		$nationality =
+			key_exists("nationality", $identity_card) &&
+			is_string($identity_card["nationality"])
+				? $identity_card["nationality"]
+				: "";
+
+		$serial =
+			key_exists("serial", $identity_card) &&
+			is_string($identity_card["serial"])
+				? $identity_card["serial"]
+				: "";
+
+		return $nationality . $serial;
+	}
+
+	/**
 	 * Display a listing of the resource.
 	 */
 	public function index(Request $request) {
@@ -47,7 +66,8 @@ class UserController extends Controller {
 				// Filter by name and email.
 				$query
 					->where("name", "like", "%$search%")
-					->orWhere("email", "like", "%$search%");
+					->orWhere("email", "like", "%$search%")
+					->orWhere("identity_card", "like", "%$search%");
 			})
 			->orderBy("name")
 			->get()
@@ -88,9 +108,20 @@ class UserController extends Controller {
 	public function store(Request $request) {
 		$this->authorize("create", User::class);
 
+		// Set the generated identity card.
+		$data = $request->all();
+		$data["identity_card"] = $this->toIdentityCard($data["identity_card"]);
+		$request->merge($data);
+
 		$validated = $request->validate([
 			"name" => "required|string|max:255",
 			"email" => "required|string|email|max:255|unique:" . User::class,
+			"identity_card" => [
+				"required",
+				"string",
+				"regex:/^(V|E){1,1}\d+$/",
+				"unique:" . User::class,
+			],
 			"password" => ["required", Rules\Password::defaults()],
 			"role_name" => "required|exists:roles,name",
 		]);
@@ -100,6 +131,7 @@ class UserController extends Controller {
 			"name" => $validated["name"],
 			"email" => $validated["email"],
 			"password" => Hash::make($validated["password"]),
+			"identity_card" => $validated["identity_card"],
 		]);
 
 		$user->assignRole($validated["role_name"]);
@@ -127,6 +159,11 @@ class UserController extends Controller {
 	public function update(Request $request, User $user) {
 		$this->authorize("update", $user);
 
+		// Set the generated identity card.
+		$data = $request->all();
+		$data["identity_card"] = $this->toIdentityCard($data["identity_card"]);
+		$request->merge($data);
+
 		$validated = $request->validate([
 			"name" => "required|string|max:255",
 			"email" => [
@@ -136,6 +173,12 @@ class UserController extends Controller {
 				"max:255",
 				Rule::unique(User::class)->ignore($user->id),
 			],
+			"identity_card" => [
+				"required",
+				"string",
+				"regex:/^(V|E){1,1}\d+$/",
+				Rule::unique(User::class)->ignore($user->id),
+			],
 			"role_name" => "required|exists:roles,name",
 		]);
 
@@ -143,6 +186,7 @@ class UserController extends Controller {
 		$user->update([
 			"name" => $validated["name"],
 			"email" => $validated["email"],
+			"identity_card" => $validated["identity_card"],
 		]);
 
 		$user->syncRoles([$validated["role_name"]]);

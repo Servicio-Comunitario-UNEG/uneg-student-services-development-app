@@ -38,6 +38,7 @@ class HandleInertiaRequests extends Middleware {
 						"name",
 						"permission_names",
 						"role",
+						"identity_card",
 						"email_verified_at",
 					]),
 			],

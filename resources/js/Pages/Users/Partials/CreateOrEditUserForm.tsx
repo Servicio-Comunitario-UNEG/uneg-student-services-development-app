@@ -5,6 +5,7 @@ import type { FormEventHandler } from "react";
 import type { User } from "@/types";
 
 import CardRadioGroupField from "@/Components/CardRadioGroupField";
+import IdentityCardField from "@/Components/IdentityCardField";
 import PasswordField from "@/Components/PasswordField";
 import TextField from "@/Components/TextField";
 import { Button } from "@/Components/ui/button";
@@ -32,6 +33,10 @@ export default function CreateOrEditUserForm({
 
 	const { data, setData, errors, processing, post, put } = useForm({
 		...initialValues,
+		identity_card: initialValues.identity_card ?? {
+			nationality: "V",
+			serial: "",
+		},
 		role_name: initialValues.role?.name || initialValues.role_name,
 	});
 
@@ -65,7 +70,7 @@ export default function CreateOrEditUserForm({
 						children: "Nombre",
 					}}
 					inputProps={{
-						autoComplete: "name",
+						autoComplete: "off",
 						autoFocus: true,
 						onChange: (e) => setData("name", e.target.value),
 						placeholder: "ej: John Doe",
@@ -81,7 +86,7 @@ export default function CreateOrEditUserForm({
 						children: "Correo electrónico",
 					}}
 					inputProps={{
-						autoComplete: "username",
+						autoComplete: "off",
 						onChange: (e) => setData("email", e.target.value),
 						placeholder: "ej: johndoe@gmail.com",
 						required: true,
@@ -89,6 +94,37 @@ export default function CreateOrEditUserForm({
 						value: data.email,
 					}}
 					errorMessage={errors.email}
+				/>
+
+				<IdentityCardField
+					id="identity-card"
+					selectProps={{
+						value: data.identity_card?.nationality,
+						name: "nationality",
+						onValueChange(value) {
+							setData("identity_card", {
+								nationality: value,
+								serial: data.identity_card?.serial ?? "",
+							});
+						},
+					}}
+					labelProps={{
+						children: "Cédula de Identidad",
+					}}
+					inputProps={{
+						name: "serial",
+						onChange: (e) =>
+							setData("identity_card", {
+								nationality:
+									data.identity_card?.nationality ?? "V",
+								serial: e.target.value,
+							}),
+						placeholder: "ej: 10000000",
+						required: true,
+						value: data.identity_card?.serial,
+						autoComplete: "off",
+					}}
+					errorMessage={errors.identity_card}
 				/>
 
 				{isUpdate ? null : (

@@ -2,6 +2,10 @@ export interface User {
 	id: number;
 	name: string;
 	email: string;
+	identity_card: {
+		nationality: "V" | "E";
+		serial: string;
+	};
 	email_verified_at: string;
 	role: Role;
 	permission_names: string[];
