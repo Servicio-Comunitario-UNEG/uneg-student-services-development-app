@@ -1,10 +1,28 @@
-import { AuthenticatedLayout } from "@/Layouts/AuthenticatedLayout";
 import type { Headquarter, PageProps } from "@/types";
+import { type ColumnDef } from "@tanstack/react-table";
+import { AuthenticatedLayout } from "@/Layouts/AuthenticatedLayout";
 import { Head } from "@inertiajs/react";
 import CreateHeadquarterFormDialog from "./Partials/CreateHeadquarterFormDialog";
 import { DataTable } from "@/Components/DataTable";
-import { columns } from "./columns";
 import PageLayout from "@/Layouts/PageLayout";
+import { DataTableColumnHeader } from "@/Components/DataTableColumnHeader";
+import HeadquarterCellAction from "./Partials/HeadquartersCellAction";
+
+const columns: ColumnDef<Headquarter>[] = [
+	{
+		accessorKey: "name",
+		header: ({ column }) => (
+			<DataTableColumnHeader column={column} title="Nombre" />
+		),
+		cell: ({ row }) => row.getValue("name"),
+		enableHiding: false,
+		enableSorting: false,
+	},
+	{
+		id: "actions",
+		cell: (cell) => <HeadquarterCellAction {...cell} />,
+	},
+];
 
 export default function Index({
 	headquarters,
