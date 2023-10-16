@@ -1,4 +1,4 @@
-import { Head, Link, useForm } from "@inertiajs/react";
+import { Head, useForm } from "@inertiajs/react";
 import { Loader2 } from "lucide-react";
 import { useEffect, FormEventHandler } from "react";
 
@@ -46,14 +46,6 @@ export default function Login({
 	return (
 		<GuestLayout title="Inicio de Sesión">
 			<Head title="Inicio de Sesión" />
-
-			<Button
-				variant="ghost"
-				className="absolute right-4 top-4 md:right-6 md:top-6"
-				asChild
-			>
-				<Link href={route("register")}>Registro</Link>
-			</Button>
 
 			<form onSubmit={submit} className="space-y-6">
 				<div className="space-y-4">
