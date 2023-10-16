@@ -66,7 +66,8 @@ class UserController extends Controller {
 				// Filter by name and email.
 				$query
 					->where("name", "like", "%$search%")
-					->orWhere("email", "like", "%$search%");
+					->orWhere("email", "like", "%$search%")
+					->orWhere("identity_card", "like", "%$search%");
 			})
 			->orderBy("name")
 			->get()
