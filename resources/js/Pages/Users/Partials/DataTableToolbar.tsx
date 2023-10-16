@@ -16,7 +16,7 @@ export function DataTableToolbar() {
 				router.get(
 					route("users.index"),
 					{
-						search: e.target.value,
+						search: e.target.value ? e.target.value : undefined,
 						roles: filters.roles,
 					},
 					{
@@ -35,7 +35,7 @@ export function DataTableToolbar() {
 				router.get(
 					route("users.index"),
 					{
-						search: filters.search,
+						search: filters.search ? filters.search : undefined,
 						roles: Array.from(selectedValues),
 					},
 					{
@@ -56,27 +56,25 @@ export function DataTableToolbar() {
 	}, [onSearchTermChange, onSelectRoleChange]);
 
 	return (
-		<div className="flex items-center justify-between">
-			<div className="flex flex-1 items-center space-x-2">
-				<Input
-					id="users-search"
-					defaultValue={filters.search}
-					type="search"
-					placeholder="Buscar por nombre, cédula o correo"
-					onChange={onSearchTermChange}
-					className="h-8 w-full sm:max-w-xs"
-				/>
+		<div className="flex flex-1 items-center space-x-2">
+			<Input
+				id="users-search"
+				defaultValue={filters.search}
+				type="search"
+				placeholder="Buscar por nombre, cédula o correo"
+				onChange={onSearchTermChange}
+				className="h-8 w-full sm:max-w-xs"
+			/>
 
-				<DataTableFacetedFilter
-					defaultValues={filters.roles}
-					onChange={onSelectRoleChange}
-					title="Roles"
-					options={roles.map((role) => ({
-						label: role.description,
-						value: role.name,
-					}))}
-				/>
-			</div>
+			<DataTableFacetedFilter
+				defaultValues={filters.roles}
+				onChange={onSelectRoleChange}
+				title="Roles"
+				options={roles.map((role) => ({
+					label: role.description,
+					value: role.name,
+				}))}
+			/>
 		</div>
 	);
 }
