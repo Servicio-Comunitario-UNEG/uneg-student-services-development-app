@@ -1,13 +1,16 @@
+import { Link, usePage } from "@inertiajs/react";
 import { Menu as MenuIcon, X } from "lucide-react";
 import { useState } from "react";
 
-import { Link, usePage } from "@inertiajs/react";
-import { cn } from "@/lib/utils";
 import { PageProps } from "@/types";
-import { Button } from "@/Components/ui/button";
+
 import ApplicationLogo from "@/Components/ApplicationLogo";
 import UserNavigation from "@/Components/UserNavigation";
+import { Button } from "@/Components/ui/button";
+
 import { useGate } from "@/hooks/useGate";
+
+import { cn } from "@/lib/utils";
 
 const links: {
 	title: string;

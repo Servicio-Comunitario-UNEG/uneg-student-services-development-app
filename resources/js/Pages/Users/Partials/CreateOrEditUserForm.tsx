@@ -1,11 +1,14 @@
+import { useForm, usePage } from "@inertiajs/react";
+import { Loader2 } from "lucide-react";
 import type { FormEventHandler } from "react";
+
 import type { User } from "@/types";
+
 import CardRadioGroupField from "@/Components/CardRadioGroupField";
 import PasswordField from "@/Components/PasswordField";
 import TextField from "@/Components/TextField";
 import { Button } from "@/Components/ui/button";
-import { useForm, usePage } from "@inertiajs/react";
-import { Loader2 } from "lucide-react";
+
 import { UserPageProps } from "../Index";
 
 export default function CreateOrEditUserForm({

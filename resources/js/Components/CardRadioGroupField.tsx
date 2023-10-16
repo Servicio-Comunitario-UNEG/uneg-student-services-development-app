@@ -1,8 +1,10 @@
 import { ComponentProps } from "react";
+
+import { cn } from "@/lib/utils";
+
 import CardRadioGroup from "./CardRadioGroup";
 import InputError from "./InputError";
 import { Label } from "./ui/label";
-import { cn } from "@/lib/utils";
 
 interface Props {
 	legendProps: Omit<

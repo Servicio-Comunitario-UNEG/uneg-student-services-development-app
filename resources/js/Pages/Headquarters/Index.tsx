@@ -1,11 +1,15 @@
-import type { Headquarter, PageProps } from "@/types";
-import { type ColumnDef } from "@tanstack/react-table";
-import { AuthenticatedLayout } from "@/Layouts/AuthenticatedLayout";
 import { Head } from "@inertiajs/react";
-import CreateHeadquarterFormDialog from "./Partials/CreateHeadquarterFormDialog";
-import { DataTable } from "@/Components/DataTable";
+import { type ColumnDef } from "@tanstack/react-table";
+
+import type { Headquarter, PageProps } from "@/types";
+
+import { AuthenticatedLayout } from "@/Layouts/AuthenticatedLayout";
 import PageLayout from "@/Layouts/PageLayout";
+
+import { DataTable } from "@/Components/DataTable";
 import { DataTableColumnHeader } from "@/Components/DataTableColumnHeader";
+
+import CreateHeadquarterFormDialog from "./Partials/CreateHeadquarterFormDialog";
 import HeadquarterCellAction from "./Partials/HeadquartersCellAction";
 
 const columns: ColumnDef<Headquarter>[] = [

@@ -1,14 +1,19 @@
-import type { PageProps, Role, User } from "@/types";
-import type { ColumnDef } from "@tanstack/react-table";
-import { AuthenticatedLayout } from "@/Layouts/AuthenticatedLayout";
 import { Head } from "@inertiajs/react";
-import CreateUserFormDialog from "./Partials/CreateUserFormDialog";
-import { DataTableColumnHeader } from "@/Components/DataTableColumnHeader";
-import { DataTable } from "@/Components/DataTable";
-import UserCellAction from "./Partials/UserCellAction";
-import { useGate } from "@/hooks/useGate";
-import { DataTableToolbar } from "./Partials/DataTableToolbar";
+import type { ColumnDef } from "@tanstack/react-table";
+
+import type { PageProps, Role, User } from "@/types";
+
+import { AuthenticatedLayout } from "@/Layouts/AuthenticatedLayout";
 import PageLayout from "@/Layouts/PageLayout";
+
+import { DataTable } from "@/Components/DataTable";
+import { DataTableColumnHeader } from "@/Components/DataTableColumnHeader";
+
+import { useGate } from "@/hooks/useGate";
+
+import CreateUserFormDialog from "./Partials/CreateUserFormDialog";
+import { DataTableToolbar } from "./Partials/DataTableToolbar";
+import UserCellAction from "./Partials/UserCellAction";
 
 const columns: ColumnDef<User>[] = [
 	{

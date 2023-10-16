@@ -1,5 +1,6 @@
-import { PageProps } from "@/types";
 import { usePage } from "@inertiajs/react";
+
+import { PageProps } from "@/types";
 
 export function useGate() {
 	const { permission_names } = usePage<PageProps>().props.auth.user;

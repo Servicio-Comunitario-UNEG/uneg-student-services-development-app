@@ -1,8 +1,10 @@
 import { ComponentProps } from "react";
-import Combobox from "./Combobox";
+
 import { cn } from "@/lib/utils";
-import { Label } from "./ui/label";
+
+import Combobox from "./Combobox";
 import InputError from "./InputError";
+import { Label } from "./ui/label";
 
 interface Props {
 	id: string;

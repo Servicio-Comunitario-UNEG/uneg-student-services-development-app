@@ -1,7 +1,8 @@
 import { cn } from "@/lib/utils";
+
 import InputError from "./InputError";
-import { Label } from "./ui/label";
 import { Input } from "./ui/input";
+import { Label } from "./ui/label";
 
 interface Props {
 	id: string;

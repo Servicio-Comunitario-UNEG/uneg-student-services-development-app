@@ -1,6 +1,9 @@
-import { type ComponentType } from "react";
+import { useSet } from "@uidotdev/usehooks";
 import { CheckIcon, PlusCircleIcon } from "lucide-react";
+import { type ComponentType } from "react";
+
 import { cn } from "@/lib/utils";
+
 import { Badge } from "./ui/badge";
 import { Button } from "./ui/button";
 import {
@@ -14,7 +17,6 @@ import {
 } from "./ui/command";
 import { Popover, PopoverContent, PopoverTrigger } from "./ui/popover";
 import { Separator } from "./ui/separator";
-import { useSet } from "@uidotdev/usehooks";
 
 interface DataTableFacetedFilterProps {
 	defaultValues?: string[];
