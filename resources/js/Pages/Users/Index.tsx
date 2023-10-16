@@ -25,6 +25,18 @@ const columns: ColumnDef<User>[] = [
 		enableHiding: false,
 	},
 	{
+		accessorKey: "identity_card",
+		header: ({ column }) => (
+			<DataTableColumnHeader column={column} title="Cédula" />
+		),
+		cell: ({ row }) => {
+			const card = row.getValue("identity_card") as User["identity_card"];
+
+			return `${card.nationality}${card.serial}`;
+		},
+		enableHiding: false,
+	},
+	{
 		accessorKey: "email",
 		header: ({ column }) => (
 			<DataTableColumnHeader column={column} title="Correo" />

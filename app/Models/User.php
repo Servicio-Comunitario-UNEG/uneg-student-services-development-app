@@ -20,7 +20,7 @@ class User extends Authenticatable {
 	 *
 	 * @var array<int, string>
 	 */
-	protected $fillable = ["name", "email", "password"];
+	protected $fillable = ["name", "email", "password", "identity_card"];
 
 	/**
 	 * The attributes that should be hidden for serialization.
@@ -64,6 +64,20 @@ class User extends Authenticatable {
 		}
 
 		return new Attribute(get: fn() => $role);
+	}
+
+	/**
+	 * Get the identityCard the user has.
+	 */
+	protected function identityCard(): Attribute {
+		return new Attribute(
+			get: function (string $value = "") {
+				return [
+					"nationality" => $value[0],
+					"serial" => substr($value, 1),
+				];
+			},
+		);
 	}
 
 	/**
