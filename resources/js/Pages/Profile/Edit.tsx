@@ -4,15 +4,14 @@ import UpdateProfileInformationForm from "./Partials/UpdateProfileInformationFor
 import { Head } from "@inertiajs/react";
 import { PageProps } from "@/types";
 import { AuthenticatedLayout } from "@/Layouts/AuthenticatedLayout";
+import PageLayout from "@/Layouts/PageLayout";
 
 export default function Edit({
-	auth,
 	mustVerifyEmail,
 	status,
 }: PageProps<{ mustVerifyEmail: boolean; status?: string }>) {
 	return (
-		<AuthenticatedLayout
-			user={auth.user}
+		<PageLayout
 			headerProps={{
 				title: "Perfil",
 			}}
@@ -30,6 +29,8 @@ export default function Edit({
 
 				<DeleteUserForm className="max-w-xl" />
 			</div>
-		</AuthenticatedLayout>
+		</PageLayout>
 	);
 }
+
+Edit.layout = (page: JSX.Element) => <AuthenticatedLayout children={page} />;

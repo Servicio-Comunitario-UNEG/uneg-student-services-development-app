@@ -1,16 +1,18 @@
 import { Menu as MenuIcon, X } from "lucide-react";
 import { useState } from "react";
 
-import { Link } from "@inertiajs/react";
+import { Link, usePage } from "@inertiajs/react";
 import { cn } from "@/lib/utils";
-import { User } from "@/types";
+import { PageProps } from "@/types";
 import { Button } from "@/Components/ui/button";
 import ApplicationLogo from "@/Components/ApplicationLogo";
 import UserNavigation from "@/Components/UserNavigation";
+import { useGate } from "@/hooks/useGate";
 
 const links: {
 	title: string;
 	to: string;
+	permission?: string;
 	isMobileOnly?: boolean;
 }[] = [
 	{
@@ -18,11 +20,18 @@ const links: {
 		to: "dashboard",
 	},
 	{
+		title: "Usuarios",
+		permission: "view users",
+		to: "users.index",
+	},
+	{
 		title: "Carreras",
+		permission: "view careers",
 		to: "careers.index",
 	},
 	{
 		title: "Sedes",
+		permission: "view headquarters",
 		to: "headquarters.index",
 	},
 	{
@@ -33,12 +42,16 @@ const links: {
 ];
 
 function Menu({ className, ...props }: React.ComponentPropsWithoutRef<"ul">) {
+	const gate = useGate();
+
 	return (
 		<ul className={cn("flex items-center", className)} {...props}>
-			{links.map(({ title, to, isMobileOnly }) => {
+			{links.map(({ title, to, permission, isMobileOnly }) => {
 				const isActive = route().current(to);
 
-				if (isMobileOnly) return;
+				if (isMobileOnly || (permission && !gate.allows(permission))) {
+					return;
+				}
 
 				return (
 					<li className="block" key={to}>
@@ -86,16 +99,19 @@ function MobileLink({
 }
 
 function MobileMenu({
-	user,
 	className,
 	...props
-}: React.ComponentPropsWithoutRef<"div"> & {
-	user: User;
-}) {
+}: React.ComponentPropsWithoutRef<"div">) {
+	const user = usePage<PageProps>().props.auth.user;
+
+	const gate = useGate();
+
 	return (
 		<div className={cn("flex flex-col gap-4", className)} {...props}>
 			<ul className="flex-col gap-4">
-				{links.map(({ title, to }) => {
+				{links.map(({ title, to, permission }) => {
+					if (permission && !gate.allows(permission)) return;
+
 					return (
 						<li key={to}>
 							<MobileLink to={to}>{title}</MobileLink>
@@ -129,11 +145,8 @@ function MobileMenu({
 
 export default function NavBar({
 	className,
-	user,
 	...props
-}: React.ComponentPropsWithoutRef<"nav"> & {
-	user: User;
-}) {
+}: React.ComponentPropsWithoutRef<"nav">) {
 	const [showingNavigationDropdown, setShowingNavigationDropdown] =
 		useState(false);
 
@@ -157,7 +170,7 @@ export default function NavBar({
 				</div>
 
 				<div className="hidden space-x-2 lg:ml-6 lg:flex lg:items-center">
-					<UserNavigation user={user} />
+					<UserNavigation />
 				</div>
 
 				<div className="flex items-center gap-2 lg:hidden">
@@ -185,7 +198,7 @@ export default function NavBar({
 					"lg:hidden",
 				)}
 			>
-				<MobileMenu user={user} />
+				<MobileMenu />
 			</div>
 		</nav>
 	);

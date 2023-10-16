@@ -4,14 +4,13 @@ import { Head } from "@inertiajs/react";
 import CreateHeadquarterFormDialog from "./Partials/CreateHeadquarterFormDialog";
 import { DataTable } from "@/Components/DataTable";
 import { columns } from "./columns";
+import PageLayout from "@/Layouts/PageLayout";
 
 export default function Index({
-	auth,
 	headquarters,
 }: PageProps<{ headquarters: Headquarter[] }>) {
 	return (
-		<AuthenticatedLayout
-			user={auth.user}
+		<PageLayout
 			headerProps={{
 				title: "Sedes",
 				description:
@@ -22,6 +21,8 @@ export default function Index({
 			<Head title="Sedes" />
 
 			<DataTable columns={columns} data={headquarters} />
-		</AuthenticatedLayout>
+		</PageLayout>
 	);
 }
+
+Index.layout = (page: JSX.Element) => <AuthenticatedLayout children={page} />;

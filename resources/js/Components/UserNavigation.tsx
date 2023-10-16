@@ -1,4 +1,4 @@
-import { User } from "@/types";
+import { PageProps } from "@/types";
 import { ChevronDown, LogOut, UserCog } from "lucide-react";
 import {
 	DropdownMenu,
@@ -8,9 +8,11 @@ import {
 	DropdownMenuTrigger,
 } from "./ui/dropdown-menu";
 import { Button } from "./ui/button";
-import { Link } from "@inertiajs/react";
+import { Link, usePage } from "@inertiajs/react";
 
-export default function UserNavigation({ user }: { user: User }) {
+export default function UserNavigation() {
+	const user = usePage<PageProps>().props.auth.user;
+
 	return (
 		<DropdownMenu>
 			<DropdownMenuTrigger asChild>
