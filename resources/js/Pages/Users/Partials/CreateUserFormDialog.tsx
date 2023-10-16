@@ -1,3 +1,6 @@
+import { Plus } from "lucide-react";
+import { useState } from "react";
+
 import { Button } from "@/Components/ui/button";
 import {
 	Dialog,
@@ -6,8 +9,7 @@ import {
 	DialogTitle,
 	DialogTrigger,
 } from "@/Components/ui/dialog";
-import { useState } from "react";
-import { Plus } from "lucide-react";
+
 import CreateOrEditUserForm from "./CreateOrEditUserForm";
 
 export default function CreateUserFormDialog() {

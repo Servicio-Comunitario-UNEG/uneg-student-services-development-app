@@ -1,7 +1,8 @@
 import { CheckboxProps } from "@radix-ui/react-checkbox";
+import { LabelProps } from "@radix-ui/react-label";
+
 import { Checkbox } from "./ui/checkbox";
 import { Label } from "./ui/label";
-import { LabelProps } from "@radix-ui/react-label";
 
 export function CheckboxField({
 	id,

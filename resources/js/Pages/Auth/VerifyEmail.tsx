@@ -1,9 +1,11 @@
-import GuestLayout from "@/Layouts/GuestLayout";
 import { Head, Link, useForm } from "@inertiajs/react";
-import { FormEventHandler, useEffect } from "react";
-import { useToast } from "@/Components/ui/use-toast";
-import { Button } from "@/Components/ui/button";
 import { Loader2 } from "lucide-react";
+import { FormEventHandler, useEffect } from "react";
+
+import GuestLayout from "@/Layouts/GuestLayout";
+
+import { Button } from "@/Components/ui/button";
+import { useToast } from "@/Components/ui/use-toast";
 
 export default function VerifyEmail({ status }: { status?: string }) {
 	const { post, processing } = useForm({});

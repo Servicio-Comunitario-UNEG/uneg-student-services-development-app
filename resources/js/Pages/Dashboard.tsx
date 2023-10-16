@@ -1,4 +1,5 @@
 import { Head } from "@inertiajs/react";
+
 import { AuthenticatedLayout } from "@/Layouts/AuthenticatedLayout";
 import PageLayout from "@/Layouts/PageLayout";
 

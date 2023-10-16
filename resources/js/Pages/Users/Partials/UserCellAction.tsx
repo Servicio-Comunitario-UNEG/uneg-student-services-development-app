@@ -1,15 +1,11 @@
-import { type CellContext } from "@tanstack/react-table";
-import { Button } from "@/Components/ui/button";
-import {
-	DropdownMenu,
-	DropdownMenuContent,
-	DropdownMenuItem,
-	DropdownMenuTrigger,
-} from "@/Components/ui/dropdown-menu";
-import { type User } from "@/types";
 import { Link } from "@inertiajs/react";
+import { type CellContext } from "@tanstack/react-table";
 import { MoreHorizontal, Pencil, Trash } from "lucide-react";
 import { useState } from "react";
+
+import { type User } from "@/types";
+
+import { Button } from "@/Components/ui/button";
 import {
 	Dialog,
 	DialogContent,
@@ -17,7 +13,15 @@ import {
 	DialogTitle,
 	DialogTrigger,
 } from "@/Components/ui/dialog";
+import {
+	DropdownMenu,
+	DropdownMenuContent,
+	DropdownMenuItem,
+	DropdownMenuTrigger,
+} from "@/Components/ui/dropdown-menu";
+
 import { useGate } from "@/hooks/useGate";
+
 import CreateOrEditUserForm from "./CreateOrEditUserForm";
 
 export default function UserCellAction({ row }: CellContext<User, unknown>) {

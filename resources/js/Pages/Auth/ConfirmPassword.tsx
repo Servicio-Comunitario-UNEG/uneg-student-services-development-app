@@ -1,9 +1,11 @@
-import { useEffect, FormEventHandler } from "react";
-import GuestLayout from "@/Layouts/GuestLayout";
 import { Head, useForm } from "@inertiajs/react";
+import { Loader2 } from "lucide-react";
+import { useEffect, FormEventHandler } from "react";
+
+import GuestLayout from "@/Layouts/GuestLayout";
+
 import PasswordField from "@/Components/PasswordField";
 import { Button } from "@/Components/ui/button";
-import { Loader2 } from "lucide-react";
 
 export default function ConfirmPassword() {
 	const { data, setData, post, processing, errors, reset } = useForm({

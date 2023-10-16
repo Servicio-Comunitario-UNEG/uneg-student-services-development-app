@@ -1,11 +1,13 @@
-import { useEffect, FormEventHandler } from "react";
-import GuestLayout from "@/Layouts/GuestLayout";
 import { Head, Link, useForm } from "@inertiajs/react";
-import TextField from "@/Components/TextField";
-import { CheckboxField } from "@/Components/CheckboxField";
-import { Button } from "@/Components/ui/button";
 import { Loader2 } from "lucide-react";
+import { useEffect, FormEventHandler } from "react";
+
+import GuestLayout from "@/Layouts/GuestLayout";
+
+import { CheckboxField } from "@/Components/CheckboxField";
 import PasswordField from "@/Components/PasswordField";
+import TextField from "@/Components/TextField";
+import { Button } from "@/Components/ui/button";
 import { useToast } from "@/Components/ui/use-toast";
 
 export default function Login({

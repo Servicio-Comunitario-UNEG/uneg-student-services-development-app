@@ -1,9 +1,11 @@
-import { Input } from "@/Components/ui/input";
 import { router, usePage } from "@inertiajs/react";
-import { useEffect, type ChangeEvent, useMemo } from "react";
-import { UserPageProps } from "../Index";
 import debounce from "lodash.debounce";
+import { useEffect, type ChangeEvent, useMemo } from "react";
+
 import { DataTableFacetedFilter } from "@/Components/DataTableFacetedFilter";
+import { Input } from "@/Components/ui/input";
+
+import { UserPageProps } from "../Index";
 
 export function DataTableToolbar() {
 	const { filters, roles } = usePage<UserPageProps>().props;

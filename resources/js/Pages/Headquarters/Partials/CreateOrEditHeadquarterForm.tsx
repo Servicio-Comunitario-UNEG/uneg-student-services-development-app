@@ -1,9 +1,11 @@
-import TextField from "@/Components/TextField";
-import { Button } from "@/Components/ui/button";
-import { Headquarter } from "@/types";
 import { useForm } from "@inertiajs/react";
 import { Loader2 } from "lucide-react";
 import { FormEventHandler } from "react";
+
+import { Headquarter } from "@/types";
+
+import TextField from "@/Components/TextField";
+import { Button } from "@/Components/ui/button";
 
 export default function CreateOrEditHeadquarterForm({
 	initialValues,

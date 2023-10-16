@@ -1,3 +1,6 @@
+import { Link } from "@inertiajs/react";
+import { PropsWithChildren } from "react";
+
 import ApplicationLogo from "@/Components/ApplicationLogo";
 import {
 	Card,
@@ -5,9 +8,9 @@ import {
 	CardDescription,
 	CardHeader,
 } from "@/Components/ui/card";
+
 import { cn } from "@/lib/utils";
-import { Link } from "@inertiajs/react";
-import { PropsWithChildren } from "react";
+
 import BaseLayout from "./BaseLayout";
 
 export default function GuestLayout({

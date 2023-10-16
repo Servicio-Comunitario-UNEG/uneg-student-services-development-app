@@ -1,15 +1,11 @@
-import { type CellContext } from "@tanstack/react-table";
-import { Button } from "@/Components/ui/button";
-import {
-	DropdownMenu,
-	DropdownMenuContent,
-	DropdownMenuItem,
-	DropdownMenuTrigger,
-} from "@/Components/ui/dropdown-menu";
-import type { Career } from "@/types";
 import { Link } from "@inertiajs/react";
+import { type CellContext } from "@tanstack/react-table";
 import { MoreHorizontal, Pencil, Trash } from "lucide-react";
 import { useState } from "react";
+
+import type { Career } from "@/types";
+
+import { Button } from "@/Components/ui/button";
 import {
 	Dialog,
 	DialogContent,
@@ -17,6 +13,13 @@ import {
 	DialogTitle,
 	DialogTrigger,
 } from "@/Components/ui/dialog";
+import {
+	DropdownMenu,
+	DropdownMenuContent,
+	DropdownMenuItem,
+	DropdownMenuTrigger,
+} from "@/Components/ui/dropdown-menu";
+
 import EditCareerForm from "./EditCareerForm";
 
 export default function CareerCellAction({

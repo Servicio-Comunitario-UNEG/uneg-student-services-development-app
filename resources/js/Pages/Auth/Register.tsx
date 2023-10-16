@@ -1,10 +1,12 @@
-import { useEffect, FormEventHandler } from "react";
-import GuestLayout from "@/Layouts/GuestLayout";
 import { Head, Link, useForm } from "@inertiajs/react";
-import TextField from "@/Components/TextField";
-import PasswordField from "@/Components/PasswordField";
-import { Button } from "@/Components/ui/button";
 import { Loader2 } from "lucide-react";
+import { useEffect, FormEventHandler } from "react";
+
+import GuestLayout from "@/Layouts/GuestLayout";
+
+import PasswordField from "@/Components/PasswordField";
+import TextField from "@/Components/TextField";
+import { Button } from "@/Components/ui/button";
 
 export default function Register() {
 	const { data, setData, post, processing, errors, reset } = useForm({
