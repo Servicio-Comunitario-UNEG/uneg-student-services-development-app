@@ -4,8 +4,8 @@ import type { FormEventHandler } from "react";
 
 import type { User } from "@/types";
 
-import CardField from "@/Components/CardField";
 import CardRadioGroupField from "@/Components/CardRadioGroupField";
+import IdentityCardField from "@/Components/IdentityCardField";
 import PasswordField from "@/Components/PasswordField";
 import TextField from "@/Components/TextField";
 import { Button } from "@/Components/ui/button";
@@ -96,7 +96,7 @@ export default function CreateOrEditUserForm({
 					errorMessage={errors.email}
 				/>
 
-				<CardField
+				<IdentityCardField
 					id="identity-card"
 					selectProps={{
 						value: data.identity_card?.nationality,

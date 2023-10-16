@@ -22,7 +22,7 @@ interface Props {
 		"className" | "htmlFor" | "onValueChange"
 	>;
 	selectProps: Omit<SelectProps, "id" | "onValueChange"> & {
-		onValueChange: (value: User["card"]["nationality"]) => void;
+		onValueChange: (value: User["identity_card"]["nationality"]) => void;
 	};
 	inputProps: Omit<React.InputHTMLAttributes<HTMLInputElement>, "className">;
 	errorMessage?: string;
@@ -31,7 +31,7 @@ interface Props {
 	isOptional?: boolean;
 }
 
-export default function CardField({
+export default function IdentityCardField({
 	id,
 	selectProps,
 	labelProps,
