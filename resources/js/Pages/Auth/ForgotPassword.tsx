@@ -1,6 +1,8 @@
-import GuestLayout from "@/Layouts/GuestLayout";
 import { Head, useForm } from "@inertiajs/react";
 import { FormEventHandler, useEffect } from "react";
+
+import GuestLayout from "@/Layouts/GuestLayout";
+
 import TextField from "@/Components/TextField";
 import { Button } from "@/Components/ui/button";
 import { useToast } from "@/Components/ui/use-toast";

@@ -1,6 +1,9 @@
-import type { FormEventHandler } from "react";
-import { useForm } from "@inertiajs/react";
 import { Transition } from "@headlessui/react";
+import { useForm } from "@inertiajs/react";
+import type { FormEventHandler } from "react";
+
+import PasswordField from "@/Components/PasswordField";
+import { Button } from "@/Components/ui/button";
 import {
 	Card,
 	CardContent,
@@ -8,8 +11,6 @@ import {
 	CardHeader,
 	CardTitle,
 } from "@/Components/ui/card";
-import PasswordField from "@/Components/PasswordField";
-import { Button } from "@/Components/ui/button";
 
 export default function UpdatePasswordForm({
 	className = "",

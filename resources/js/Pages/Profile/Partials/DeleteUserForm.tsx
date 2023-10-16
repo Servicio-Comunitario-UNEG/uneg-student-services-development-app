@@ -1,6 +1,8 @@
+import { useForm } from "@inertiajs/react";
 import { useState, type FormEventHandler } from "react";
 
-import { useForm } from "@inertiajs/react";
+import PasswordField from "@/Components/PasswordField";
+import { Button } from "@/Components/ui/button";
 import {
 	Card,
 	CardContent,
@@ -16,8 +18,6 @@ import {
 	DialogTitle,
 	DialogTrigger,
 } from "@/Components/ui/dialog";
-import { Button } from "@/Components/ui/button";
-import PasswordField from "@/Components/PasswordField";
 
 export default function DeleteUserForm({
 	className = "",

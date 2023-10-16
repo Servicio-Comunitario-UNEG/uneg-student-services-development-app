@@ -1,7 +1,11 @@
-import { Link, useForm, usePage } from "@inertiajs/react";
 import { Transition } from "@headlessui/react";
+import { Link, useForm, usePage } from "@inertiajs/react";
 import { FormEventHandler } from "react";
+
 import { PageProps } from "@/types";
+
+import TextField from "@/Components/TextField";
+import { Button } from "@/Components/ui/button";
 import {
 	Card,
 	CardContent,
@@ -9,8 +13,6 @@ import {
 	CardHeader,
 	CardTitle,
 } from "@/Components/ui/card";
-import TextField from "@/Components/TextField";
-import { Button } from "@/Components/ui/button";
 
 export default function UpdateProfileInformation({
 	mustVerifyEmail,

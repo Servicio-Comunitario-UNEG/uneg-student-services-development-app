@@ -1,11 +1,13 @@
-import { cn } from "@/lib/utils";
-import InputError from "./InputError";
-import { Label } from "./ui/label";
-import { Input } from "./ui/input";
-import { Button } from "./ui/button";
+import { Link } from "@inertiajs/react";
 import { Eye, EyeOff } from "lucide-react";
 import { useState } from "react";
-import { Link } from "@inertiajs/react";
+
+import { cn } from "@/lib/utils";
+
+import InputError from "./InputError";
+import { Button } from "./ui/button";
+import { Input } from "./ui/input";
+import { Label } from "./ui/label";
 
 interface Props {
 	id: string;

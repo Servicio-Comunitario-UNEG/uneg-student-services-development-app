@@ -1,3 +1,6 @@
+import { Plus } from "lucide-react";
+import { useState } from "react";
+
 import { Button } from "@/Components/ui/button";
 import {
 	Dialog,
@@ -6,9 +9,8 @@ import {
 	DialogTitle,
 	DialogTrigger,
 } from "@/Components/ui/dialog";
+
 import CreateOrEditHeadquarterForm from "./CreateOrEditHeadquarterForm";
-import { useState } from "react";
-import { Plus } from "lucide-react";
 
 export default function CreateHeadquarterFormDialog() {
 	const [open, setOpen] = useState(false);

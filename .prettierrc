@@ -2,7 +2,21 @@
 	"tabWidth": 4,
 	"useTabs": true,
 	"phpVersion": "8.1",
+	"importOrderSeparation": true,
+	"importOrder": [
+		"<THIRD_PARTY_MODULES>",
+		"^@/types",
+		"^@/Layouts/(.*)$",
+		"^@/Components/(.*)$",
+		"^@/hooks/(.*)$",
+		"^@/lib/(.*)$",
+		"^[./]"
+	],
 	"tailwindFunctions": ["cn"],
 	"braceStyle": "1tbs",
-	"plugins": ["@prettier/plugin-php", "prettier-plugin-tailwindcss"]
+	"plugins": [
+		"@trivago/prettier-plugin-sort-imports",
+		"@prettier/plugin-php",
+		"prettier-plugin-tailwindcss"
+	]
 }

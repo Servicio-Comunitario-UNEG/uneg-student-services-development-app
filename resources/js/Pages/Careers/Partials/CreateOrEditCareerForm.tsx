@@ -1,9 +1,11 @@
-import type { FormEventHandler } from "react";
-import type { Career } from "@/types";
-import TextField from "@/Components/TextField";
-import { Button } from "@/Components/ui/button";
 import { useForm } from "@inertiajs/react";
 import { Loader2 } from "lucide-react";
+import type { FormEventHandler } from "react";
+
+import type { Career } from "@/types";
+
+import TextField from "@/Components/TextField";
+import { Button } from "@/Components/ui/button";
 
 export default function CreateOrEditCareerForm({
 	initialValues,

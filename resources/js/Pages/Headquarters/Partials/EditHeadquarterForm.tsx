@@ -1,4 +1,5 @@
 import type { ComponentProps } from "react";
+
 import CreateOrEditHeadquarterForm from "./CreateOrEditHeadquarterForm";
 
 export default function EditHeadquarterForm({
