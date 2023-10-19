@@ -59,30 +59,45 @@ class UserController extends Controller {
 		// Get the search queries.
 		$search = $request->query("search", "");
 		$selectedRoles = $request->query("roles", []);
+		$page = $request->query("page");
+		$perPage = $request->query("per_page");
 
-		// Get all users.
+		if (is_null($page) || !is_numeric($page)) {
+			$page = 1;
+		}
+
+		if (is_null($perPage) || !is_numeric($perPage)) {
+			$perPage = 10;
+		}
+
+		// All users that match the queries.
 		$users = User::query()
+			->where("id", "!=", $user->id)
 			->when($search, function (Builder $query, string $search) {
-				// Filter by name and email.
-				$query
-					->where("name", "like", "%$search%")
-					->orWhere("email", "like", "%$search%")
-					->orWhere("identity_card", "like", "%$search%");
+				$query->where(function (Builder $query) use ($search) {
+					// Filter by name, email or identity card.
+					$query
+						->where("name", "like", "%$search%")
+						->orWhere("email", "like", "%$search%")
+						->orWhere("identity_card", "like", "%$search%");
+				});
 			})
-			->orderBy("name")
-			->get()
-			->except($user->id);
-
-		if (!empty($selectedRoles)) {
-			$users = $users
-				->filter(
-					fn(User $user) => in_array(
-						$user->role->name,
+			->when($selectedRoles, function (
+				Builder $query,
+				array $selectedRoles,
+			) {
+				// Filter by roles.
+				$query->whereHas(
+					"roles",
+					fn(Builder $query) => $query->whereIn(
+						"name",
 						$selectedRoles,
 					),
-				)
-				->values();
-		}
+				);
+			})
+			->orderBy("name")
+			->paginate($perPage)
+			->withQueryString();
 
 		return Inertia::render("Users/Index", [
 			"users" => $users,
@@ -91,6 +106,8 @@ class UserController extends Controller {
 			"filters" => [
 				"search" => $search,
 				"roles" => $selectedRoles,
+				"page" => $page,
+				"per_page" => $perPage,
 			],
 		]);
 	}

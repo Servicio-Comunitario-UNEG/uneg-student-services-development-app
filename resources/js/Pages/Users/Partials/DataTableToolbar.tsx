@@ -10,14 +10,15 @@ import { UserPageProps } from "../Index";
 export function DataTableToolbar() {
 	const { filters, roles } = usePage<UserPageProps>().props;
 
+	// Updates the search query.
 	const onSearchTermChange = useMemo(
 		() =>
 			debounce((e: ChangeEvent<HTMLInputElement>) => {
 				router.get(
 					route("users.index"),
 					{
-						search: e.target.value ? e.target.value : undefined,
-						roles: filters.roles,
+						...filters,
+						search: e.target.value,
 					},
 					{
 						preserveState: true,
@@ -26,16 +27,17 @@ export function DataTableToolbar() {
 					},
 				);
 			}, 500),
-		[filters.roles],
+		[filters],
 	);
 
+	// Updates the roles query,
 	const onSelectRoleChange = useMemo(
 		() =>
 			debounce((selectedValues: Set<string>) => {
 				router.get(
 					route("users.index"),
 					{
-						search: filters.search ? filters.search : undefined,
+						...filters,
 						roles: Array.from(selectedValues),
 					},
 					{
@@ -45,7 +47,7 @@ export function DataTableToolbar() {
 					},
 				);
 			}, 500),
-		[filters.search],
+		[filters],
 	);
 
 	useEffect(() => {
