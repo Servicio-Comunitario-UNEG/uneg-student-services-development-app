@@ -9,14 +9,17 @@ import {
 	getFacetedRowModel,
 	getFacetedUniqueValues,
 	getFilteredRowModel,
-	getPaginationRowModel,
 	getSortedRowModel,
 	useReactTable,
+	getPaginationRowModel,
 } from "@tanstack/react-table";
 import { useState } from "react";
 
+import { Paginated } from "@/types";
+
 import { cn } from "@/lib/utils";
 
+import { DataTableManualPagination } from "./DataTableManualPagination";
 import { DataTablePagination } from "./DataTablePagination";
 import {
 	Table,
@@ -30,16 +33,22 @@ import {
 interface DataTableProps<TData, TValue> {
 	columns: ColumnDef<TData, TValue>[];
 	initialState?: InitialTableState;
-	data: TData[];
+	data?: TData[];
+	paginatedData?: Paginated<TData>;
 	toolbar?: JSX.Element;
 }
 
 export function DataTable<TData, TValue>({
 	columns,
 	data,
+	paginatedData,
 	initialState,
 	toolbar,
 }: DataTableProps<TData, TValue>) {
+	if (!data && !paginatedData) {
+		throw new Error("Data or Paginated Data must be provided");
+	}
+
 	const [columnVisibility, setColumnVisibility] = useState<VisibilityState>(
 		{},
 	);
@@ -49,7 +58,7 @@ export function DataTable<TData, TValue>({
 	const [sorting, setSorting] = useState<SortingState>([]);
 
 	const table = useReactTable({
-		data,
+		data: paginatedData ? paginatedData.data : data!,
 		columns,
 		state: {
 			sorting,
@@ -57,12 +66,15 @@ export function DataTable<TData, TValue>({
 			columnFilters,
 		},
 		initialState: initialState,
+		manualPagination: Boolean(paginatedData),
 		onSortingChange: setSorting,
 		onColumnFiltersChange: setColumnFilters,
 		onColumnVisibilityChange: setColumnVisibility,
 		getCoreRowModel: getCoreRowModel(),
 		getFilteredRowModel: getFilteredRowModel(),
-		getPaginationRowModel: getPaginationRowModel(),
+		getPaginationRowModel: paginatedData
+			? undefined
+			: getPaginationRowModel(),
 		getSortedRowModel: getSortedRowModel(),
 		getFacetedRowModel: getFacetedRowModel(),
 		getFacetedUniqueValues: getFacetedUniqueValues(),
@@ -138,7 +150,11 @@ export function DataTable<TData, TValue>({
 				</Table>
 			</div>
 
-			<DataTablePagination table={table} />
+			{paginatedData ? (
+				<DataTableManualPagination paginatedData={paginatedData} />
+			) : (
+				<DataTablePagination table={table} />
+			)}
 		</div>
 	);
 }

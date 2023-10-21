@@ -1,7 +1,7 @@
 import { Head } from "@inertiajs/react";
 import type { ColumnDef } from "@tanstack/react-table";
 
-import type { PageProps, Role, User } from "@/types";
+import type { PageProps, Paginated, Role, User } from "@/types";
 
 import { AuthenticatedLayout } from "@/Layouts/AuthenticatedLayout";
 import PageLayout from "@/Layouts/PageLayout";
@@ -65,12 +65,14 @@ const columns: ColumnDef<User>[] = [
 ];
 
 export type UserPageProps = PageProps<{
-	users: User[];
+	users: Paginated<User>;
 	roles: Role[];
 	assignableRoles: Role[];
 	filters: {
 		search: string;
 		roles: string[];
+		page: number;
+		per_page: number;
 	};
 }>;
 
@@ -95,7 +97,7 @@ export default function Index({ users }: UserPageProps) {
 			<DataTable
 				toolbar={<DataTableToolbar />}
 				columns={columns}
-				data={users}
+				paginatedData={users}
 			/>
 		</PageLayout>
 	);
