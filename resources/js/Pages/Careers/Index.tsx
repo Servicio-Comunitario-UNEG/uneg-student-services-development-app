@@ -1,7 +1,7 @@
 import { Head } from "@inertiajs/react";
 import { type ColumnDef } from "@tanstack/react-table";
 
-import type { Career, PageProps } from "@/types";
+import type { Career, PageProps, Paginated } from "@/types";
 
 import { AuthenticatedLayout } from "@/Layouts/AuthenticatedLayout";
 import PageLayout from "@/Layouts/PageLayout";
@@ -11,6 +11,7 @@ import { DataTableColumnHeader } from "@/Components/DataTableColumnHeader";
 
 import CareerCellAction from "./Partials/CareerCellAction";
 import CreateCareerFormDialog from "./Partials/CreateCareerFormDialog";
+import { DataTableToolbar } from "./Partials/DataTableToolbar";
 
 const columns: ColumnDef<Career>[] = [
 	{
@@ -27,7 +28,17 @@ const columns: ColumnDef<Career>[] = [
 		cell: (cell) => <CareerCellAction {...cell} />,
 	},
 ];
-export default function Index({ careers }: PageProps<{ careers: Career[] }>) {
+
+export type CareerPageProps = PageProps<{
+	careers: Paginated<Career>;
+	filters: {
+		search: string;
+		page: string;
+		per_page: string;
+	};
+}>;
+
+export default function Index({ careers }: CareerPageProps) {
 	return (
 		<PageLayout
 			headerProps={{
@@ -38,7 +49,11 @@ export default function Index({ careers }: PageProps<{ careers: Career[] }>) {
 		>
 			<Head title="Carreras" />
 
-			<DataTable columns={columns} data={careers} />
+			<DataTable
+				columns={columns}
+				paginatedData={careers}
+				toolbar={<DataTableToolbar />}
+			/>
 		</PageLayout>
 	);
 }
