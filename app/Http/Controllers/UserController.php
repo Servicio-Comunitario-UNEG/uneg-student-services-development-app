@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Headquarter;
 use App\Models\User;
 use Hash;
 use Illuminate\Contracts\Database\Eloquent\Builder;

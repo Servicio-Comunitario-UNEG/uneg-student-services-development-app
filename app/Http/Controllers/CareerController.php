@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Career;
+use Illuminate\Contracts\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
 use Inertia\Inertia;
@@ -11,9 +12,34 @@ class CareerController extends Controller {
 	/**
 	 * Display a listing of the resource.
 	 */
-	public function index() {
+	public function index(Request $request) {
+		// Get the search queries.
+		$search = $request->query("search", "");
+		$page = $request->query("page");
+		$perPage = $request->query("per_page");
+
+		if (is_null($page) || !is_numeric($page)) {
+			$page = 1;
+		}
+
+		if (is_null($perPage) || !is_numeric($perPage)) {
+			$perPage = 10;
+		}
+
 		return Inertia::render("Careers/Index", [
-			"careers" => Career::orderBy("name")->get(),
+			"careers" => Career::query()
+				->when($search, function (Builder $query, string $search) {
+					// Filter by name.
+					$query->where("name", "like", "%$search%");
+				})
+				->orderBy("name")
+				->paginate($perPage)
+				->withQueryString(),
+			"filters" => [
+				"search" => $search,
+				"page" => $page,
+				"per_page" => $perPage,
+			],
 		]);
 	}
 
@@ -21,7 +47,6 @@ class CareerController extends Controller {
 	 * Show the form for creating a new resource.
 	 */
 	public function create() {
-		//
 	}
 
 	/**
