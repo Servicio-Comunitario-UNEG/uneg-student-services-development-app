@@ -17,6 +17,8 @@ class HeadquarterController extends Controller {
 	 * Display a listing of the resource.
 	 */
 	public function index() {
+		$this->authorize("viewAny", User::class);
+
 		// Get the unavailable representatives.
 		$unavailableRepresentativeIds = Headquarter::all()
 			->reject(
@@ -53,13 +55,15 @@ class HeadquarterController extends Controller {
 	 * Show the form for creating a new resource.
 	 */
 	public function create() {
-		//
+		$this->authorize("create", User::class);
 	}
 
 	/**
 	 * Store a newly created resource in storage.
 	 */
 	public function store(Request $request) {
+		$this->authorize("create", User::class);
+
 		$validated = $request->validate([
 			"name" => "required|string|unique:headquarters|max:255",
 			"user_id" => "nullable|numeric|exists:users,id|unique:headquarters",
@@ -74,20 +78,22 @@ class HeadquarterController extends Controller {
 	 * Display the specified resource.
 	 */
 	public function show(Headquarter $headquarters) {
-		//
+		$this->authorize("view", $headquarters);
 	}
 
 	/**
 	 * Show the form for editing the specified resource.
 	 */
 	public function edit(Headquarter $headquarters) {
-		//
+		$this->authorize("update", $headquarters);
 	}
 
 	/**
 	 * Update the specified resource in storage.
 	 */
 	public function update(Request $request, Headquarter $headquarters) {
+		$this->authorize("update", $headquarters);
+
 		$userId = $headquarters->user?->id;
 
 		$validated = $request->validate([
@@ -121,6 +127,8 @@ class HeadquarterController extends Controller {
 	 * Remove the specified resource from storage.
 	 */
 	public function destroy(Headquarter $headquarters) {
+		$this->authorize("delete", $headquarters);
+
 		$headquarters->delete();
 
 		return redirect(route("headquarters.index"));
