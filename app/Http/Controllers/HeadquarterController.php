@@ -20,7 +20,7 @@ class HeadquarterController extends Controller {
 		// Get the unavailable representatives.
 		$unavailableRepresentativeIds = Headquarter::all()
 			->reject(
-				fn(Headquarter $headquarter) => is_null($headquarter->user),
+				fn(Headquarter $headquarters) => is_null($headquarters->user),
 			)
 			->pluck("user_id")
 			->values()
@@ -73,29 +73,28 @@ class HeadquarterController extends Controller {
 	/**
 	 * Display the specified resource.
 	 */
-	public function show(Headquarter $headquarter) {
+	public function show(Headquarter $headquarters) {
 		//
 	}
 
 	/**
 	 * Show the form for editing the specified resource.
 	 */
-	public function edit(Headquarter $headquarter) {
+	public function edit(Headquarter $headquarters) {
 		//
 	}
 
 	/**
 	 * Update the specified resource in storage.
 	 */
-	public function update(Request $request, int $id) {
-		$headquarter = Headquarter::find($id);
-		$userId = $headquarter->user?->id;
+	public function update(Request $request, Headquarter $headquarters) {
+		$userId = $headquarters->user?->id;
 
 		$validated = $request->validate([
 			"name" => [
 				"required",
 				"string",
-				Rule::unique("headquarters")->ignore($id),
+				Rule::unique("headquarters")->ignore($headquarters->id),
 				"max:255",
 			],
 			"user_id" => is_null($userId)
@@ -113,9 +112,7 @@ class HeadquarterController extends Controller {
 				],
 		]);
 
-		if ($headquarter instanceof Headquarter) {
-			$headquarter->update($validated);
-		}
+		$headquarters->update($validated);
 
 		return redirect(route("headquarters.index"));
 	}
@@ -123,8 +120,8 @@ class HeadquarterController extends Controller {
 	/**
 	 * Remove the specified resource from storage.
 	 */
-	public function destroy(int $id) {
-		Headquarter::destroy($id);
+	public function destroy(Headquarter $headquarters) {
+		$headquarters->delete();
 
 		return redirect(route("headquarters.index"));
 	}
