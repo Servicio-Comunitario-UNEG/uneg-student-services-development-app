@@ -23,6 +23,12 @@ export default function CreateOrEditHeadquarterForm({
 }) {
 	const { representatives } = usePage<HeadquarterPageProps>().props;
 
+	// Take the selectable representatives.
+	const availableRepresentatives = representatives.filter(
+		// Only take the availables and current representative of this headquarter.
+		({ id, is_available }) => is_available || initialValues.user_id === id,
+	);
+
 	const { data, setData, errors, processing, post, put } =
 		useForm(initialValues);
 
@@ -74,7 +80,7 @@ export default function CreateOrEditHeadquarterForm({
 						placeholder: "Seleccione un representante",
 						value: data.user_id ? String(data.user_id) : "",
 						setValue: (id) => setData("user_id", Number(id)),
-						options: representatives.map(
+						options: availableRepresentatives.map(
 							({ id, name, identity_card }) => ({
 								label: `${name} (${identity_card.nationality}${identity_card.serial})`,
 								value: String(id),

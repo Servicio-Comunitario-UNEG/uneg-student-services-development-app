@@ -30,12 +30,14 @@ const columns: ColumnDef<Headquarter>[] = [
 
 export type HeadquarterPageProps = PageProps<{
 	headquarters: Headquarter[];
-	representatives: Pick<User, "id" | "name" | "identity_card">[];
+	representatives: Array<
+		Pick<User, "id" | "name" | "identity_card"> & {
+			is_available: boolean;
+		}
+	>;
 }>;
 
 export default function Index({ headquarters }: HeadquarterPageProps) {
-	console.log(headquarters);
-
 	return (
 		<PageLayout
 			headerProps={{

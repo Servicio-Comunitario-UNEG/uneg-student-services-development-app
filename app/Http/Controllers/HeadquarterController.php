@@ -17,12 +17,33 @@ class HeadquarterController extends Controller {
 	 * Display a listing of the resource.
 	 */
 	public function index() {
+		// Get the unavailable representatives.
+		$unavailableRepresentativeIds = Headquarter::all()
+			->reject(
+				fn(Headquarter $headquarter) => is_null($headquarter->user),
+			)
+			->pluck("user_id")
+			->values()
+			->all();
+
 		return Inertia::render("Headquarters/Index", [
 			"headquarters" => Headquarter::orderBy("name")->get(),
 			"representatives" => User::role("representative")
 				->orderBy("name")
 				->get()
-				->setVisible(["id", "name", "identity_card"]),
+				->transform(function (User $user) use (
+					$unavailableRepresentativeIds,
+				) {
+					return [
+						"id" => $user->id,
+						"name" => $user->name,
+						"identity_card" => $user->identity_card,
+						"is_available" => !in_array(
+							$user->id,
+							$unavailableRepresentativeIds,
+						),
+					];
+				}),
 		]);
 	}
 
