@@ -3,8 +3,6 @@ import { type CellContext } from "@tanstack/react-table";
 import { MoreHorizontal, Pencil, Trash } from "lucide-react";
 import { useState } from "react";
 
-import { Headquarter } from "@/types";
-
 import { Button } from "@/Components/ui/button";
 import {
 	Dialog,
@@ -20,11 +18,12 @@ import {
 	DropdownMenuTrigger,
 } from "@/Components/ui/dropdown-menu";
 
+import { HeadquarterPageProps } from "../Index";
 import EditHeadquarterForm from "./EditHeadquarterForm";
 
 export default function HeadquarterCellAction({
 	row,
-}: CellContext<Headquarter, unknown>) {
+}: CellContext<HeadquarterPageProps["headquarters"][number], unknown>) {
 	const [open, setOpen] = useState(false);
 	const headquarter = row.original;
 

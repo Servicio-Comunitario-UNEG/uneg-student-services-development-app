@@ -12,7 +12,7 @@ import { DataTableColumnHeader } from "@/Components/DataTableColumnHeader";
 import CreateHeadquarterFormDialog from "./Partials/CreateHeadquarterFormDialog";
 import HeadquarterCellAction from "./Partials/HeadquartersCellAction";
 
-const columns: ColumnDef<Headquarter>[] = [
+const columns: ColumnDef<HeadquarterWithRepresentative>[] = [
 	{
 		accessorKey: "name",
 		header: ({ column }) => (
@@ -20,7 +20,31 @@ const columns: ColumnDef<Headquarter>[] = [
 		),
 		cell: ({ row }) => row.getValue("name"),
 		enableHiding: false,
-		enableSorting: false,
+		enableSorting: true,
+	},
+	{
+		accessorKey: "user",
+		header: ({ column }) => (
+			<DataTableColumnHeader column={column} title="Representante" />
+		),
+		cell: ({ row }) => {
+			const user = row.getValue(
+				"user",
+			) as HeadquarterWithRepresentative["user"];
+
+			return (
+				<div className="space-y-2">
+					<p>{user.name}</p>
+
+					<p className="text-muted-foreground">
+						{user.identity_card.nationality}
+						{user.identity_card.serial}
+					</p>
+				</div>
+			);
+		},
+		enableHiding: false,
+		enableSorting: true,
 	},
 	{
 		id: "actions",
@@ -28,8 +52,12 @@ const columns: ColumnDef<Headquarter>[] = [
 	},
 ];
 
+export type HeadquarterWithRepresentative = Headquarter & {
+	user: Omit<User, "email" | "email_verified_at">;
+};
+
 export type HeadquarterPageProps = PageProps<{
-	headquarters: Headquarter[];
+	headquarters: HeadquarterWithRepresentative[];
 	representatives: Array<
 		Pick<User, "id" | "name" | "identity_card"> & {
 			is_available: boolean;
@@ -38,6 +66,8 @@ export type HeadquarterPageProps = PageProps<{
 }>;
 
 export default function Index({ headquarters }: HeadquarterPageProps) {
+	console.log(headquarters);
+
 	return (
 		<PageLayout
 			headerProps={{

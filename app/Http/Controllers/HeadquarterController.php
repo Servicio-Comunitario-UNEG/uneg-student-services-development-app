@@ -27,7 +27,9 @@ class HeadquarterController extends Controller {
 			->all();
 
 		return Inertia::render("Headquarters/Index", [
-			"headquarters" => Headquarter::orderBy("name")->get(),
+			"headquarters" => Headquarter::with("user:id,name,identity_card")
+				->orderBy("name")
+				->get(),
 			"representatives" => User::role("representative")
 				->orderBy("name")
 				->get()
