@@ -46,12 +46,12 @@ const columns: ColumnDef<User>[] = [
 		enableSorting: false,
 	},
 	{
-		accessorKey: "role",
+		accessorKey: "current_role",
 		header: ({ column }) => (
 			<DataTableColumnHeader column={column} title="Rol" />
 		),
 		cell: ({ row }) => {
-			const role = row.getValue("role") as User["role"];
+			const role = row.getValue("current_role") as User["current_role"];
 
 			return role.description;
 		},

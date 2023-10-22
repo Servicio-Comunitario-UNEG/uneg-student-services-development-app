@@ -37,7 +37,7 @@ export default function CreateOrEditUserForm({
 			nationality: "V",
 			serial: "",
 		},
-		role_name: initialValues.role?.name || initialValues.role_name,
+		role_name: initialValues.current_role?.name || initialValues.role_name,
 	});
 
 	const onSubmit: FormEventHandler = (e) => {

@@ -1,7 +1,7 @@
 import { Head } from "@inertiajs/react";
 import { type ColumnDef } from "@tanstack/react-table";
 
-import type { Headquarter, PageProps } from "@/types";
+import type { Headquarter, PageProps, User } from "@/types";
 
 import { AuthenticatedLayout } from "@/Layouts/AuthenticatedLayout";
 import PageLayout from "@/Layouts/PageLayout";
@@ -28,9 +28,14 @@ const columns: ColumnDef<Headquarter>[] = [
 	},
 ];
 
-export default function Index({
-	headquarters,
-}: PageProps<{ headquarters: Headquarter[] }>) {
+export type HeadquarterPageProps = PageProps<{
+	headquarters: Headquarter[];
+	representatives: Pick<User, "id" | "name" | "identity_card">[];
+}>;
+
+export default function Index({ headquarters }: HeadquarterPageProps) {
+	console.log(headquarters);
+
 	return (
 		<PageLayout
 			headerProps={{

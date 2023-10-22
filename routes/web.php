@@ -46,9 +46,12 @@ Route::middleware("auth")->group(function () {
 	);
 });
 
-Route::resource("headquarters", HeadquarterController::class)
-	->only(["index", "store", "destroy", "update"])
-	->middleware(["auth", "verified"]);
+Route::resource("headquarters", HeadquarterController::class)->only([
+	"index",
+	"store",
+	"destroy",
+	"update",
+]);
 
 Route::resource("careers", CareerController::class)
 	->only(["index", "store", "destroy", "update"])

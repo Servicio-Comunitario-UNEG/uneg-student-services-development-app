@@ -14,7 +14,7 @@ class Headquarter extends Model {
 	 *
 	 * @var array<int, string>
 	 */
-	protected $fillable = ["name"];
+	protected $fillable = ["name", "user_id"];
 
 	/**
 	 * Get the user that represents this headquarter.

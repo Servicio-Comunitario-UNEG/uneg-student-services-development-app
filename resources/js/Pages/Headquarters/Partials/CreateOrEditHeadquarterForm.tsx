@@ -1,11 +1,14 @@
-import { useForm } from "@inertiajs/react";
+import { useForm, usePage } from "@inertiajs/react";
 import { Loader2 } from "lucide-react";
 import { FormEventHandler } from "react";
 
 import { Headquarter } from "@/types";
 
+import ComboboxField from "@/Components/ComboboxField";
 import TextField from "@/Components/TextField";
 import { Button } from "@/Components/ui/button";
+
+import { HeadquarterPageProps } from "../Index";
 
 export default function CreateOrEditHeadquarterForm({
 	initialValues,
@@ -18,6 +21,8 @@ export default function CreateOrEditHeadquarterForm({
 	isUpdate?: boolean;
 	callToAction: string;
 }) {
+	const { representatives } = usePage<HeadquarterPageProps>().props;
+
 	const { data, setData, errors, processing, post, put } =
 		useForm(initialValues);
 
@@ -44,20 +49,42 @@ export default function CreateOrEditHeadquarterForm({
 
 	return (
 		<form className="space-y-6" onSubmit={onSubmit}>
-			<TextField
-				id="headquarter-name"
-				labelProps={{
-					children: "Nombre",
-				}}
-				inputProps={{
-					placeholder: "ej: Puerto Ordaz",
-					required: true,
-					autoFocus: true,
-					value: data.name,
-					onChange: (e) => setData("name", e.target.value),
-				}}
-				errorMessage={errors.name}
-			/>
+			<div className="space-y-4">
+				<TextField
+					id="headquarter-name"
+					labelProps={{
+						children: "Nombre",
+					}}
+					inputProps={{
+						placeholder: "ej: Puerto Ordaz",
+						required: true,
+						autoFocus: true,
+						value: data.name,
+						onChange: (e) => setData("name", e.target.value),
+					}}
+					errorMessage={errors.name}
+				/>
+
+				<ComboboxField
+					id="representative"
+					labelProps={{
+						children: "Representante",
+					}}
+					comboboxProps={{
+						placeholder: "Seleccione un representante",
+						value: data.user_id ? String(data.user_id) : "",
+						setValue: (id) => setData("user_id", Number(id)),
+						options: representatives.map(
+							({ id, name, identity_card }) => ({
+								label: `${name} (${identity_card.nationality}${identity_card.serial})`,
+								value: String(id),
+							}),
+						),
+					}}
+					errorMessage={errors.user_id}
+					isOptional
+				/>
+			</div>
 
 			<div className="flex justify-end">
 				<Button disabled={processing}>

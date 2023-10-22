@@ -40,7 +40,9 @@ export default function ComboboxField({
 				) : null}
 			</div>
 
-			<p className="text-sm text-muted-foreground">{description}</p>
+			{description ? (
+				<p className="text-sm text-muted-foreground">{description}</p>
+			) : null}
 
 			<Combobox
 				buttonProps={{

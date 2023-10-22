@@ -7,7 +7,7 @@ export interface User {
 		serial: string;
 	};
 	email_verified_at: string;
-	role: Role;
+	current_role: Role;
 	permission_names: string[];
 }
 
@@ -24,6 +24,7 @@ export interface Headquarter {
 	name: string;
 	created_at: string;
 	updated_at: string;
+	user_id: number;
 }
 
 export interface Career {
@@ -34,7 +35,6 @@ export interface Career {
 }
 
 export interface Role {
-	id: number;
 	name: "admin" | "coordinator" | "representative";
 	description: string;
 }
