@@ -1,6 +1,6 @@
 import { Link } from "@inertiajs/react";
 import { type CellContext } from "@tanstack/react-table";
-import { MoreHorizontal, Pencil, Trash } from "lucide-react";
+import { MoreHorizontal, Pencil, Trash, UserX } from "lucide-react";
 import { useState } from "react";
 
 import { Button } from "@/Components/ui/button";
@@ -45,6 +45,33 @@ export default function HeadquarterCellAction({
 								<span>Editar</span>
 							</DropdownMenuItem>
 						</DialogTrigger>
+
+						{headquarter.user ? (
+							<DropdownMenuItem asChild>
+								<Link
+									className="w-full"
+									as="button"
+									href={route(
+										"headquarters.unassign",
+										headquarter.id,
+									)}
+									onClick={(e) => {
+										if (
+											!confirm(
+												"¿Desea desasignar al representante?",
+											)
+										) {
+											e.preventDefault();
+										}
+									}}
+									method="put"
+								>
+									<UserX className="mr-2 h-4 w-4" />
+
+									<span>Desasignar representante</span>
+								</Link>
+							</DropdownMenuItem>
+						) : null}
 
 						<DropdownMenuItem className="text-destructive" asChild>
 							<Link

@@ -124,6 +124,20 @@ class HeadquarterController extends Controller {
 	}
 
 	/**
+	 * Unassigns the current representative.
+	 */
+	public function unassignRepresentative(Headquarter $headquarters) {
+		$hasRepresentative = !is_null($headquarters->user?->id);
+
+		if ($hasRepresentative) {
+			$headquarters->user()->disassociate();
+			$headquarters->save();
+		}
+
+		return redirect(route("headquarters.index"));
+	}
+
+	/**
 	 * Remove the specified resource from storage.
 	 */
 	public function destroy(Headquarter $headquarters) {

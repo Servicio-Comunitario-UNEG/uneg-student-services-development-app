@@ -32,6 +32,8 @@ const columns: ColumnDef<HeadquarterWithRepresentative>[] = [
 				"user",
 			) as HeadquarterWithRepresentative["user"];
 
+			if (!user) return null;
+
 			return (
 				<div className="space-y-2">
 					<p>{user.name}</p>
@@ -44,7 +46,7 @@ const columns: ColumnDef<HeadquarterWithRepresentative>[] = [
 			);
 		},
 		enableHiding: false,
-		enableSorting: true,
+		enableSorting: false,
 	},
 	{
 		id: "actions",
@@ -53,7 +55,7 @@ const columns: ColumnDef<HeadquarterWithRepresentative>[] = [
 ];
 
 export type HeadquarterWithRepresentative = Headquarter & {
-	user: Omit<User, "email" | "email_verified_at">;
+	user: Omit<User, "email" | "email_verified_at"> | null;
 };
 
 export type HeadquarterPageProps = PageProps<{
