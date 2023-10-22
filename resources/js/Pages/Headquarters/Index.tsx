@@ -66,8 +66,6 @@ export type HeadquarterPageProps = PageProps<{
 }>;
 
 export default function Index({ headquarters }: HeadquarterPageProps) {
-	console.log(headquarters);
-
 	return (
 		<PageLayout
 			headerProps={{
