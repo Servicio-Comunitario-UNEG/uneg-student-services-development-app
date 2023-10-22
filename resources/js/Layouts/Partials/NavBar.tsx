@@ -28,14 +28,14 @@ const links: {
 		to: "users.index",
 	},
 	{
-		title: "Carreras",
-		permission: "view careers",
-		to: "careers.index",
-	},
-	{
 		title: "Sedes",
 		permission: "view headquarters",
 		to: "headquarters.index",
+	},
+	{
+		title: "Carreras",
+		permission: "view careers",
+		to: "careers.index",
 	},
 	{
 		title: "Perfil",
