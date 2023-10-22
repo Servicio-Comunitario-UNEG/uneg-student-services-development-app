@@ -28,7 +28,7 @@ export default function Combobox({
 	placeholder: string;
 	value: string;
 	setValue: (value: string) => void;
-	emptyTitle: string;
+	emptyTitle?: string;
 	options: {
 		label: string;
 		value: string;
@@ -62,7 +62,9 @@ export default function Combobox({
 			<PopoverContent className="w-full p-0">
 				<Command>
 					<CommandInput placeholder={placeholder} />
-					<CommandEmpty>{emptyTitle}</CommandEmpty>
+					<CommandEmpty>
+						{emptyTitle ?? "No hay resultados disponibles."}
+					</CommandEmpty>
 					<CommandGroup>
 						{options.map((option) => (
 							<CommandItem

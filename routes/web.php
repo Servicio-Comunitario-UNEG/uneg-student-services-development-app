@@ -46,19 +46,30 @@ Route::middleware("auth")->group(function () {
 	);
 });
 
-Route::resource("headquarters", HeadquarterController::class)
-	->only(["index", "store", "destroy", "update"])
-	->middleware(["auth", "verified"]);
-
-Route::resource("careers", CareerController::class)
-	->only(["index", "store", "destroy", "update"])
-	->middleware(["auth", "verified"]);
-
+// Users routes.
 Route::resource("users", UserController::class)->only([
 	"index",
 	"store",
 	"destroy",
 	"update",
 ]);
+
+// Headquarters routes.
+Route::resource("headquarters", HeadquarterController::class)->only([
+	"index",
+	"store",
+	"destroy",
+	"update",
+]);
+
+Route::put("/headquarter/{headquarters}/unassign", [
+	HeadquarterController::class,
+	"unassignRepresentative",
+])->name("headquarters.unassign");
+
+// Careers routes.
+Route::resource("careers", CareerController::class)
+	->only(["index", "store", "destroy", "update"])
+	->middleware(["auth", "verified"]);
 
 require __DIR__ . "/auth.php";

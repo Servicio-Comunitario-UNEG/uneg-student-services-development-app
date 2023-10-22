@@ -27,14 +27,14 @@ class User extends Authenticatable {
 	 *
 	 * @var array<int, string>
 	 */
-	protected $hidden = ["password", "remember_token"];
+	protected $hidden = ["password", "remember_token", "roles", "permissions"];
 
 	/**
 	 * The role name the user has.
 	 *
 	 * @var array
 	 */
-	protected $appends = ["role", "permission_names"];
+	protected $appends = ["current_role", "permission_names"];
 
 	/**
 	 * The attributes that should be cast.
@@ -47,9 +47,9 @@ class User extends Authenticatable {
 	];
 
 	/**
-	 * Get the role name user has.
+	 * Get the current role this user has.
 	 */
-	protected function role(): Attribute {
+	protected function currentRole(): Attribute {
 		$role = null;
 
 		// As it will be used only a single role per user, then take the first one.
@@ -57,7 +57,6 @@ class User extends Authenticatable {
 
 		if (is_string($roleName)) {
 			$role = Role::findByName($roleName)->setVisible([
-				"id",
 				"name",
 				"description",
 			]);
