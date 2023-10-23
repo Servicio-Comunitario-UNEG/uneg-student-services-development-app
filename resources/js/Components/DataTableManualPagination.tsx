@@ -76,7 +76,7 @@ export function DataTableManualPagination<TData>({
 			</div>
 
 			<div className="flex justify-between sm:justify-start sm:gap-2">
-				<div className="flex w-[100px] items-center text-sm font-medium">
+				<div className="flex items-center text-sm font-medium">
 					Página {paginatedData.current_page} de {totalPages}
 				</div>
 

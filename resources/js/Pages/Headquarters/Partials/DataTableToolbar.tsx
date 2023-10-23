@@ -17,6 +17,7 @@ export function DataTableToolbar() {
 					route("headquarters.index"),
 					{
 						...filters,
+						page: 1,
 						search: e.target.value,
 					},
 					{

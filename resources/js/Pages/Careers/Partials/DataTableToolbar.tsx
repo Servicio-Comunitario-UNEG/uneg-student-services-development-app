@@ -17,6 +17,7 @@ export function DataTableToolbar() {
 					route("careers.index"),
 					{
 						...filters,
+						page: 1,
 						search: e.target.value,
 					},
 					{
