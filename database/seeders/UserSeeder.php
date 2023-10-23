@@ -29,5 +29,10 @@ class UserSeeder extends Seeder {
 			} catch (Exception $e) {
 			}
 		}
+
+		// Factory users.
+		User::factory()
+			->count(150)
+			->create();
 	}
 }
