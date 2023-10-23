@@ -62,9 +62,11 @@ export default function Combobox({
 			<PopoverContent className="w-full p-0">
 				<Command>
 					<CommandInput placeholder={placeholder} />
+
 					<CommandEmpty>
 						{emptyTitle ?? "No hay resultados disponibles."}
 					</CommandEmpty>
+
 					<CommandGroup>
 						{options.map((option) => (
 							<CommandItem
