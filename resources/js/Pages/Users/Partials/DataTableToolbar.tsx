@@ -18,6 +18,7 @@ export function DataTableToolbar() {
 					route("users.index"),
 					{
 						...filters,
+						page: 1,
 						search: e.target.value,
 					},
 					{
@@ -38,6 +39,7 @@ export function DataTableToolbar() {
 					route("users.index"),
 					{
 						...filters,
+						page: 1,
 						roles: Array.from(selectedValues),
 					},
 					{
