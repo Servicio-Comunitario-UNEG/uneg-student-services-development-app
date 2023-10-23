@@ -3,17 +3,16 @@
 namespace Database\Seeders;
 
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+use App\Models\Headquarter;
 use Illuminate\Database\Seeder;
 
-class DatabaseSeeder extends Seeder {
+class HeadquarterSeeder extends Seeder {
 	/**
-	 * Seed the application's database.
+	 * Run the database seeds.
 	 */
 	public function run(): void {
-		$this->call([
-			PermissionSeeder::class,
-			UserSeeder::class,
-			HeadquarterSeeder::class,
-		]);
+		Headquarter::factory()
+			->count(20)
+			->create();
 	}
 }
