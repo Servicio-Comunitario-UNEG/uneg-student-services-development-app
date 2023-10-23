@@ -1,7 +1,7 @@
 import { Head } from "@inertiajs/react";
 import { type ColumnDef } from "@tanstack/react-table";
 
-import type { Headquarter, PageProps, User } from "@/types";
+import type { Headquarter, PageProps, Paginated, User } from "@/types";
 
 import { AuthenticatedLayout } from "@/Layouts/AuthenticatedLayout";
 import PageLayout from "@/Layouts/PageLayout";
@@ -10,6 +10,7 @@ import { DataTable } from "@/Components/DataTable";
 import { DataTableColumnHeader } from "@/Components/DataTableColumnHeader";
 
 import CreateHeadquarterFormDialog from "./Partials/CreateHeadquarterFormDialog";
+import { DataTableToolbar } from "./Partials/DataTableToolbar";
 import HeadquarterCellAction from "./Partials/HeadquartersCellAction";
 
 const columns: ColumnDef<HeadquarterWithRepresentative>[] = [
@@ -59,12 +60,17 @@ export type HeadquarterWithRepresentative = Headquarter & {
 };
 
 export type HeadquarterPageProps = PageProps<{
-	headquarters: HeadquarterWithRepresentative[];
+	headquarters: Paginated<HeadquarterWithRepresentative>;
 	representatives: Array<
 		Pick<User, "id" | "name" | "identity_card"> & {
 			is_available: boolean;
 		}
 	>;
+	filters: {
+		search: string;
+		page: string;
+		per_page: string;
+	};
 }>;
 
 export default function Index({ headquarters }: HeadquarterPageProps) {
@@ -79,7 +85,11 @@ export default function Index({ headquarters }: HeadquarterPageProps) {
 		>
 			<Head title="Sedes" />
 
-			<DataTable columns={columns} data={headquarters} />
+			<DataTable
+				columns={columns}
+				paginatedData={headquarters}
+				toolbar={<DataTableToolbar />}
+			/>
 		</PageLayout>
 	);
 }
