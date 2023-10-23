@@ -18,12 +18,12 @@ import {
 	DropdownMenuTrigger,
 } from "@/Components/ui/dropdown-menu";
 
-import { HeadquarterPageProps } from "../Index";
+import { HeadquarterWithRepresentative } from "../Index";
 import EditHeadquarterForm from "./EditHeadquarterForm";
 
 export default function HeadquarterCellAction({
 	row,
-}: CellContext<HeadquarterPageProps["headquarters"][number], unknown>) {
+}: CellContext<HeadquarterWithRepresentative, unknown>) {
 	const [open, setOpen] = useState(false);
 	const headquarter = row.original;
 

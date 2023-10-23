@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Headquarter;
 use App\Models\User;
+use Illuminate\Contracts\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
 use Inertia\Inertia;
@@ -16,8 +17,21 @@ class HeadquarterController extends Controller {
 	/**
 	 * Display a listing of the resource.
 	 */
-	public function index() {
+	public function index(Request $request) {
 		$this->authorize("viewAny", User::class);
+
+		// Get search queries.
+		$search = $request->query("search", "");
+		$page = $request->query("page");
+		$perPage = $request->query("per_page");
+
+		if (is_null($page) || !is_numeric($page)) {
+			$page = 1;
+		}
+
+		if (is_null($perPage) || !is_numeric($perPage)) {
+			$perPage = 10;
+		}
 
 		// Get the unavailable representatives.
 		$unavailableRepresentativeIds = Headquarter::all()
@@ -30,8 +44,12 @@ class HeadquarterController extends Controller {
 
 		return Inertia::render("Headquarters/Index", [
 			"headquarters" => Headquarter::with("user:id,name,identity_card")
+				->when($search, function (Builder $query, string $search) {
+					// Filter by name.
+					$query->where("name", "like", "%$search%");
+				})
 				->orderBy("name")
-				->get(),
+				->paginate($perPage),
 			"representatives" => User::role("representative")
 				->orderBy("name")
 				->get()
@@ -48,6 +66,11 @@ class HeadquarterController extends Controller {
 						),
 					];
 				}),
+			"filters" => [
+				"search" => $search,
+				"page" => $page,
+				"per_page" => $perPage,
+			],
 		]);
 	}
 
