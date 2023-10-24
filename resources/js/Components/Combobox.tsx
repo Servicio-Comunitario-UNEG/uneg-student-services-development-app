@@ -59,7 +59,7 @@ export default function Combobox({
 				</Button>
 			</PopoverTrigger>
 
-			<PopoverContent className="w-full p-0">
+			<PopoverContent className="max-h-48 w-full overflow-y-auto p-0">
 				<Command>
 					<CommandInput placeholder={placeholder} />
 
@@ -73,7 +73,13 @@ export default function Combobox({
 								key={option.value}
 								value={option.label}
 								onSelect={() => {
-									setValue(option.value);
+									// Unselect option when it is the current value.
+									setValue(
+										value === option.value
+											? ""
+											: option.value,
+									);
+
 									setOpen(false);
 								}}
 							>
