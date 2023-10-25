@@ -212,7 +212,7 @@ class UserController extends Controller {
 
 		return redirect(url()->previous())->with(
 			"message",
-			"Usuario actualizado con éxito",
+			"Usuario editado con éxito",
 		);
 	}
 

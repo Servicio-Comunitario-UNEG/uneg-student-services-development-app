@@ -59,7 +59,10 @@ class CareerController extends Controller {
 
 		Career::create($validated);
 
-		return redirect(route("careers.index"));
+		return redirect(url()->previous())->with(
+			"message",
+			"Carrera creada con éxito",
+		);
 	}
 
 	/**
@@ -91,7 +94,10 @@ class CareerController extends Controller {
 
 		$career->update($validated);
 
-		return redirect(route("careers.index"));
+		return redirect(url()->previous())->with(
+			"message",
+			"Carrera editada con éxito",
+		);
 	}
 
 	/**
@@ -100,6 +106,9 @@ class CareerController extends Controller {
 	public function destroy(Career $career) {
 		$career->delete();
 
-		return redirect(route("careers.index"));
+		return redirect(url()->previous())->with(
+			"message",
+			"Carrera eliminada con éxito",
+		);
 	}
 }
