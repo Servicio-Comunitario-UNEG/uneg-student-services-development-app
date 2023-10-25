@@ -152,7 +152,10 @@ class UserController extends Controller {
 
 		$user->assignRole($validated["role_name"]);
 
-		return redirect(route("users.index"));
+		return redirect(url()->previous())->with(
+			"message",
+			"Usuario creado con éxito",
+		);
 	}
 
 	/**
@@ -207,7 +210,10 @@ class UserController extends Controller {
 
 		$user->syncRoles([$validated["role_name"]]);
 
-		return redirect(route("users.index"));
+		return redirect(url()->previous())->with(
+			"message",
+			"Usuario actualizado con éxito",
+		);
 	}
 
 	/**
@@ -218,6 +224,9 @@ class UserController extends Controller {
 
 		$user->delete();
 
-		return redirect(route("users.index"));
+		return redirect(url()->previous())->with(
+			"message",
+			"Usuario eliminado con éxito",
+		);
 	}
 }
