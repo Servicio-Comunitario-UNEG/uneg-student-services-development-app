@@ -94,7 +94,10 @@ class HeadquarterController extends Controller {
 
 		Headquarter::create($validated);
 
-		return redirect(route("headquarters.index"));
+		return redirect(url()->previous())->with(
+			"message",
+			"Sede creada con éxito",
+		);
 	}
 
 	/**
@@ -143,7 +146,10 @@ class HeadquarterController extends Controller {
 
 		$headquarters->update($validated);
 
-		return redirect(route("headquarters.index"));
+		return redirect(url()->previous())->with(
+			"message",
+			"Sede editada con éxito",
+		);
 	}
 
 	/**
@@ -157,7 +163,10 @@ class HeadquarterController extends Controller {
 			$headquarters->save();
 		}
 
-		return redirect(route("headquarters.index"));
+		return redirect(url()->previous())->with(
+			"message",
+			"Representante desasignado con éxito",
+		);
 	}
 
 	/**
@@ -168,6 +177,9 @@ class HeadquarterController extends Controller {
 
 		$headquarters->delete();
 
-		return redirect(route("headquarters.index"));
+		return redirect(url()->previous())->with(
+			"message",
+			"Sede eliminada con éxito",
+		);
 	}
 }
