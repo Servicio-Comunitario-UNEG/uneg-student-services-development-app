@@ -42,6 +42,7 @@ export default function CreateOrEditHeadquarterForm({
 		if (isUpdate) {
 			put(route("headquarters.update", initialValues.id), {
 				onSuccess,
+				preserveScroll: true,
 			});
 
 			return;
@@ -50,6 +51,7 @@ export default function CreateOrEditHeadquarterForm({
 		// Create the headquarter.
 		post(route("headquarters.store"), {
 			onSuccess,
+			preserveScroll: true,
 		});
 	};
 

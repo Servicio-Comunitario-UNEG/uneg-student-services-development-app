@@ -50,6 +50,7 @@ export default function CreateOrEditUserForm({
 		if (isUpdate) {
 			put(route("users.update", initialValues.id), {
 				onSuccess,
+				preserveScroll: true,
 			});
 
 			return;
@@ -58,6 +59,7 @@ export default function CreateOrEditUserForm({
 		// Create the user.
 		post(route("users.store"), {
 			onSuccess,
+			preserveScroll: true,
 		});
 	};
 
