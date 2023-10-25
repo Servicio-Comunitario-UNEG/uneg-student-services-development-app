@@ -2,13 +2,20 @@ import { useForm, usePage } from "@inertiajs/react";
 import { Loader2 } from "lucide-react";
 import { FormEventHandler } from "react";
 
+
+
 import { Headquarter } from "@/types";
+
+
 
 import ComboboxField from "@/Components/ComboboxField";
 import TextField from "@/Components/TextField";
 import { Button } from "@/Components/ui/button";
 
+
+
 import { HeadquarterPageProps } from "../Index";
+
 
 export default function CreateOrEditHeadquarterForm({
 	initialValues,
@@ -42,6 +49,7 @@ export default function CreateOrEditHeadquarterForm({
 		if (isUpdate) {
 			put(route("headquarters.update", initialValues.id), {
 				onSuccess,
+				preserveScroll: true,
 			});
 
 			return;
@@ -50,6 +58,7 @@ export default function CreateOrEditHeadquarterForm({
 		// Create the headquarter.
 		post(route("headquarters.store"), {
 			onSuccess,
+			preserveScroll: true,
 		});
 	};
 

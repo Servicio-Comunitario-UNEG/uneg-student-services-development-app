@@ -65,6 +65,7 @@ export default function HeadquarterCellAction({
 										}
 									}}
 									method="put"
+									preserveScroll
 								>
 									<UserX className="mr-2 h-4 w-4" />
 
@@ -87,6 +88,7 @@ export default function HeadquarterCellAction({
 									}
 								}}
 								method="delete"
+								preserveScroll
 							>
 								<Trash className="mr-2 h-4 w-4" />
 

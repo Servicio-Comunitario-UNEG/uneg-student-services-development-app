@@ -71,6 +71,7 @@ export default function UserCellAction({ row }: CellContext<User, unknown>) {
 										}
 									}}
 									method="delete"
+									preserveScroll
 								>
 									<Trash className="mr-2 h-4 w-4" />
 

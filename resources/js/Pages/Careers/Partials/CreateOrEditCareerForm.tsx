@@ -31,6 +31,7 @@ export default function CreateOrEditCareerForm({
 		if (isUpdate) {
 			put(route("careers.update", initialValues.id), {
 				onSuccess,
+				preserveScroll: true,
 			});
 
 			return;
@@ -39,6 +40,7 @@ export default function CreateOrEditCareerForm({
 		// Create the career.
 		post(route("careers.store"), {
 			onSuccess,
+			preserveScroll: true,
 		});
 	};
 
