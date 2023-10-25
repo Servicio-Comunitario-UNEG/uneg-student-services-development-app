@@ -11,7 +11,12 @@ return new class extends Migration {
 	public function up(): void {
 		Schema::create("headquarters", function (Blueprint $table) {
 			$table->id();
-			$table->foreignId("user_id")->nullable();
+			$table
+				->foreignId("user_id")
+				->nullable()
+				->constrained()
+				->cascadeOnUpdate()
+				->nullOnDelete();
 			$table->string("name")->unique();
 			$table->timestamps();
 		});
