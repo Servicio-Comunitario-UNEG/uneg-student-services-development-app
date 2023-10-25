@@ -10,6 +10,7 @@ import {
 	CommandGroup,
 	CommandInput,
 	CommandItem,
+	CommandList,
 } from "./ui/command";
 import { Popover, PopoverContent, PopoverTrigger } from "./ui/popover";
 
@@ -37,7 +38,7 @@ export default function Combobox({
 	const [open, setOpen] = useState(false);
 
 	return (
-		<Popover open={open} onOpenChange={setOpen}>
+		<Popover open={open} onOpenChange={setOpen} modal={false}>
 			<PopoverTrigger asChild>
 				<Button
 					variant="outline"
@@ -59,43 +60,45 @@ export default function Combobox({
 				</Button>
 			</PopoverTrigger>
 
-			<PopoverContent className="max-h-48 w-full overflow-y-auto p-0">
+			<PopoverContent className="p-0">
 				<Command>
 					<CommandInput placeholder={placeholder} />
 
-					<CommandEmpty>
-						{emptyTitle ?? "No hay resultados disponibles."}
-					</CommandEmpty>
+					<CommandList className="max-h-40">
+						<CommandEmpty>
+							{emptyTitle ?? "No hay resultados disponibles."}
+						</CommandEmpty>
 
-					<CommandGroup>
-						{options.map((option) => (
-							<CommandItem
-								key={option.value}
-								value={option.label}
-								onSelect={() => {
-									// Unselect option when it is the current value.
-									setValue(
-										value === option.value
-											? ""
-											: option.value,
-									);
+						<CommandGroup>
+							{options.map((option) => (
+								<CommandItem
+									key={option.value}
+									value={option.label}
+									onSelect={() => {
+										// Unselect option when it is the current value.
+										setValue(
+											value === option.value
+												? ""
+												: option.value,
+										);
 
-									setOpen(false);
-								}}
-							>
-								<Check
-									className={cn(
-										"mr-2 h-4 w-4",
-										value === option.value
-											? "opacity-100"
-											: "opacity-0",
-									)}
-								/>
+										setOpen(false);
+									}}
+								>
+									<Check
+										className={cn(
+											"mr-2 h-4 w-4",
+											value === option.value
+												? "opacity-100"
+												: "opacity-0",
+										)}
+									/>
 
-								{option.label}
-							</CommandItem>
-						))}
-					</CommandGroup>
+									{option.label}
+								</CommandItem>
+							))}
+						</CommandGroup>
+					</CommandList>
 				</Command>
 			</PopoverContent>
 		</Popover>
