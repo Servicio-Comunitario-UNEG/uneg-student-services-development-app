@@ -60,7 +60,13 @@ export default function Combobox({
 				</Button>
 			</PopoverTrigger>
 
-			<PopoverContent className="p-0">
+			<PopoverContent
+				style={{
+					// Use the popover trigger width.
+					width: "var(--radix-popover-trigger-width)",
+				}}
+				className="p-0"
+			>
 				<Command>
 					<CommandInput placeholder={placeholder} />
 
