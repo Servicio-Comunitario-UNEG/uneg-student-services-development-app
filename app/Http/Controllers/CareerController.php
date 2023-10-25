@@ -32,7 +32,7 @@ class CareerController extends Controller {
 					// Filter by name.
 					$query->where("name", "like", "%$search%");
 				})
-				->orderBy("name")
+				->orderByRaw("name COLLATE NOCASE ASC")
 				->paginate($perPage)
 				->withQueryString(),
 			"filters" => [
