@@ -38,11 +38,18 @@ const links: {
 		to: "careers.index",
 	},
 	{
+		title: "Estudiantes",
+		permission: "view students",
+		to: "students.index",
+	},
+	{
 		title: "Perfil",
 		to: "profile.edit",
 		isMobileOnly: true,
 	},
 ];
+
+console.log(links);
 
 function Menu({ className, ...props }: React.ComponentPropsWithoutRef<"ul">) {
 	const gate = useGate();

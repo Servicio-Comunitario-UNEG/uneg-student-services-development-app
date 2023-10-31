@@ -37,6 +37,12 @@ class PermissionSeeder extends Seeder {
 			"view careers",
 			"edit careers",
 			"delete careers",
+
+			// Students.
+			"create students",
+			"view students",
+			"edit students",
+			"delete students",
 		];
 
 		foreach ($permissionNames as $permission) {
@@ -81,6 +87,11 @@ class PermissionSeeder extends Seeder {
 				"name" => "representative",
 				"description" => "Representante",
 			],
-		)->syncPermissions([]);
+		)->syncPermissions([
+			"create students",
+			"view students",
+			"edit students",
+			"delete students",
+		]);
 	}
 }

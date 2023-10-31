@@ -3,6 +3,7 @@
 use App\Http\Controllers\CareerController;
 use App\Http\Controllers\HeadquarterController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\StudentController;
 use App\Http\Controllers\UserController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
@@ -71,5 +72,8 @@ Route::put("/headquarter/{headquarters}/unassign", [
 Route::resource("careers", CareerController::class)
 	->only(["index", "store", "destroy", "update"])
 	->middleware(["auth", "verified"]);
+
+// Students routes.
+Route::resource("students", StudentController::class)->only(["index"]);
 
 require __DIR__ . "/auth.php";
