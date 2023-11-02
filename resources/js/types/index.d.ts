@@ -97,6 +97,7 @@ export interface Student {
 	first_name: string;
 	last_name: string;
 	cell_phone: string;
+	room_phone: string;
 	sex: "M" | "F";
 	birth_date: string;
 	second_name: string | null;

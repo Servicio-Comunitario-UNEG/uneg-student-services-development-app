@@ -5,6 +5,8 @@ import { FormEventHandler } from "react";
 import { Student } from "@/types";
 
 import CardRadioGroupField from "@/Components/CardRadioGroupField";
+import IdentityCardField from "@/Components/IdentityCardField";
+import PhoneField from "@/Components/PhoneField";
 import TextField from "@/Components/TextField";
 import { Button } from "@/Components/ui/button";
 
@@ -122,6 +124,37 @@ export default function CreateOrEditStudentForm({
 					/>
 				</div>
 
+				<IdentityCardField
+					id="identity_card"
+					selectProps={{
+						value: data.identity_card?.nationality,
+						name: "nationality",
+						onValueChange(value) {
+							setData("identity_card", {
+								nationality: value,
+								serial: data.identity_card?.serial ?? "",
+							});
+						},
+					}}
+					labelProps={{
+						children: "Cédula de Identidad",
+					}}
+					inputProps={{
+						name: "serial",
+						onChange: (e) =>
+							setData("identity_card", {
+								nationality:
+									data.identity_card?.nationality ?? "V",
+								serial: e.target.value,
+							}),
+						placeholder: "ej: 10000000",
+						required: true,
+						value: data.identity_card?.serial,
+						autoComplete: "off",
+					}}
+					errorMessage={errors.identity_card}
+				/>
+
 				<TextField
 					id="birth_date"
 					labelProps={{
@@ -159,6 +192,50 @@ export default function CreateOrEditStudentForm({
 						],
 					}}
 					errorMessage={errors.sex}
+				/>
+
+				<PhoneField
+					id="cell_phone"
+					labelProps={{
+						children: "Teléfono",
+					}}
+					phoneInputProps={{
+						autoComplete: "tel",
+						addInternationalOption: false,
+						onChange: (e) => setData("cell_phone", e),
+						placeholder: "0412-0000000",
+						value: data.cell_phone,
+						smartCaret: true,
+						defaultCountry: "VE",
+						countrySelectProps: {
+							unicodeFlags: true,
+						},
+						limitMaxLength: true,
+						required: true,
+					}}
+					errorMessage={errors.cell_phone}
+				/>
+
+				<PhoneField
+					id="room_phone"
+					labelProps={{
+						children: "Teléfono alternativo",
+					}}
+					phoneInputProps={{
+						autoComplete: "tel",
+						addInternationalOption: false,
+						onChange: (e) => setData("room_phone", e),
+						placeholder: "0412-0000000",
+						value: data.room_phone,
+						smartCaret: true,
+						defaultCountry: "VE",
+						countrySelectProps: {
+							unicodeFlags: true,
+						},
+						limitMaxLength: true,
+					}}
+					errorMessage={errors.room_phone}
+					isOptional
 				/>
 			</div>
 
