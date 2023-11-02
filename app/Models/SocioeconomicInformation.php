@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class SocioeconomicState extends Model {
+class SocioeconomicInformation extends Model {
 	use HasFactory;
 
 	/**
@@ -18,6 +18,6 @@ class SocioeconomicState extends Model {
 		"is_indigenous",
 		"is_disabled",
 		"graffar",
-		"description",
+		"situation",
 	];
 }

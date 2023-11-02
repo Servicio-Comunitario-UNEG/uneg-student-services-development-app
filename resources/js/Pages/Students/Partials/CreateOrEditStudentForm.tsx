@@ -2,7 +2,7 @@ import { useForm } from "@inertiajs/react";
 import { Loader2 } from "lucide-react";
 import { FormEventHandler } from "react";
 
-import { SocioeconomicState, Student } from "@/types";
+import { SocioeconomicInformation, Student } from "@/types";
 
 import CardRadioGroupField from "@/Components/CardRadioGroupField";
 import { CheckboxField } from "@/Components/CheckboxField";
@@ -20,7 +20,7 @@ export default function CreateOrEditStudentForm({
 	callToAction,
 }: {
 	initialValues: Partial<Omit<Student, "created_at" | "updated_at">> &
-		Partial<SocioeconomicState>;
+		Partial<SocioeconomicInformation>;
 	onSuccess?: () => void;
 	isUpdate?: boolean;
 	callToAction: string;
@@ -266,6 +266,7 @@ export default function CreateOrEditStudentForm({
 						children: "Dirección",
 					}}
 					textareaProps={{
+						autoComplete: "street-address",
 						className: "h-16",
 						placeholder: "ej: Los Olivos, Calle 5, Casa 1",
 						value: data.address ?? "",
@@ -312,19 +313,42 @@ export default function CreateOrEditStudentForm({
 					}}
 				/>
 
+				<TextField
+					id="graffar"
+					labelProps={{
+						children: "Graffar",
+					}}
+					inputProps={{
+						type: "number",
+						min: 1,
+						max: 5,
+						placeholder: "ej: 1",
+						value: data.graffar ?? "",
+						onChange: (e) => {
+							const graffar = Number(e.target.value);
+
+							if (!Number.isNaN(graffar)) {
+								setData("graffar", graffar);
+							}
+						},
+					}}
+					errorMessage={errors.graffar}
+					isOptional
+				/>
+
 				<TextareaField
 					id="description"
 					labelProps={{
-						children: "Descripción",
+						children: "Situación",
 					}}
 					textareaProps={{
 						className: "h-16",
 						placeholder: "ej: Ambos padres trabajan.",
-						value: data.description ?? "",
-						onChange: (e) => setData("description", e.target.value),
+						value: data.situation ?? "",
+						onChange: (e) => setData("situation", e.target.value),
 						maxLength: 150,
 					}}
-					errorMessage={errors.description}
+					errorMessage={errors.situation}
 					isOptional
 				/>
 			</fieldset>

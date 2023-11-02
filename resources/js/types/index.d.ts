@@ -106,9 +106,9 @@ export interface Student {
 }
 
 /**
- * The socioeconomic state that an student has.
+ * The socioeconomic information that an student has.
  */
-export interface SocioeconomicState {
+export interface SocioeconomicInformation {
 	id: number;
 	created_at: string;
 	updated_at: string;
@@ -116,5 +116,5 @@ export interface SocioeconomicState {
 	is_indigenous: boolean;
 	is_disabled: boolean;
 	graffar: number | null;
-	description: string | null;
+	situation: string | null;
 }

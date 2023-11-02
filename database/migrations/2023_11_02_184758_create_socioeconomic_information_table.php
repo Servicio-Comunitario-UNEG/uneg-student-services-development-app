@@ -9,7 +9,9 @@ return new class extends Migration {
 	 * Run the migrations.
 	 */
 	public function up(): void {
-		Schema::create("socioeconomic_states", function (Blueprint $table) {
+		Schema::create("socioeconomic_information", function (
+			Blueprint $table,
+		) {
 			$table->id();
 			$table->timestamps();
 			$table
@@ -20,7 +22,7 @@ return new class extends Migration {
 			$table->boolean("is_indigenous")->default(false);
 			$table->boolean("is_disabled")->default(false);
 			$table->unsignedInteger("graffar")->nullable();
-			$table->string("description")->nullable();
+			$table->string("situation")->nullable();
 		});
 	}
 
@@ -28,6 +30,6 @@ return new class extends Migration {
 	 * Reverse the migrations.
 	 */
 	public function down(): void {
-		Schema::dropIfExists("socioeconomic_states");
+		Schema::dropIfExists("socioeconomic_information");
 	}
 };

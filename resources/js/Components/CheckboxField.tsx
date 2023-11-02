@@ -15,7 +15,7 @@ export function CheckboxField({
 }) {
 	return (
 		<div className="flex items-center space-x-2">
-			<Checkbox id={id} {...checkboxProps} />
+			<Checkbox id={id} name={id} {...checkboxProps} />
 
 			<Label htmlFor={id} {...labelProps} />
 		</div>
