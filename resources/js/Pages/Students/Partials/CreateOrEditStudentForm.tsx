@@ -2,13 +2,16 @@ import { useForm } from "@inertiajs/react";
 import { Loader2 } from "lucide-react";
 import { FormEventHandler } from "react";
 
-import { Student } from "@/types";
+import { SocioeconomicState, Student } from "@/types";
 
 import CardRadioGroupField from "@/Components/CardRadioGroupField";
+import { CheckboxField } from "@/Components/CheckboxField";
 import IdentityCardField from "@/Components/IdentityCardField";
 import PhoneField from "@/Components/PhoneField";
 import TextField from "@/Components/TextField";
+import TextareaField from "@/Components/TextareaField";
 import { Button } from "@/Components/ui/button";
+import { Separator } from "@/Components/ui/separator";
 
 export default function CreateOrEditStudentForm({
 	initialValues,
@@ -16,7 +19,8 @@ export default function CreateOrEditStudentForm({
 	isUpdate = false,
 	callToAction,
 }: {
-	initialValues: Partial<Omit<Student, "created_at" | "updated_at">>;
+	initialValues: Partial<Omit<Student, "created_at" | "updated_at">> &
+		Partial<SocioeconomicState>;
 	onSuccess?: () => void;
 	isUpdate?: boolean;
 	callToAction: string;
@@ -54,7 +58,15 @@ export default function CreateOrEditStudentForm({
 
 	return (
 		<form className="space-y-6" onSubmit={onSubmit}>
-			<div className="space-y-4">
+			<fieldset className="space-y-4">
+				<div className="space-y-2">
+					<legend className="font-heading font-medium text-foreground">
+						Información Personal
+					</legend>
+
+					<Separator className="w-full" />
+				</div>
+
 				<div className="flex flex-col gap-4 sm:grid sm:grid-cols-2">
 					<TextField
 						id="first_name"
@@ -116,7 +128,7 @@ export default function CreateOrEditStudentForm({
 							autoComplete: "off",
 							onChange: (e) =>
 								setData("second_last_name", e.target.value),
-							placeholder: "ej: Row",
+							placeholder: "ej: Roe",
 							value: data.second_last_name ?? "",
 						}}
 						errorMessage={errors.second_last_name}
@@ -193,6 +205,16 @@ export default function CreateOrEditStudentForm({
 					}}
 					errorMessage={errors.sex}
 				/>
+			</fieldset>
+
+			<fieldset className="space-y-4">
+				<div className="space-y-2">
+					<legend className="font-heading font-medium text-foreground">
+						Información de Contacto
+					</legend>
+
+					<Separator className="w-full" />
+				</div>
 
 				<PhoneField
 					id="cell_phone"
@@ -237,7 +259,75 @@ export default function CreateOrEditStudentForm({
 					errorMessage={errors.room_phone}
 					isOptional
 				/>
-			</div>
+
+				<TextareaField
+					id="address"
+					labelProps={{
+						children: "Dirección",
+					}}
+					textareaProps={{
+						className: "h-16",
+						placeholder: "ej: Los Olivos, Calle 5, Casa 1",
+						value: data.address ?? "",
+						onChange: (e) => setData("address", e.target.value),
+						maxLength: 150,
+					}}
+					errorMessage={errors.address}
+					isOptional
+				/>
+			</fieldset>
+
+			<fieldset className="space-y-4">
+				<div className="space-y-2">
+					<legend className="font-heading font-medium text-foreground">
+						Información socioeconómica
+					</legend>
+
+					<Separator className="w-full" />
+				</div>
+
+				<CheckboxField
+					id="is_disabled"
+					labelProps={{
+						children: "¿Posee una discapacidad?",
+					}}
+					checkboxProps={{
+						checked: data.is_disabled,
+						onCheckedChange(checked) {
+							setData("is_disabled", Boolean(checked));
+						},
+					}}
+				/>
+
+				<CheckboxField
+					id="is_indigenous"
+					labelProps={{
+						children: "¿Es indigena?",
+					}}
+					checkboxProps={{
+						checked: data.is_indigenous,
+						onCheckedChange(checked) {
+							setData("is_indigenous", Boolean(checked));
+						},
+					}}
+				/>
+
+				<TextareaField
+					id="description"
+					labelProps={{
+						children: "Descripción",
+					}}
+					textareaProps={{
+						className: "h-16",
+						placeholder: "ej: Ambos padres trabajan.",
+						value: data.description ?? "",
+						onChange: (e) => setData("description", e.target.value),
+						maxLength: 150,
+					}}
+					errorMessage={errors.description}
+					isOptional
+				/>
+			</fieldset>
 
 			<div className="flex justify-end">
 				<Button disabled={processing}>
