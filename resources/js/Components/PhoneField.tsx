@@ -31,7 +31,7 @@ export default function PhoneField({
 }: Props) {
 	return (
 		<div className={cn("space-y-2", className)}>
-			<div className="flex h-4 items-center justify-between">
+			<div className="flex items-center justify-between">
 				<Label htmlFor={id} {...labelProps}></Label>
 
 				{isOptional ? (
@@ -41,7 +41,9 @@ export default function PhoneField({
 				) : null}
 			</div>
 
-			<p className="text-sm text-muted-foreground">{description}</p>
+			{description ? (
+				<p className="text-sm text-muted-foreground">{description}</p>
+			) : null}
 
 			<PhoneInput
 				className="flex gap-x-2"

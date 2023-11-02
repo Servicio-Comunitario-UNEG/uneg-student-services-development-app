@@ -50,7 +50,9 @@ export default function PasswordField({
 				) : null}
 			</div>
 
-			<p className="text-sm text-muted-foreground">{description}</p>
+			{description ? (
+				<p className="text-sm text-muted-foreground">{description}</p>
+			) : null}
 
 			<div className="flex gap-2">
 				<Input

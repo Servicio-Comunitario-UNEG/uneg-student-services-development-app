@@ -35,13 +35,15 @@ export default function CardRadioGroupField({
 				</Label>
 
 				{isOptional ? (
-					<span className="text-sm text-muted-foreground">
+					<span className="text-xs text-muted-foreground">
 						Opcional
 					</span>
 				) : null}
 			</div>
 
-			<p className="text-sm text-muted-foreground">{description}</p>
+			{description ? (
+				<p className="text-sm text-muted-foreground">{description}</p>
+			) : null}
 
 			<CardRadioGroup
 				aria-invalid={errorMessage ? true : false}

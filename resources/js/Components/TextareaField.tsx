@@ -32,13 +32,15 @@ export default function TextareaField({
 				<Label htmlFor={id} {...labelProps}></Label>
 
 				{isOptional ? (
-					<span className="text-sm text-muted-foreground">
+					<span className="text-xs text-muted-foreground">
 						Opcional
 					</span>
 				) : null}
 			</div>
 
-			<p className="text-sm text-muted-foreground">{description}</p>
+			{description ? (
+				<p className="text-sm text-muted-foreground">{description}</p>
+			) : null}
 
 			<Textarea
 				id={id}
