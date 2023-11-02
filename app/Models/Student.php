@@ -19,7 +19,6 @@ class Student extends Model {
 		"last_name",
 		"second_last_name",
 		"email",
-		"password",
 		"cell_phone",
 		"room_phone",
 		"identity_card",

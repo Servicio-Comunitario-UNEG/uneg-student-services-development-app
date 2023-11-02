@@ -16,7 +16,6 @@ return new class extends Migration {
 			$table->string("identity_card")->unique();
 			$table->string("first_name");
 			$table->string("last_name");
-			$table->string("password");
 			$table->string("cell_phone");
 			$table->enum("sex", ["M", "F"]);
 			$table->date("birth_date");
