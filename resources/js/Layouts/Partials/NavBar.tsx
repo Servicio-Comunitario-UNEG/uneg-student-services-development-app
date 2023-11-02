@@ -49,8 +49,6 @@ const links: {
 	},
 ];
 
-console.log(links);
-
 function Menu({ className, ...props }: React.ComponentPropsWithoutRef<"ul">) {
 	const gate = useGate();
 

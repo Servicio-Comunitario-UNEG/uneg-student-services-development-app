@@ -31,11 +31,11 @@ export default function TextField({
 }: Props) {
 	return (
 		<div className={cn("space-y-2", className)}>
-			<div className="flex items-center justify-between">
+			<div className="flex h-4 items-center justify-between">
 				<Label htmlFor={id} {...labelProps}></Label>
 
 				{isOptional ? (
-					<span className="text-sm text-muted-foreground">
+					<span className="text-xs text-muted-foreground">
 						Opcional
 					</span>
 				) : null}
