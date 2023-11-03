@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Traits\IdentityCardTrait;
 use App\Models\User;
 use Hash;
 use Illuminate\Contracts\Database\Eloquent\Builder;
@@ -12,27 +13,10 @@ use Inertia\Inertia;
 use Spatie\Permission\Models\Role;
 
 class UserController extends Controller {
+	use IdentityCardTrait;
+
 	public function __construct() {
 		$this->middleware(["auth", "verified"]);
-	}
-
-	/**
-	 * Returns the identity card from the nationality and serial.
-	 */
-	private function toIdentityCard(array $identity_card): string {
-		$nationality =
-			key_exists("nationality", $identity_card) &&
-			is_string($identity_card["nationality"])
-				? $identity_card["nationality"]
-				: "";
-
-		$serial =
-			key_exists("serial", $identity_card) &&
-			is_string($identity_card["serial"])
-				? $identity_card["serial"]
-				: "";
-
-		return $nationality . $serial;
 	}
 
 	/**
@@ -126,7 +110,9 @@ class UserController extends Controller {
 
 		// Set the generated identity card.
 		$data = $request->all();
-		$data["identity_card"] = $this->toIdentityCard($data["identity_card"]);
+		$data["identity_card"] = $this->toIdentityCardString(
+			$data["identity_card"],
+		);
 		$request->merge($data);
 
 		$validated = $request->validate([
@@ -180,7 +166,9 @@ class UserController extends Controller {
 
 		// Set the generated identity card.
 		$data = $request->all();
-		$data["identity_card"] = $this->toIdentityCard($data["identity_card"]);
+		$data["identity_card"] = $this->toIdentityCardString(
+			$data["identity_card"],
+		);
 		$request->merge($data);
 
 		$validated = $request->validate([

@@ -1,4 +1,4 @@
-import { useForm } from "@inertiajs/react";
+import { useForm, usePage } from "@inertiajs/react";
 import { Loader2 } from "lucide-react";
 import { FormEventHandler } from "react";
 
@@ -13,6 +13,8 @@ import TextareaField from "@/Components/TextareaField";
 import { Button } from "@/Components/ui/button";
 import { Separator } from "@/Components/ui/separator";
 
+import { StudentPageProps } from "../Index";
+
 export default function CreateOrEditStudentForm({
 	initialValues,
 	onSuccess,
@@ -20,11 +22,13 @@ export default function CreateOrEditStudentForm({
 	callToAction,
 }: {
 	initialValues: Partial<Omit<Student, "created_at" | "updated_at">> &
-		Partial<SocioeconomicInformation>;
+		Partial<Omit<SocioeconomicInformation, "created_at" | "updated_at">>;
 	onSuccess?: () => void;
 	isUpdate?: boolean;
 	callToAction: string;
 }) {
+	const { max_birth_date } = usePage<StudentPageProps>().props;
+
 	const { data, setData, errors, processing, post, put } = useForm({
 		...initialValues,
 		identity_card: initialValues.identity_card ?? {
@@ -149,7 +153,7 @@ export default function CreateOrEditStudentForm({
 						},
 					}}
 					labelProps={{
-						children: "Cédula de Identidad",
+						children: "Cédula de identidad",
 					}}
 					inputProps={{
 						name: "serial",
@@ -178,6 +182,7 @@ export default function CreateOrEditStudentForm({
 						onChange: (e) => setData("birth_date", e.target.value),
 						required: true,
 						value: data.birth_date ?? "",
+						max: max_birth_date,
 					}}
 					errorMessage={errors.birth_date}
 				/>
@@ -215,6 +220,22 @@ export default function CreateOrEditStudentForm({
 
 					<Separator className="w-full" />
 				</div>
+
+				<TextField
+					id="email"
+					labelProps={{
+						children: "Correo electrónico",
+					}}
+					inputProps={{
+						autoComplete: "off",
+						type: "email",
+						placeholder: "ej: johndoe@gmail.com",
+						value: data.email,
+						onChange: (e) => setData("email", e.target.value),
+						required: true,
+					}}
+					errorMessage={errors.email}
+				/>
 
 				<PhoneField
 					id="cell_phone"

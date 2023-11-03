@@ -45,6 +45,11 @@ export default function CreateStudentFormDialog() {
 						second_last_name: "",
 						second_name: "",
 						sex: "M",
+						is_disabled: false,
+						is_indigenous: false,
+						room_phone: "",
+						situation: "",
+						graffar: null,
 					}}
 					onSuccess={() => setOpen(false)}
 					callToAction="Crear"

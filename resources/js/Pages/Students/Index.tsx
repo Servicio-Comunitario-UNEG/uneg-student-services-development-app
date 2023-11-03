@@ -1,10 +1,15 @@
 import { Head } from "@inertiajs/react";
 
+import { PageProps } from "@/types";
+
 import { AuthenticatedLayout } from "@/Layouts/AuthenticatedLayout";
 import PageLayout from "@/Layouts/PageLayout";
 
 import CreateStudentFormDialog from "./Partials/CreateStudentFormDialog";
 
+export type StudentPageProps = PageProps<{
+	max_birth_date: string;
+}>;
 export default function Index() {
 	return (
 		<PageLayout

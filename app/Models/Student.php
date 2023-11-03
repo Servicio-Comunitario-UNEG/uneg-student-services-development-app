@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class Student extends Model {
 	use HasFactory;
@@ -14,16 +15,23 @@ class Student extends Model {
 	 * @var array<int, string>
 	 */
 	protected $fillable = [
-		"first_name",
-		"second_name",
-		"last_name",
-		"second_last_name",
 		"email",
-		"cell_phone",
-		"room_phone",
 		"identity_card",
-		"address",
+		"first_name",
+		"last_name",
+		"cell_phone",
 		"sex",
 		"birth_date",
+		"second_name",
+		"second_last_name",
+		"room_phone",
+		"address",
 	];
+
+	/**
+	 * Get the socieconomic information of this student.
+	 */
+	public function socioeconomicInformation(): HasOne {
+		return $this->hasOne(SocioeconomicInformation::class);
+	}
 }
