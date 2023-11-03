@@ -50,7 +50,6 @@ class StudentController extends Controller {
 		$request->merge($data);
 
 		$validated = $request->validate([
-			// Student.
 			"email" => "required|string|email|max:255|unique:" . Student::class,
 			"identity_card" => [
 				"required",
@@ -64,42 +63,18 @@ class StudentController extends Controller {
 			"sex" => "in:M,F",
 			"birth_date" =>
 				"required|date|before_or_equal:" . $this->getMaxBirthDate(),
+			"is_indigenous" => "required|boolean",
+			"is_disabled" => "required|boolean",
 			"second_name" => "nullable|string|max:255",
 			"second_last_name" => "nullable|string|max:255",
 			"room_phone" => "nullable|string|min:10",
 			"address" => "nullable|string|max:255",
-
-			// Socioeconomic information.
-			"is_indigenous" => "required|boolean",
-			"is_disabled" => "required|boolean",
 			"graffar" => "nullable|integer|min:1|max:5",
-			"situation" => "nullable|string|max:255",
+			"socioeconomic_situation" => "nullable|string|max:255",
 		]);
 
 		// Create the student.
-		$student = Student::create([
-			"email" => $validated["email"],
-			"identity_card" => $validated["identity_card"],
-			"first_name" => $validated["first_name"],
-			"last_name" => $validated["last_name"],
-			"cell_phone" => $validated["cell_phone"],
-			"sex" => $validated["sex"],
-			"birth_date" => $validated["birth_date"],
-			"second_name" => $validated["second_name"],
-			"second_last_name" => $validated["second_last_name"],
-			"room_phone" => $validated["room_phone"],
-			"address" => $validated["address"],
-		]);
-
-		// Create the socioeconomic information related to this student.
-		if ($student instanceof Student) {
-			$student->socioeconomicInformation()->create([
-				"is_indigenous" => $validated["is_indigenous"],
-				"is_disabled" => $validated["is_disabled"],
-				"graffar" => $validated["graffar"],
-				"situation" => $validated["situation"],
-			]);
-		}
+		Student::create($validated);
 
 		return redirect(url()->previous())->with(
 			"message",

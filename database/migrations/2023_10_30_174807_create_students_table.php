@@ -19,10 +19,14 @@ return new class extends Migration {
 			$table->string("cell_phone");
 			$table->enum("sex", ["M", "F"]);
 			$table->date("birth_date");
+			$table->boolean("is_indigenous")->default(false);
+			$table->boolean("is_disabled")->default(false);
 			$table->string("second_name")->nullable();
 			$table->string("second_last_name")->nullable();
 			$table->string("room_phone")->nullable();
 			$table->string("address")->nullable();
+			$table->unsignedInteger("graffar")->nullable();
+			$table->string("socioeconomic_situation")->nullable();
 		});
 	}
 

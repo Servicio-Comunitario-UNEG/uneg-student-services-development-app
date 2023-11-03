@@ -103,18 +103,8 @@ export interface Student {
 	second_name: string | null;
 	second_last_name: string | null;
 	address: string | null;
-}
-
-/**
- * The socioeconomic information that an student has.
- */
-export interface SocioeconomicInformation {
-	id: number;
-	created_at: string;
-	updated_at: string;
-	student_id: number;
 	is_indigenous: boolean;
 	is_disabled: boolean;
 	graffar: number | null;
-	situation: string | null;
+	socioeconomic_situation: string | null;
 }

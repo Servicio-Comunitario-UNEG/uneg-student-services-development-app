@@ -2,7 +2,7 @@ import { useForm, usePage } from "@inertiajs/react";
 import { Loader2 } from "lucide-react";
 import { FormEventHandler } from "react";
 
-import { SocioeconomicInformation, Student } from "@/types";
+import { Student } from "@/types";
 
 import CardRadioGroupField from "@/Components/CardRadioGroupField";
 import { CheckboxField } from "@/Components/CheckboxField";
@@ -21,8 +21,7 @@ export default function CreateOrEditStudentForm({
 	isUpdate = false,
 	callToAction,
 }: {
-	initialValues: Partial<Omit<Student, "created_at" | "updated_at">> &
-		Partial<Omit<SocioeconomicInformation, "created_at" | "updated_at">>;
+	initialValues: Partial<Omit<Student, "created_at" | "updated_at">>;
 	onSuccess?: () => void;
 	isUpdate?: boolean;
 	callToAction: string;
@@ -358,18 +357,19 @@ export default function CreateOrEditStudentForm({
 				/>
 
 				<TextareaField
-					id="description"
+					id="socioeconomic_situation"
 					labelProps={{
 						children: "Situación",
 					}}
 					textareaProps={{
 						className: "h-16",
 						placeholder: "ej: Ambos padres trabajan.",
-						value: data.situation ?? "",
-						onChange: (e) => setData("situation", e.target.value),
+						value: data.socioeconomic_situation ?? "",
+						onChange: (e) =>
+							setData("socioeconomic_situation", e.target.value),
 						maxLength: 150,
 					}}
-					errorMessage={errors.situation}
+					errorMessage={errors.socioeconomic_situation}
 					isOptional
 				/>
 			</fieldset>

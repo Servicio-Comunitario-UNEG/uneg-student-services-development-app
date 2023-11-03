@@ -4,7 +4,6 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class Student extends Model {
 	use HasFactory;
@@ -22,16 +21,13 @@ class Student extends Model {
 		"cell_phone",
 		"sex",
 		"birth_date",
+		"is_indigenous",
+		"is_disabled",
 		"second_name",
 		"second_last_name",
 		"room_phone",
 		"address",
+		"graffar",
+		"socioeconomic_situation",
 	];
-
-	/**
-	 * Get the socieconomic information of this student.
-	 */
-	public function socioeconomicInformation(): HasOne {
-		return $this->hasOne(SocioeconomicInformation::class);
-	}
 }
