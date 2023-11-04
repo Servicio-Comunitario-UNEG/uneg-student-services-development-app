@@ -59,7 +59,7 @@ class CareerController extends Controller {
 	 * Store a newly created resource in storage.
 	 */
 	public function store(StoreCareerRequest $request) {
-		$validated = $request->safe();
+		$validated = $request->validated();
 
 		$career = Career::create(["name" => $validated["name"]]);
 		$career->headquarters()->attach($validated["headquarters_id"]);
@@ -88,7 +88,7 @@ class CareerController extends Controller {
 	 * Update the specified resource in storage.
 	 */
 	public function update(UpdateCareerRequest $request, Career $career) {
-		$validated = $request->safe();
+		$validated = $request->validated();
 
 		$career->update(["name" => $validated["name"]]);
 		$career->headquarters()->sync($validated["headquarters_id"]);
