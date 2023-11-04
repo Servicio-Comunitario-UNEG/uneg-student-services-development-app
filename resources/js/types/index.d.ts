@@ -83,6 +83,7 @@ export interface Career {
 	name: string;
 	created_at: string;
 	updated_at: string;
+	headquarters_id: Headquarter["id"][];
 }
 
 /**

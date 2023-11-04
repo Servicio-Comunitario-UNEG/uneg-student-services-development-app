@@ -1,7 +1,7 @@
 import { Head } from "@inertiajs/react";
 import { type ColumnDef } from "@tanstack/react-table";
 
-import type { Career, PageProps, Paginated } from "@/types";
+import type { Career, Headquarter, PageProps, Paginated } from "@/types";
 
 import { AuthenticatedLayout } from "@/Layouts/AuthenticatedLayout";
 import PageLayout from "@/Layouts/PageLayout";
@@ -31,6 +31,7 @@ const columns: ColumnDef<Career>[] = [
 
 export type CareerPageProps = PageProps<{
 	careers: Paginated<Career>;
+	headquarters: Pick<Headquarter, "id" | "name">[];
 	filters: {
 		search: string;
 		page: string;

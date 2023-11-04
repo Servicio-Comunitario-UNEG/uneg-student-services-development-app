@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Career;
+use App\Models\Headquarter;
 use Illuminate\Contracts\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
@@ -35,6 +36,7 @@ class CareerController extends Controller {
 				->orderByRaw("name COLLATE NOCASE ASC")
 				->paginate($perPage)
 				->withQueryString(),
+			"headquarters" => Headquarter::all(["id", "name"]),
 			"filters" => [
 				"search" => $search,
 				"page" => $page,
@@ -54,10 +56,17 @@ class CareerController extends Controller {
 	 */
 	public function store(Request $request) {
 		$validated = $request->validate([
-			"name" => "required|string|unique:headquarters|max:255",
+			"name" => "required|string|unique:careers|max:255",
+			"headquarters_id" => "required|array",
+			"headquarters_id.*" => "required|integer|exists:headquarters,id",
 		]);
 
-		Career::create($validated);
+		/** @var Career */
+		$career = Career::create(["name" => $validated["name"]]);
+
+		if ($career instanceof Career) {
+			$career->headquarters()->attach($validated["headquarters_id"]);
+		}
 
 		return redirect(url()->previous())->with(
 			"message",
@@ -90,9 +99,13 @@ class CareerController extends Controller {
 				Rule::unique("careers")->ignore($career->id),
 				"max:255",
 			],
+			"headquarters_id" => "required|array",
+			"headquarters_id.*" => "required|integer|exists:headquarters,id",
 		]);
 
-		$career->update($validated);
+		// Update the career name and headquarters.
+		$career->update(["name" => $validated["name"]]);
+		$career->headquarters()->sync($validated["headquarters_id"]);
 
 		return redirect(url()->previous())->with(
 			"message",

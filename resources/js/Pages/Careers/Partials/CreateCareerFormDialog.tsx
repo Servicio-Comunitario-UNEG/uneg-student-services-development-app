@@ -33,6 +33,7 @@ export default function CreateCareerFormDialog() {
 				<CreateOrEditCareerForm
 					initialValues={{
 						name: "",
+						headquarters_id: [],
 					}}
 					onSuccess={() => setOpen(false)}
 					callToAction="Agregar carrera"
