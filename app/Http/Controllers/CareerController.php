@@ -2,11 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\StoreCareerRequest;
+use App\Http\Requests\UpdateCareerRequest;
 use App\Models\Career;
 use App\Models\Headquarter;
+use App\Models\User;
 use Illuminate\Contracts\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
-use Illuminate\Validation\Rule;
 use Inertia\Inertia;
 
 class CareerController extends Controller {
@@ -14,6 +16,8 @@ class CareerController extends Controller {
 	 * Display a listing of the resource.
 	 */
 	public function index(Request $request) {
+		$this->authorize("viewAny", User::class);
+
 		// Get the search queries.
 		$search = $request->query("search", "");
 		$page = $request->query("page");
@@ -54,19 +58,11 @@ class CareerController extends Controller {
 	/**
 	 * Store a newly created resource in storage.
 	 */
-	public function store(Request $request) {
-		$validated = $request->validate([
-			"name" => "required|string|unique:careers|max:255",
-			"headquarters_id" => "required|array",
-			"headquarters_id.*" => "required|integer|exists:headquarters,id",
-		]);
+	public function store(StoreCareerRequest $request) {
+		$validated = $request->safe();
 
-		/** @var Career */
 		$career = Career::create(["name" => $validated["name"]]);
-
-		if ($career instanceof Career) {
-			$career->headquarters()->attach($validated["headquarters_id"]);
-		}
+		$career->headquarters()->attach($validated["headquarters_id"]);
 
 		return redirect(url()->previous())->with(
 			"message",
@@ -91,19 +87,9 @@ class CareerController extends Controller {
 	/**
 	 * Update the specified resource in storage.
 	 */
-	public function update(Request $request, Career $career) {
-		$validated = $request->validate([
-			"name" => [
-				"required",
-				"string",
-				Rule::unique("careers")->ignore($career->id),
-				"max:255",
-			],
-			"headquarters_id" => "required|array",
-			"headquarters_id.*" => "required|integer|exists:headquarters,id",
-		]);
+	public function update(UpdateCareerRequest $request, Career $career) {
+		$validated = $request->safe();
 
-		// Update the career name and headquarters.
 		$career->update(["name" => $validated["name"]]);
 		$career->headquarters()->sync($validated["headquarters_id"]);
 
@@ -117,6 +103,8 @@ class CareerController extends Controller {
 	 * Remove the specified resource from storage.
 	 */
 	public function destroy(Career $career) {
+		$this->authorize("delete", $career);
+
 		$career->delete();
 
 		return redirect(url()->previous())->with(
