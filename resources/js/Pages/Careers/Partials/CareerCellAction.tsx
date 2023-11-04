@@ -3,8 +3,6 @@ import { type CellContext } from "@tanstack/react-table";
 import { MoreHorizontal, Pencil, Trash } from "lucide-react";
 import { useState } from "react";
 
-import type { Career } from "@/types";
-
 import { Button } from "@/Components/ui/button";
 import {
 	Dialog,
@@ -20,11 +18,12 @@ import {
 	DropdownMenuTrigger,
 } from "@/Components/ui/dropdown-menu";
 
+import type { CareerWithHeadquarters } from "../Index";
 import EditCareerForm from "./EditCareerForm";
 
 export default function CareerCellAction({
 	row,
-}: CellContext<Career, unknown>) {
+}: CellContext<CareerWithHeadquarters, unknown>) {
 	const [open, setOpen] = useState(false);
 	const career = row.original;
 

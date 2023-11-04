@@ -38,6 +38,7 @@ class CareerController extends Controller {
 					$query->where("name", "like", "%$search%");
 				})
 				->orderByRaw("name COLLATE NOCASE ASC")
+				->with("headquarters:id,name")
 				->paginate($perPage)
 				->withQueryString(),
 			"headquarters" => Headquarter::all(["id", "name"]),
