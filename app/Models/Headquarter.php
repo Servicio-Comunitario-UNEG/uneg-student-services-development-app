@@ -28,6 +28,8 @@ class Headquarter extends Model {
 	 * The careers this headquarter offers.
 	 */
 	public function careers(): BelongsToMany {
-		return $this->belongsToMany(Career::class);
+		return $this->belongsToMany(Career::class)
+			->as("academic_offer")
+			->withPivot(["id"]);
 	}
 }

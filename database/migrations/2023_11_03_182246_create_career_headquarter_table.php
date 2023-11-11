@@ -20,6 +20,7 @@ return new class extends Migration {
 				->foreignId("headquarter_id")
 				->constrained()
 				->cascadeOnDelete();
+			$table->unique(["career_id", "headquarter_id"]);
 		});
 	}
 

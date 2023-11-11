@@ -28,11 +28,13 @@ class Career extends Model {
 	 * The headquarters where this career is given.
 	 */
 	public function headquarters(): BelongsToMany {
-		return $this->belongsToMany(Headquarter::class);
+		return $this->belongsToMany(Headquarter::class)
+			->as("academic_offer")
+			->withPivot(["id"]);
 	}
 
 	/**
-	 * Get the permissions the user has.
+	 * Gets the headquarters id where this career is given.
 	 */
 	protected function headquartersId(): Attribute {
 		return new Attribute(

@@ -48,7 +48,7 @@ export default function CreateStudentFormDialog() {
 						is_disabled: false,
 						is_indigenous: false,
 						room_phone: "",
-						situation: "",
+						socioeconomic_situation: "",
 						graffar: null,
 					}}
 					onSuccess={() => setOpen(false)}

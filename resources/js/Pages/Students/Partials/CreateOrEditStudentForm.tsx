@@ -26,7 +26,7 @@ export default function CreateOrEditStudentForm({
 	isUpdate?: boolean;
 	callToAction: string;
 }) {
-	const { max_birth_date } = usePage<StudentPageProps>().props;
+	const { maximum_enrollable_birth_date } = usePage<StudentPageProps>().props;
 
 	const { data, setData, errors, processing, post, put } = useForm({
 		...initialValues,
@@ -181,7 +181,7 @@ export default function CreateOrEditStudentForm({
 						onChange: (e) => setData("birth_date", e.target.value),
 						required: true,
 						value: data.birth_date ?? "",
-						max: max_birth_date,
+						max: maximum_enrollable_birth_date,
 					}}
 					errorMessage={errors.birth_date}
 				/>

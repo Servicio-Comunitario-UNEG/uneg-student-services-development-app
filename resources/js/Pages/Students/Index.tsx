@@ -1,6 +1,6 @@
 import { Head } from "@inertiajs/react";
 
-import { PageProps } from "@/types";
+import { Career, Headquarter, PageProps } from "@/types";
 
 import { AuthenticatedLayout } from "@/Layouts/AuthenticatedLayout";
 import PageLayout from "@/Layouts/PageLayout";
@@ -8,7 +8,12 @@ import PageLayout from "@/Layouts/PageLayout";
 import CreateStudentFormDialog from "./Partials/CreateStudentFormDialog";
 
 export type StudentPageProps = PageProps<{
-	max_birth_date: string;
+	careers_by_headquarter: {
+		career: Pick<Career, "id" | "name">;
+		headquarter: Pick<Headquarter, "id" | "name">;
+		id: number;
+	}[];
+	maximum_enrollable_birth_date: string;
 }>;
 export default function Index() {
 	return (
