@@ -1,4 +1,4 @@
-import { Head } from "@inertiajs/react";
+import { Head, Link } from "@inertiajs/react";
 import { type ColumnDef } from "@tanstack/react-table";
 
 import type { Headquarter, PageProps, Paginated, User } from "@/types";
@@ -8,8 +8,8 @@ import PageLayout from "@/Layouts/PageLayout";
 
 import { DataTable } from "@/Components/DataTable";
 import { DataTableColumnHeader } from "@/Components/DataTableColumnHeader";
+import { Button } from "@/Components/ui/button";
 
-import CreateHeadquarterFormDialog from "./Partials/CreateHeadquarterFormDialog";
 import { DataTableToolbar } from "./Partials/DataTableToolbar";
 import HeadquarterCellAction from "./Partials/HeadquartersCellAction";
 
@@ -61,11 +61,6 @@ export type HeadquarterWithRepresentative = Headquarter & {
 
 export type HeadquarterPageProps = PageProps<{
 	headquarters: Paginated<HeadquarterWithRepresentative>;
-	representatives: Array<
-		Pick<User, "id" | "name" | "identity_card"> & {
-			is_available: boolean;
-		}
-	>;
 	filters: {
 		search: string;
 		page: string;
@@ -80,7 +75,11 @@ export default function Index({ headquarters }: HeadquarterPageProps) {
 				title: "Sedes",
 				description:
 					"Las sedes son los lugares donde se encuentra la universidad.",
-				actions: <CreateHeadquarterFormDialog />,
+				actions: (
+					<Button asChild>
+						<Link href={route("headquarters.create")}>Crear</Link>
+					</Button>
+				),
 			}}
 		>
 			<Head title="Sedes" />
