@@ -14,13 +14,13 @@ import { cn } from "@/lib/utils";
 
 function MobileLink({
 	children,
+	isActive,
 	to,
 }: {
 	children: React.ReactNode | React.ReactNode[];
+	isActive: boolean;
 	to: string;
 }) {
-	const isActive = route().current(to);
-
 	return (
 		<Link
 			href={route(to)}
@@ -41,19 +41,32 @@ function MobileMenu({
 	className,
 	...props
 }: React.ComponentPropsWithoutRef<"div">) {
-	const user = usePage<PageProps>().props.auth.user;
-
+	const {
+		props: {
+			auth: { user },
+		},
+		url,
+	} = usePage<PageProps>();
 	const gate = useGate();
 
 	return (
 		<div className={cn("flex flex-col gap-4", className)} {...props}>
 			<ul className="flex-col gap-4">
-				{links.map(({ title, to, permission }) => {
+				{links.map(({ title, to, permission, urlStartsWith }) => {
 					if (permission && !gate.allows(permission)) return;
 
 					return (
 						<li key={to}>
-							<MobileLink to={to}>{title}</MobileLink>
+							<MobileLink
+								to={to}
+								isActive={
+									urlStartsWith
+										? url.startsWith(urlStartsWith)
+										: route().current(to)
+								}
+							>
+								{title}
+							</MobileLink>
 						</li>
 					);
 				})}
