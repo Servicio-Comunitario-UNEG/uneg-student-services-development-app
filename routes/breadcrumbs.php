@@ -2,6 +2,7 @@
 
 // Note: Laravel will automatically resolve `Breadcrumbs::` without
 // this import. This is nice for IDE syntax and refactoring.
+use App\Models\Headquarter;
 use App\Models\User;
 use Diglactic\Breadcrumbs\Breadcrumbs;
 
@@ -35,4 +36,13 @@ Breadcrumbs::for("headquarters.index", function (BreadcrumbTrail $trail) {
 Breadcrumbs::for("headquarters.create", function (BreadcrumbTrail $trail) {
 	$trail->parent("headquarters.index");
 	$trail->push("Crear", route("headquarters.create"));
+});
+
+// Headqaurters > Edit
+Breadcrumbs::for("headquarters.edit", function (
+	BreadcrumbTrail $trail,
+	Headquarter $headquarter,
+) {
+	$trail->parent("headquarters.index");
+	$trail->push("Editar", route("headquarters.edit", $headquarter));
 });

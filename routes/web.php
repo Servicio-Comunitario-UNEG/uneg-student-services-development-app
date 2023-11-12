@@ -61,6 +61,7 @@ Route::resource("headquarters", HeadquarterController::class)->only([
 	"index",
 	"create",
 	"store",
+	"edit",
 	"destroy",
 	"update",
 ]);

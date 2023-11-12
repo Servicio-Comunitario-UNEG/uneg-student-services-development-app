@@ -102,6 +102,24 @@ class HeadquarterController extends Controller {
 	 */
 	public function edit(Headquarter $headquarters) {
 		$this->authorize("update", $headquarters);
+
+		return Inertia::render("Headquarters/Edit", [
+			// Get the available representatives and the current
+			// headquarter's representative.
+			"representatives" => User::role("representative")
+				->where(function (Builder $query) use ($headquarters) {
+					if (is_null($headquarters->user)) {
+						return $query->doesntHave("headquarter");
+					}
+
+					$query
+						->doesntHave("headquarter", "or")
+						->orWhere("id", "=", $headquarters->user->id);
+				})
+				->orderBy("name")
+				->get(),
+			"headquarter" => $headquarters,
+		]);
 	}
 
 	/**
@@ -136,7 +154,7 @@ class HeadquarterController extends Controller {
 
 		$headquarters->update($validated);
 
-		return redirect(url()->previous())->with(
+		return redirect(route("headquarters.index"))->with(
 			"message",
 			"Sede editada con éxito",
 		);
