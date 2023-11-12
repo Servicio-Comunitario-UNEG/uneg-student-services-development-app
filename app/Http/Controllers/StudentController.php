@@ -7,6 +7,7 @@ use App\Http\Utils;
 use App\Models\Career;
 use App\Models\Student;
 use App\Models\User;
+use Illuminate\Contracts\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
@@ -19,10 +20,37 @@ class StudentController extends Controller {
 	/**
 	 * Display a listing of the resource.
 	 */
-	public function index() {
+	public function index(Request $request) {
 		$this->authorize("viewAny", User::class);
 
-		return Inertia::render("Students/Index");
+		// Get search queries.
+		$search = $request->query("search", "");
+		$page = $request->query("page");
+		$perPage = $request->query("per_page");
+
+		if (is_null($page) || !is_numeric($page)) {
+			$page = 1;
+		}
+
+		if (is_null($perPage) || !is_numeric($perPage)) {
+			$perPage = 10;
+		}
+
+		return Inertia::render("Students/Index", [
+			"students" => Student::query()
+				->when($search, function (Builder $query, string $search) {
+					// Filter by name.
+					$query
+						->where("first_name", "like", "%$search%")
+						->orWhere("second_name", "like", "%$search%")
+						->orWhere("last_name", "like", "%$search%")
+						->orWhere("second_last_name", "like", "%$search%")
+						->orWhere("email", "like", "%$search%")
+						->orWhere("identity_card", "like", "%$search%");
+				})
+				->orderByRaw("first_name COLLATE NOCASE ASC")
+				->paginate($perPage),
+		]);
 	}
 
 	/**

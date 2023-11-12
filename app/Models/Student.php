@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -30,4 +31,18 @@ class Student extends Model {
 		"graffar",
 		"socioeconomic_situation",
 	];
+
+	/**
+	 * Get the identityCard the user has.
+	 */
+	protected function identityCard(): Attribute {
+		return new Attribute(
+			get: function (string $value = "") {
+				return [
+					"nationality" => $value[0],
+					"serial" => substr($value, 1),
+				];
+			},
+		);
+	}
 }

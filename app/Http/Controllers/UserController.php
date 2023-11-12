@@ -17,25 +17,6 @@ class UserController extends Controller {
 	}
 
 	/**
-	 * Returns the identity card from the nationality and serial.
-	 */
-	private function toIdentityCard(array $identity_card): string {
-		$nationality =
-			key_exists("nationality", $identity_card) &&
-			is_string($identity_card["nationality"])
-				? $identity_card["nationality"]
-				: "";
-
-		$serial =
-			key_exists("serial", $identity_card) &&
-			is_string($identity_card["serial"])
-				? $identity_card["serial"]
-				: "";
-
-		return $nationality . $serial;
-	}
-
-	/**
 	 * Returns the roles the user can assign
 	 */
 	private function getAssignableRoles(User $user) {
