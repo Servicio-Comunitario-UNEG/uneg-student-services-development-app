@@ -1,8 +1,8 @@
-import { useForm, usePage } from "@inertiajs/react";
+import { Link, useForm } from "@inertiajs/react";
 import { Loader2 } from "lucide-react";
 import type { FormEventHandler } from "react";
 
-import type { User } from "@/types";
+import type { Role, User } from "@/types";
 
 import CardRadioGroupField from "@/Components/CardRadioGroupField";
 import IdentityCardField from "@/Components/IdentityCardField";
@@ -10,16 +10,14 @@ import PasswordField from "@/Components/PasswordField";
 import TextField from "@/Components/TextField";
 import { Button } from "@/Components/ui/button";
 
-import { UserPageProps } from "../Index";
-
 export default function CreateOrEditUserForm({
 	initialValues,
-	onSuccess,
 	isUpdate = false,
 	callToAction,
+	roles,
 }: {
 	initialValues: Partial<
-		User & {
+		Pick<User, "email" | "name" | "identity_card" | "id"> & {
 			password: string;
 			role_name: string;
 		}
@@ -27,18 +25,10 @@ export default function CreateOrEditUserForm({
 	onSuccess?: () => void;
 	isUpdate?: boolean;
 	callToAction: string;
+	roles: Role[];
 }) {
-	// Get the roles the user can select.
-	const { assignableRoles } = usePage<UserPageProps>().props;
-
-	const { data, setData, errors, processing, post, put } = useForm({
-		...initialValues,
-		identity_card: initialValues.identity_card ?? {
-			nationality: "V",
-			serial: "",
-		},
-		role_name: initialValues.current_role?.name || initialValues.role_name,
-	});
+	const { data, setData, errors, processing, post, put } =
+		useForm(initialValues);
 
 	const onSubmit: FormEventHandler = (e) => {
 		e.preventDefault();
@@ -46,21 +36,10 @@ export default function CreateOrEditUserForm({
 		// The id must be provided on update.
 		if (isUpdate && !initialValues.id) return;
 
-		// Update the user.
-		if (isUpdate) {
-			put(route("users.update", initialValues.id), {
-				onSuccess,
-				preserveScroll: true,
-			});
-
-			return;
-		}
-
-		// Create the user.
-		post(route("users.store"), {
-			onSuccess,
-			preserveScroll: true,
-		});
+		// Create or update the user.
+		isUpdate
+			? put(route("users.update", initialValues.id))
+			: post(route("users.store"));
 	};
 
 	return (
@@ -153,12 +132,12 @@ export default function CreateOrEditUserForm({
 					}}
 					cardRadioGroupProps={{
 						style: {
-							gridTemplateColumns: `repeat(${assignableRoles.length}, minmax(0, 1fr))`,
+							gridTemplateColumns: `repeat(${roles.length}, minmax(0, 1fr))`,
 						},
 						name: "role",
 						value: data.role_name ?? "",
 						onValueChange: (value) => setData("role_name", value),
-						options: assignableRoles.map((role) => ({
+						options: roles.map((role) => ({
 							label: role.description,
 							value: role.name,
 						})),
@@ -167,13 +146,17 @@ export default function CreateOrEditUserForm({
 				/>
 			</div>
 
-			<div className="flex justify-end">
+			<div className="space-x-2">
 				<Button disabled={processing}>
 					{processing ? (
 						<Loader2 className="mr-2 h-4 w-4 animate-spin" />
 					) : null}
 
 					<span>{callToAction}</span>
+				</Button>
+
+				<Button disabled={processing} variant="outline" asChild>
+					<Link href={route("users.index")}>Cancelar</Link>
 				</Button>
 			</div>
 		</form>

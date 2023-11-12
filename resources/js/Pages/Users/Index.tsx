@@ -1,4 +1,4 @@
-import { Head } from "@inertiajs/react";
+import { Head, Link } from "@inertiajs/react";
 import type { ColumnDef } from "@tanstack/react-table";
 
 import type { PageProps, Paginated, Role, User } from "@/types";
@@ -8,10 +8,10 @@ import PageLayout from "@/Layouts/PageLayout";
 
 import { DataTable } from "@/Components/DataTable";
 import { DataTableColumnHeader } from "@/Components/DataTableColumnHeader";
+import { Button } from "@/Components/ui/button";
 
 import { useGate } from "@/hooks/useGate";
 
-import CreateUserFormDialog from "./Partials/CreateUserFormDialog";
 import { DataTableToolbar } from "./Partials/DataTableToolbar";
 import UserCellAction from "./Partials/UserCellAction";
 
@@ -88,7 +88,9 @@ export default function Index({ users }: UserPageProps) {
 					"create users",
 					"create non admin users",
 				]) ? (
-					<CreateUserFormDialog />
+					<Button asChild>
+						<Link href={route("users.create")}>Crear</Link>
+					</Button>
 				) : null,
 			}}
 		>

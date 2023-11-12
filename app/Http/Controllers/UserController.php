@@ -41,20 +41,6 @@ class UserController extends Controller {
 	public function index(Request $request) {
 		$this->authorize("viewAny", User::class);
 
-		/** @var User */
-		$user = $request->user();
-
-		// Get the roles the user can assign.
-		$assignableRoles = [];
-
-		if ($user->hasPermissionTo("create users")) {
-			$assignableRoles = Role::all();
-		}
-
-		if ($user->hasPermissionTo("create non admin users")) {
-			$assignableRoles = Role::where("name", "!=", "admin")->get();
-		}
-
 		// Get the search queries.
 		$search = $request->query("search", "");
 		$selectedRoles = $request->query("roles", []);
@@ -68,6 +54,9 @@ class UserController extends Controller {
 		if (is_null($perPage) || !is_numeric($perPage)) {
 			$perPage = 10;
 		}
+
+		/** @var User */
+		$user = $request->user();
 
 		// All users that match the queries.
 		$users = User::query()
@@ -101,7 +90,6 @@ class UserController extends Controller {
 		return Inertia::render("Users/Index", [
 			"users" => $users,
 			"roles" => Role::all(),
-			"assignableRoles" => $assignableRoles,
 			"filters" => [
 				"search" => $search,
 				"roles" => $selectedRoles,
@@ -114,8 +102,26 @@ class UserController extends Controller {
 	/**
 	 * Show the form for creating a new resource.
 	 */
-	public function create() {
+	public function create(Request $request) {
 		$this->authorize("create", User::class);
+
+		/** @var User */
+		$user = $request->user();
+
+		// Get the roles the user can assign.
+		$roles = [];
+
+		if ($user->hasPermissionTo("create users")) {
+			$roles = Role::all();
+		}
+
+		if ($user->hasPermissionTo("create non admin users")) {
+			$roles = Role::where("name", "!=", "admin")->get();
+		}
+
+		return Inertia::render("Users/Create", [
+			"roles" => $roles,
+		]);
 	}
 
 	/**
@@ -152,7 +158,7 @@ class UserController extends Controller {
 
 		$user->assignRole($validated["role_name"]);
 
-		return redirect(url()->previous())->with(
+		return redirect(route("users.index"))->with(
 			"message",
 			"Usuario creado con éxito",
 		);
