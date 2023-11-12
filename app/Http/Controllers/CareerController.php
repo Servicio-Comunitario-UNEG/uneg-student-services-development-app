@@ -47,6 +47,7 @@ class CareerController extends Controller {
 	 * Show the form for creating a new resource.
 	 */
 	public function create() {
+		return Inertia::render("Careers/Create");
 	}
 
 	/**
@@ -59,7 +60,7 @@ class CareerController extends Controller {
 
 		Career::create($validated);
 
-		return redirect(url()->previous())->with(
+		return redirect(route("careers.index"))->with(
 			"message",
 			"Carrera creada con éxito",
 		);
@@ -76,7 +77,9 @@ class CareerController extends Controller {
 	 * Show the form for editing the specified resource.
 	 */
 	public function edit(Career $career) {
-		//
+		return Inertia::render("Careers/Edit", [
+			"career" => $career,
+		]);
 	}
 
 	/**
@@ -94,7 +97,7 @@ class CareerController extends Controller {
 
 		$career->update($validated);
 
-		return redirect(url()->previous())->with(
+		return redirect(route("careers.index"))->with(
 			"message",
 			"Carrera editada con éxito",
 		);
