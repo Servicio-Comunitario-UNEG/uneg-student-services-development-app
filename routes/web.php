@@ -78,6 +78,10 @@ Route::resource("careers", CareerController::class)
 	->middleware(["auth", "verified"]);
 
 // Students routes.
-Route::resource("students", StudentController::class)->only(["index", "store"]);
+Route::resource("students", StudentController::class)->only([
+	"index",
+	"create",
+	"store",
+]);
 
 require __DIR__ . "/auth.php";

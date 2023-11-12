@@ -67,3 +67,14 @@ Breadcrumbs::for("careers.edit", function (
 	$trail->parent("careers.index");
 	$trail->push("Editar", route("careers.edit", $career));
 });
+
+//* Students
+Breadcrumbs::for("students.index", function (BreadcrumbTrail $trail) {
+	$trail->push("Estudiantes", route("students.index"));
+});
+
+// Students > Create
+Breadcrumbs::for("students.create", function (BreadcrumbTrail $trail) {
+	$trail->parent("students.index");
+	$trail->push("Crear", route("students.create"));
+});

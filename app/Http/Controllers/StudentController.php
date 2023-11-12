@@ -22,6 +22,13 @@ class StudentController extends Controller {
 	public function index() {
 		$this->authorize("viewAny", User::class);
 
+		return Inertia::render("Students/Index");
+	}
+
+	/**
+	 * Show the form for creating a new resource.
+	 */
+	public function create() {
 		$careers = Career::whereHas("headquarters")->get();
 
 		/** @var Collection */
@@ -37,18 +44,11 @@ class StudentController extends Controller {
 			}
 		}
 
-		return Inertia::render("Students/Index", [
+		return Inertia::render("Students/Create", [
 			// The career that are given in any headquarter.
 			"careers_by_headquarter" => $careersByHeadquarter,
 			"maximum_enrollable_birth_date" => Utils::getMaximumEnrollableBirthDate(),
 		]);
-	}
-
-	/**
-	 * Show the form for creating a new resource.
-	 */
-	public function create() {
-		//
 	}
 
 	/**
@@ -58,7 +58,7 @@ class StudentController extends Controller {
 		// Create the student.
 		Student::create($request->validated());
 
-		return redirect(url()->previous())->with(
+		return redirect(route("students.index"))->with(
 			"message",
 			"Estudiante creado con éxito",
 		);

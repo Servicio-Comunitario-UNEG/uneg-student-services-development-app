@@ -1,8 +1,8 @@
-import { useForm, usePage } from "@inertiajs/react";
+import { Link, useForm, usePage } from "@inertiajs/react";
 import { Loader2 } from "lucide-react";
 import { FormEventHandler } from "react";
 
-import { Student } from "@/types";
+import { Career, Headquarter, PageProps, Student } from "@/types";
 
 import CardRadioGroupField from "@/Components/CardRadioGroupField";
 import { CheckboxField } from "@/Components/CheckboxField";
@@ -13,28 +13,29 @@ import TextareaField from "@/Components/TextareaField";
 import { Button } from "@/Components/ui/button";
 import { Separator } from "@/Components/ui/separator";
 
-import { StudentPageProps } from "../Index";
+export type CreateOrEditStudentPageProps = PageProps<{
+	careers_by_headquarter: {
+		career: Pick<Career, "id" | "name">;
+		headquarter: Pick<Headquarter, "id" | "name">;
+		id: number;
+	}[];
+	maximum_enrollable_birth_date: string;
+}>;
 
 export default function CreateOrEditStudentForm({
 	initialValues,
-	onSuccess,
 	isUpdate = false,
 	callToAction,
 }: {
 	initialValues: Partial<Omit<Student, "created_at" | "updated_at">>;
-	onSuccess?: () => void;
 	isUpdate?: boolean;
 	callToAction: string;
 }) {
-	const { maximum_enrollable_birth_date } = usePage<StudentPageProps>().props;
+	const { maximum_enrollable_birth_date } =
+		usePage<CreateOrEditStudentPageProps>().props;
 
-	const { data, setData, errors, processing, post, put } = useForm({
-		...initialValues,
-		identity_card: initialValues.identity_card ?? {
-			nationality: "V",
-			serial: "",
-		},
-	});
+	const { data, setData, errors, processing, post, put } =
+		useForm(initialValues);
 
 	const onSubmit: FormEventHandler = (e) => {
 		e.preventDefault();
@@ -42,21 +43,10 @@ export default function CreateOrEditStudentForm({
 		// The id must be provided on update.
 		if (isUpdate && !initialValues.id) return;
 
-		// Update the student.
-		if (isUpdate) {
-			put(route("students.update", initialValues.id), {
-				onSuccess,
-				preserveScroll: true,
-			});
-
-			return;
-		}
-
-		// Create the student.
-		post(route("students.store"), {
-			onSuccess,
-			preserveScroll: true,
-		});
+		// Create or update the student.
+		isUpdate
+			? put(route("students.update", initialValues.id))
+			: post(route("students.store"));
 	};
 
 	return (
@@ -374,13 +364,17 @@ export default function CreateOrEditStudentForm({
 				/>
 			</fieldset>
 
-			<div className="flex justify-end">
+			<div className="space-x-2">
 				<Button disabled={processing}>
 					{processing ? (
 						<Loader2 className="mr-2 h-4 w-4 animate-spin" />
 					) : null}
 
 					<span>{callToAction}</span>
+				</Button>
+
+				<Button disabled={processing} variant="outline" asChild>
+					<Link href={route("students.index")}>Cancelar</Link>
 				</Button>
 			</div>
 		</form>

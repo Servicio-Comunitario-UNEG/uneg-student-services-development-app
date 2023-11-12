@@ -1,5 +1,6 @@
 import {
 	BarChart3,
+	BookCopy,
 	Building,
 	GraduationCap,
 	LucideIcon,
@@ -37,8 +38,15 @@ export const links: {
 		title: "Carreras",
 		permission: "view careers",
 		to: "careers.index",
-		Icon: GraduationCap,
+		Icon: BookCopy,
 		urlStartsWith: "/careers",
+	},
+	{
+		title: "Estudiantes",
+		permission: "view students",
+		to: "students.index",
+		Icon: GraduationCap,
+		urlStartsWith: "/students",
 	},
 	{
 		title: "Perfil",

@@ -1,26 +1,20 @@
-import { Head } from "@inertiajs/react";
-
-import { Career, Headquarter, PageProps } from "@/types";
+import { Head, Link } from "@inertiajs/react";
 
 import { AuthenticatedLayout } from "@/Layouts/AuthenticatedLayout";
 import PageLayout from "@/Layouts/PageLayout";
 
-import CreateStudentFormDialog from "./Partials/CreateStudentFormDialog";
+import { Button } from "@/Components/ui/button";
 
-export type StudentPageProps = PageProps<{
-	careers_by_headquarter: {
-		career: Pick<Career, "id" | "name">;
-		headquarter: Pick<Headquarter, "id" | "name">;
-		id: number;
-	}[];
-	maximum_enrollable_birth_date: string;
-}>;
 export default function Index() {
 	return (
 		<PageLayout
 			headerProps={{
 				title: "Estudiantes",
-				actions: <CreateStudentFormDialog />,
+				actions: (
+					<Button asChild>
+						<Link href={route("students.create")}>Crear</Link>
+					</Button>
+				),
 			}}
 		>
 			<Head title="Estudiantes" />
