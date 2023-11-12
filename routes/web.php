@@ -49,7 +49,9 @@ Route::middleware("auth")->group(function () {
 // Users routes.
 Route::resource("users", UserController::class)->only([
 	"index",
+	"create",
 	"store",
+	"edit",
 	"destroy",
 	"update",
 ]);

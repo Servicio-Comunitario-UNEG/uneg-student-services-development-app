@@ -1,4 +1,4 @@
-import { Link } from "@inertiajs/react";
+import { Link, usePage } from "@inertiajs/react";
 
 import UserNavigation from "@/Components/UserNavigation";
 import { Button } from "@/Components/ui/button";
@@ -10,6 +10,7 @@ import { cn } from "@/lib/utils";
 
 export default function SideBar({ className }: { className?: string }) {
 	const gate = useGate();
+	const { url } = usePage();
 
 	return (
 		<div
@@ -21,8 +22,17 @@ export default function SideBar({ className }: { className?: string }) {
 			<nav>
 				<ul className="space-y-1">
 					{links.map(
-						({ title, to, isMobileOnly, permission, Icon }) => {
-							const isActive = route().current(to);
+						({
+							title,
+							to,
+							isMobileOnly,
+							permission,
+							Icon,
+							urlStartsWith,
+						}) => {
+							const isActive = urlStartsWith
+								? url.startsWith(urlStartsWith)
+								: route().current(to);
 
 							if (
 								isMobileOnly ||
