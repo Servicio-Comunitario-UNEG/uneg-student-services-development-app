@@ -1,7 +1,7 @@
 import { Head, Link } from "@inertiajs/react";
 import { ColumnDef } from "@tanstack/react-table";
 
-import { Paginated, Student } from "@/types";
+import { PageProps, Paginated, Student } from "@/types";
 
 import { AuthenticatedLayout } from "@/Layouts/AuthenticatedLayout";
 import PageLayout from "@/Layouts/PageLayout";
@@ -10,6 +10,7 @@ import { DataTable } from "@/Components/DataTable";
 import { DataTableColumnHeader } from "@/Components/DataTableColumnHeader";
 import { Button } from "@/Components/ui/button";
 
+import { DataTableToolbar } from "./Partials/DataTableToolbar";
 import StudentCellAction from "./Partials/StudentCellAction";
 
 const columns: ColumnDef<Student>[] = [
@@ -75,7 +76,16 @@ const columns: ColumnDef<Student>[] = [
 	},
 ];
 
-export default function Index({ students }: { students: Paginated<Student> }) {
+export type StudentsPageProps = PageProps<{
+	students: Paginated<Student>;
+	filters: {
+		search: string;
+		page: number;
+		per_page: number;
+	};
+}>;
+
+export default function Index({ students }: StudentsPageProps) {
 	return (
 		<PageLayout
 			headerProps={{
@@ -90,7 +100,11 @@ export default function Index({ students }: { students: Paginated<Student> }) {
 		>
 			<Head title="Estudiantes" />
 
-			<DataTable columns={columns} paginatedData={students} />
+			<DataTable
+				columns={columns}
+				paginatedData={students}
+				toolbar={<DataTableToolbar />}
+			/>
 		</PageLayout>
 	);
 }

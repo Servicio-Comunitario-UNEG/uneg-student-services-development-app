@@ -73,6 +73,11 @@ class StudentController extends Controller {
 				})
 				->orderByRaw("first_name COLLATE NOCASE ASC")
 				->paginate($perPage),
+			"filters" => [
+				"search" => $search,
+				"page" => $page,
+				"per_page" => $perPage,
+			],
 		]);
 	}
 
