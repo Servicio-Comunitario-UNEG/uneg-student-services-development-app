@@ -4,6 +4,7 @@
 // this import. This is nice for IDE syntax and refactoring.
 use App\Models\Career;
 use App\Models\Headquarter;
+use App\Models\Student;
 use App\Models\User;
 use Diglactic\Breadcrumbs\Breadcrumbs;
 
@@ -77,4 +78,13 @@ Breadcrumbs::for("students.index", function (BreadcrumbTrail $trail) {
 Breadcrumbs::for("students.create", function (BreadcrumbTrail $trail) {
 	$trail->parent("students.index");
 	$trail->push("Crear", route("students.create"));
+});
+
+// Students > Edit
+Breadcrumbs::for("students.edit", function (
+	BreadcrumbTrail $trail,
+	Student $student,
+) {
+	$trail->parent("students.index");
+	$trail->push("Editar", route("students.edit", $student));
 });
