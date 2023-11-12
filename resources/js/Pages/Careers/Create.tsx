@@ -1,11 +1,15 @@
 import { Head } from "@inertiajs/react";
 
+import { Headquarter, PageProps } from "@/types";
+
 import { AuthenticatedLayout } from "@/Layouts/AuthenticatedLayout";
 import PageLayout from "@/Layouts/PageLayout";
 
 import CreateOrEditCareerForm from "./Partials/CreateOrEditCareerForm";
 
-export default function Create() {
+export default function Create({
+	headquarters,
+}: PageProps<{ headquarters: Pick<Headquarter, "id" | "name">[] }>) {
 	return (
 		<PageLayout
 			headerProps={{
@@ -19,6 +23,7 @@ export default function Create() {
 				initialValues={{
 					name: "",
 				}}
+				headquarters={headquarters}
 			/>
 		</PageLayout>
 	);

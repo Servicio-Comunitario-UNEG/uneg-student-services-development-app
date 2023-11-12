@@ -41,7 +41,6 @@ class CareerController extends Controller {
 				->with("headquarters:id,name")
 				->paginate($perPage)
 				->withQueryString(),
-			"headquarters" => Headquarter::all(["id", "name"]),
 			"filters" => [
 				"search" => $search,
 				"page" => $page,
@@ -54,7 +53,9 @@ class CareerController extends Controller {
 	 * Show the form for creating a new resource.
 	 */
 	public function create() {
-		return Inertia::render("Careers/Create");
+		return Inertia::render("Careers/Create", [
+			"headquarters" => Headquarter::all(["id", "name"]),
+		]);
 	}
 
 	/**
@@ -85,6 +86,7 @@ class CareerController extends Controller {
 	public function edit(Career $career) {
 		return Inertia::render("Careers/Edit", [
 			"career" => $career,
+			"headquarters" => Headquarter::all(["id", "name"]),
 		]);
 	}
 

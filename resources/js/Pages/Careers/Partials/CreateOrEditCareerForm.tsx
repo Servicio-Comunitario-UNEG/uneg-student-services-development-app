@@ -1,26 +1,24 @@
-import { Link, useForm, usePage } from "@inertiajs/react";
+import { Link, useForm } from "@inertiajs/react";
 import { Loader2 } from "lucide-react";
 import type { FormEventHandler } from "react";
 
-import type { Career } from "@/types";
+import type { Career, Headquarter } from "@/types";
 
 import MultiSelectComboboxField from "@/Components/MultiSelectComboboxField";
 import TextField from "@/Components/TextField";
 import { Button } from "@/Components/ui/button";
 
-import { CareerPageProps } from "../Index";
-
 export default function CreateOrEditCareerForm({
 	initialValues,
 	isUpdate = false,
 	callToAction,
+	headquarters,
 }: {
 	initialValues: Partial<Career>;
 	isUpdate?: boolean;
 	callToAction: string;
+	headquarters: Pick<Headquarter, "id" | "name">[];
 }) {
-	const { headquarters } = usePage<CareerPageProps>().props;
-
 	const { data, setData, errors, processing, post, put } =
 		useForm(initialValues);
 
