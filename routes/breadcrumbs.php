@@ -46,3 +46,14 @@ Breadcrumbs::for("headquarters.edit", function (
 	$trail->parent("headquarters.index");
 	$trail->push("Editar", route("headquarters.edit", $headquarter));
 });
+
+//* Careers
+Breadcrumbs::for("careers.index", function (BreadcrumbTrail $trail) {
+	$trail->push("Carreras", route("careers.index"));
+});
+
+// Headqaurters > Create
+Breadcrumbs::for("careers.create", function (BreadcrumbTrail $trail) {
+	$trail->parent("careers.index");
+	$trail->push("Crear", route("careers.create"));
+});

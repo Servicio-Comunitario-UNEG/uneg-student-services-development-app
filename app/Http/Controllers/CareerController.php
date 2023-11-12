@@ -47,6 +47,7 @@ class CareerController extends Controller {
 	 * Show the form for creating a new resource.
 	 */
 	public function create() {
+		return Inertia::render("Careers/Create");
 	}
 
 	/**
@@ -59,7 +60,7 @@ class CareerController extends Controller {
 
 		Career::create($validated);
 
-		return redirect(url()->previous())->with(
+		return redirect(route("careers.index"))->with(
 			"message",
 			"Carrera creada con éxito",
 		);

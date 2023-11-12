@@ -73,7 +73,7 @@ Route::put("/headquarter/{headquarters}/unassign", [
 
 // Careers routes.
 Route::resource("careers", CareerController::class)
-	->only(["index", "store", "destroy", "update"])
+	->only(["index", "store", "destroy", "update", "create"])
 	->middleware(["auth", "verified"]);
 
 require __DIR__ . "/auth.php";
