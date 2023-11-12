@@ -59,6 +59,7 @@ Route::resource("users", UserController::class)->only([
 // Headquarters routes.
 Route::resource("headquarters", HeadquarterController::class)->only([
 	"index",
+	"create",
 	"store",
 	"destroy",
 	"update",

@@ -33,15 +33,6 @@ class HeadquarterController extends Controller {
 			$perPage = 10;
 		}
 
-		// Get the unavailable representatives.
-		$unavailableRepresentativeIds = Headquarter::all()
-			->reject(
-				fn(Headquarter $headquarters) => is_null($headquarters->user),
-			)
-			->pluck("user_id")
-			->values()
-			->all();
-
 		return Inertia::render("Headquarters/Index", [
 			"headquarters" => Headquarter::with("user:id,name,identity_card")
 				->when($search, function (Builder $query, string $search) {
@@ -50,22 +41,6 @@ class HeadquarterController extends Controller {
 				})
 				->orderByRaw("name COLLATE NOCASE ASC")
 				->paginate($perPage),
-			"representatives" => User::role("representative")
-				->orderBy("name")
-				->get()
-				->transform(function (User $user) use (
-					$unavailableRepresentativeIds,
-				) {
-					return [
-						"id" => $user->id,
-						"name" => $user->name,
-						"identity_card" => $user->identity_card,
-						"is_available" => !in_array(
-							$user->id,
-							$unavailableRepresentativeIds,
-						),
-					];
-				}),
 			"filters" => [
 				"search" => $search,
 				"page" => $page,
@@ -79,6 +54,21 @@ class HeadquarterController extends Controller {
 	 */
 	public function create() {
 		$this->authorize("create", User::class);
+
+		return Inertia::render("Headquarters/Create", [
+			// Get the available representatives.
+			"representatives" => User::role("representative")
+				->doesntHave("headquarter")
+				->orderBy("name")
+				->get()
+				->transform(function (User $user) {
+					return [
+						"id" => $user->id,
+						"name" => $user->name,
+						"identity_card" => $user->identity_card,
+					];
+				}),
+		]);
 	}
 
 	/**
@@ -94,7 +84,7 @@ class HeadquarterController extends Controller {
 
 		Headquarter::create($validated);
 
-		return redirect(url()->previous())->with(
+		return redirect(route("headquarters.index"))->with(
 			"message",
 			"Sede creada con éxito",
 		);
