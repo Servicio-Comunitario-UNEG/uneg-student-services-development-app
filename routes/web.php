@@ -51,6 +51,7 @@ Route::resource("users", UserController::class)->only([
 	"index",
 	"create",
 	"store",
+	"edit",
 	"destroy",
 	"update",
 ]);

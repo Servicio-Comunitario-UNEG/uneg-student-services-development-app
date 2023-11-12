@@ -36,6 +36,24 @@ class UserController extends Controller {
 	}
 
 	/**
+	 * Returns the roles the user can assign
+	 */
+	private function getAssignableRoles(User $user) {
+		// Get the roles the user can assign.
+		$roles = [];
+
+		if ($user->hasPermissionTo("create users")) {
+			$roles = Role::all();
+		}
+
+		if ($user->hasPermissionTo("create non admin users")) {
+			$roles = Role::where("name", "!=", "admin")->get();
+		}
+
+		return $roles;
+	}
+
+	/**
 	 * Display a listing of the resource.
 	 */
 	public function index(Request $request) {
@@ -105,22 +123,8 @@ class UserController extends Controller {
 	public function create(Request $request) {
 		$this->authorize("create", User::class);
 
-		/** @var User */
-		$user = $request->user();
-
-		// Get the roles the user can assign.
-		$roles = [];
-
-		if ($user->hasPermissionTo("create users")) {
-			$roles = Role::all();
-		}
-
-		if ($user->hasPermissionTo("create non admin users")) {
-			$roles = Role::where("name", "!=", "admin")->get();
-		}
-
 		return Inertia::render("Users/Create", [
-			"roles" => $roles,
+			"roles" => $this->getAssignableRoles($request->user()),
 		]);
 	}
 
@@ -174,8 +178,13 @@ class UserController extends Controller {
 	/**
 	 * Show the form for editing the specified resource.
 	 */
-	public function edit(User $user) {
+	public function edit(Request $request, User $user) {
 		$this->authorize("update", $user);
+
+		return Inertia::render("Users/Edit", [
+			"user" => $user,
+			"roles" => $this->getAssignableRoles($request->user()),
+		]);
 	}
 
 	/**
@@ -216,7 +225,7 @@ class UserController extends Controller {
 
 		$user->syncRoles([$validated["role_name"]]);
 
-		return redirect(url()->previous())->with(
+		return redirect(route("users.index"))->with(
 			"message",
 			"Usuario editado con éxito",
 		);
