@@ -12,7 +12,7 @@ class UpdateHeadquarterRequest extends FormRequest {
 	 * Determine if the user is authorized to make this request.
 	 */
 	public function authorize(): bool {
-		return Auth::user()->can("create", $this->headquarters);
+		return Auth::user()->can("update", $this->headquarters);
 	}
 
 	/**

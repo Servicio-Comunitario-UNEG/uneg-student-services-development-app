@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreStudentRequest;
+use App\Http\Requests\UpdateStudentRequest;
 use App\Http\Utils;
 use App\Models\Career;
 use App\Models\Student;
@@ -15,6 +16,28 @@ use Inertia\Inertia;
 class StudentController extends Controller {
 	public function __construct() {
 		$this->middleware(["auth", "verified"]);
+	}
+
+	/**
+	 * Returns each career with the headquarter where it's present.
+	 */
+	private function getAcademicOffers() {
+		$careers = Career::whereHas("headquarters")->get();
+
+		/** @var Collection */
+		$careersByHeadquarter = new Collection();
+
+		foreach ($careers as $career) {
+			foreach ($career->headquarters as $headquarter) {
+				$careersByHeadquarter->push([
+					"career" => $career->setVisible(["id", "name"]),
+					"headquarter" => $headquarter->setVisible(["id", "name"]),
+					"id" => $headquarter->academic_offer->id,
+				]);
+			}
+		}
+
+		return $careersByHeadquarter;
 	}
 
 	/**
@@ -57,24 +80,10 @@ class StudentController extends Controller {
 	 * Show the form for creating a new resource.
 	 */
 	public function create() {
-		$careers = Career::whereHas("headquarters")->get();
-
-		/** @var Collection */
-		$careersByHeadquarter = new Collection();
-
-		foreach ($careers as $career) {
-			foreach ($career->headquarters as $headquarter) {
-				$careersByHeadquarter->push([
-					"career" => $career->setVisible(["id", "name"]),
-					"headquarter" => $headquarter->setVisible(["id", "name"]),
-					"id" => $headquarter->academic_offer->id,
-				]);
-			}
-		}
+		$this->authorize("create", User::class);
 
 		return Inertia::render("Students/Create", [
-			// The career that are given in any headquarter.
-			"careers_by_headquarter" => $careersByHeadquarter,
+			"careers_by_headquarter" => $this->getAcademicOffers(),
 			"maximum_enrollable_birth_date" => Utils::getMaximumEnrollableBirthDate(),
 		]);
 	}
@@ -103,14 +112,25 @@ class StudentController extends Controller {
 	 * Show the form for editing the specified resource.
 	 */
 	public function edit(Student $student) {
-		//
+		$this->authorize("update", $student);
+
+		return Inertia::render("Students/Edit", [
+			"student" => $student,
+			"careers_by_headquarter" => $this->getAcademicOffers(),
+			"maximum_enrollable_birth_date" => Utils::getMaximumEnrollableBirthDate(),
+		]);
 	}
 
 	/**
 	 * Update the specified resource in storage.
 	 */
-	public function update(Request $request, Student $student) {
-		//
+	public function update(UpdateStudentRequest $request, Student $student) {
+		$student->update($request->validated());
+
+		return redirect(route("students.index"))->with(
+			"message",
+			"Estudiante editado con éxito",
+		);
 	}
 
 	/**

@@ -10,6 +10,8 @@ import { DataTable } from "@/Components/DataTable";
 import { DataTableColumnHeader } from "@/Components/DataTableColumnHeader";
 import { Button } from "@/Components/ui/button";
 
+import StudentCellAction from "./Partials/StudentCellAction";
+
 const columns: ColumnDef<Student>[] = [
 	{
 		id: "full_name",
@@ -66,6 +68,10 @@ const columns: ColumnDef<Student>[] = [
 		cell: ({ row }) => row.getValue("cell_phone"),
 		enableHiding: false,
 		enableSorting: false,
+	},
+	{
+		id: "actions",
+		cell: (cell) => <StudentCellAction {...cell} />,
 	},
 ];
 
