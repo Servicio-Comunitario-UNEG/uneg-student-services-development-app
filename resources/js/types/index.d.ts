@@ -27,12 +27,19 @@ export interface User {
 	permission_names: string[];
 }
 
+export type Breadcrumb = {
+	title: string;
+	url: string;
+	current?: boolean;
+};
+
 /**
  * The properties of a page.
  */
 export type PageProps<
 	T extends Record<string, unknown> = Record<string, unknown>,
 > = T & {
+	breadcrumbs?: Breadcrumb[];
 	auth: {
 		user: User;
 	};

@@ -17,24 +17,47 @@ class UserController extends Controller {
 	}
 
 	/**
+	 * Returns the identity card from the nationality and serial.
+	 */
+	private function toIdentityCard(array $identity_card): string {
+		$nationality =
+			key_exists("nationality", $identity_card) &&
+			is_string($identity_card["nationality"])
+				? $identity_card["nationality"]
+				: "";
+
+		$serial =
+			key_exists("serial", $identity_card) &&
+			is_string($identity_card["serial"])
+				? $identity_card["serial"]
+				: "";
+
+		return $nationality . $serial;
+	}
+
+	/**
+	 * Returns the roles the user can assign
+	 */
+	private function getAssignableRoles(User $user) {
+		// Get the roles the user can assign.
+		$roles = [];
+
+		if ($user->hasPermissionTo("create users")) {
+			$roles = Role::all();
+		}
+
+		if ($user->hasPermissionTo("create non admin users")) {
+			$roles = Role::where("name", "!=", "admin")->get();
+		}
+
+		return $roles;
+	}
+
+	/**
 	 * Display a listing of the resource.
 	 */
 	public function index(Request $request) {
 		$this->authorize("viewAny", User::class);
-
-		/** @var User */
-		$user = $request->user();
-
-		// Get the roles the user can assign.
-		$assignableRoles = [];
-
-		if ($user->hasPermissionTo("create users")) {
-			$assignableRoles = Role::all();
-		}
-
-		if ($user->hasPermissionTo("create non admin users")) {
-			$assignableRoles = Role::where("name", "!=", "admin")->get();
-		}
 
 		// Get the search queries.
 		$search = $request->query("search", "");
@@ -49,6 +72,9 @@ class UserController extends Controller {
 		if (is_null($perPage) || !is_numeric($perPage)) {
 			$perPage = 10;
 		}
+
+		/** @var User */
+		$user = $request->user();
 
 		// All users that match the queries.
 		$users = User::query()
@@ -82,7 +108,6 @@ class UserController extends Controller {
 		return Inertia::render("Users/Index", [
 			"users" => $users,
 			"roles" => Role::all(),
-			"assignableRoles" => $assignableRoles,
 			"filters" => [
 				"search" => $search,
 				"roles" => $selectedRoles,
@@ -95,8 +120,12 @@ class UserController extends Controller {
 	/**
 	 * Show the form for creating a new resource.
 	 */
-	public function create() {
+	public function create(Request $request) {
 		$this->authorize("create", User::class);
+
+		return Inertia::render("Users/Create", [
+			"roles" => $this->getAssignableRoles($request->user()),
+		]);
 	}
 
 	/**
@@ -115,7 +144,7 @@ class UserController extends Controller {
 
 		$user->assignRole($validated["role_name"]);
 
-		return redirect(url()->previous())->with(
+		return redirect(route("users.index"))->with(
 			"message",
 			"Usuario creado con éxito",
 		);
@@ -131,8 +160,13 @@ class UserController extends Controller {
 	/**
 	 * Show the form for editing the specified resource.
 	 */
-	public function edit(User $user) {
+	public function edit(Request $request, User $user) {
 		$this->authorize("update", $user);
+
+		return Inertia::render("Users/Edit", [
+			"user" => $user,
+			"roles" => $this->getAssignableRoles($request->user()),
+		]);
 	}
 
 	/**
@@ -143,7 +177,7 @@ class UserController extends Controller {
 		$user->update($request->safe()->except(["role_name"]));
 		$user->syncRoles([$request->validated("role_name")]);
 
-		return redirect(url()->previous())->with(
+		return redirect(route("users.index"))->with(
 			"message",
 			"Usuario editado con éxito",
 		);

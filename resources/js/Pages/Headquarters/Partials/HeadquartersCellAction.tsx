@@ -1,16 +1,8 @@
 import { Link } from "@inertiajs/react";
 import { type CellContext } from "@tanstack/react-table";
 import { MoreHorizontal, Pencil, Trash, UserX } from "lucide-react";
-import { useState } from "react";
 
 import { Button } from "@/Components/ui/button";
-import {
-	Dialog,
-	DialogContent,
-	DialogHeader,
-	DialogTitle,
-	DialogTrigger,
-} from "@/Components/ui/dialog";
 import {
 	DropdownMenu,
 	DropdownMenuContent,
@@ -19,96 +11,78 @@ import {
 } from "@/Components/ui/dropdown-menu";
 
 import { HeadquarterWithRepresentative } from "../Index";
-import EditHeadquarterForm from "./EditHeadquarterForm";
 
 export default function HeadquarterCellAction({
 	row,
 }: CellContext<HeadquarterWithRepresentative, unknown>) {
-	const [open, setOpen] = useState(false);
 	const headquarter = row.original;
 
 	return (
 		<div className="flex justify-end">
-			<Dialog open={open} onOpenChange={setOpen}>
-				<DropdownMenu>
-					<DropdownMenuTrigger asChild>
-						<Button variant="ghost" className="h-8 w-8 p-0">
-							<span className="sr-only">Abrir menú</span>
-							<MoreHorizontal className="h-4 w-4" />
-						</Button>
-					</DropdownMenuTrigger>
+			<DropdownMenu>
+				<DropdownMenuTrigger asChild>
+					<Button variant="ghost" className="h-8 w-8 p-0">
+						<span className="sr-only">Abrir menú</span>
+						<MoreHorizontal className="h-4 w-4" />
+					</Button>
+				</DropdownMenuTrigger>
 
-					<DropdownMenuContent align="end">
-						<DialogTrigger asChild>
-							<DropdownMenuItem>
-								<Pencil className="mr-2 h-4 w-4" />
-								<span>Editar</span>
-							</DropdownMenuItem>
-						</DialogTrigger>
+				<DropdownMenuContent align="end">
+					<DropdownMenuItem asChild>
+						<Link href={route("headquarters.edit", headquarter.id)}>
+							<Pencil className="mr-2 h-4 w-4" />
+							<span>Editar</span>
+						</Link>
+					</DropdownMenuItem>
 
-						{headquarter.user ? (
-							<DropdownMenuItem asChild>
-								<Link
-									className="w-full"
-									as="button"
-									href={route(
-										"headquarters.unassign",
-										headquarter.id,
-									)}
-									onClick={(e) => {
-										if (
-											!confirm(
-												"¿Desea desasignar al representante?",
-											)
-										) {
-											e.preventDefault();
-										}
-									}}
-									method="put"
-									preserveScroll
-								>
-									<UserX className="mr-2 h-4 w-4" />
-
-									<span>Desasignar representante</span>
-								</Link>
-							</DropdownMenuItem>
-						) : null}
-
-						<DropdownMenuItem className="text-destructive" asChild>
+					{headquarter.user ? (
+						<DropdownMenuItem asChild>
 							<Link
 								className="w-full"
 								as="button"
 								href={route(
-									"headquarters.destroy",
+									"headquarters.unassign",
 									headquarter.id,
 								)}
 								onClick={(e) => {
-									if (!confirm("¿Desea eliminar la sede?")) {
+									if (
+										!confirm(
+											"¿Desea desasignar al representante?",
+										)
+									) {
 										e.preventDefault();
 									}
 								}}
-								method="delete"
+								method="put"
 								preserveScroll
 							>
-								<Trash className="mr-2 h-4 w-4" />
+								<UserX className="mr-2 h-4 w-4" />
 
-								<span>Eliminar</span>
+								<span>Desasignar representante</span>
 							</Link>
 						</DropdownMenuItem>
-					</DropdownMenuContent>
-				</DropdownMenu>
+					) : null}
 
-				<DialogContent className="sm:max-w-md">
-					<DialogHeader>
-						<DialogTitle>Editar sede</DialogTitle>
-					</DialogHeader>
+					<DropdownMenuItem className="text-destructive" asChild>
+						<Link
+							className="w-full"
+							as="button"
+							href={route("headquarters.destroy", headquarter.id)}
+							onClick={(e) => {
+								if (!confirm("¿Desea eliminar la sede?")) {
+									e.preventDefault();
+								}
+							}}
+							method="delete"
+							preserveScroll
+						>
+							<Trash className="mr-2 h-4 w-4" />
 
-					<EditHeadquarterForm
-						initialValues={headquarter}
-						onSuccess={() => setOpen(false)}
-					/>
-				</DialogContent>
-			</Dialog>
+							<span>Eliminar</span>
+						</Link>
+					</DropdownMenuItem>
+				</DropdownMenuContent>
+			</DropdownMenu>
 		</div>
 	);
 }

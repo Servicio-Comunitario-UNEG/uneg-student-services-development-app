@@ -1,5 +1,5 @@
 import { Link, usePage } from "@inertiajs/react";
-import { ChevronDown, LogOut, UserCog } from "lucide-react";
+import { ChevronsUpDown, LogOut, UserCog } from "lucide-react";
 
 import { PageProps } from "@/types";
 
@@ -18,10 +18,13 @@ export default function UserNavigation() {
 	return (
 		<DropdownMenu>
 			<DropdownMenuTrigger asChild>
-				<Button variant="ghost">
+				<Button
+					className="flex h-auto items-center justify-between gap-2"
+					variant="ghost"
+				>
 					<span>{user.name}</span>
 
-					<ChevronDown className="ml-2" />
+					<ChevronsUpDown className="h-4 w-4 shrink-0" />
 				</Button>
 			</DropdownMenuTrigger>
 

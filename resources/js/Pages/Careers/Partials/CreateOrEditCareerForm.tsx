@@ -1,4 +1,4 @@
-import { useForm, usePage } from "@inertiajs/react";
+import { Link, useForm, usePage } from "@inertiajs/react";
 import { Loader2 } from "lucide-react";
 import type { FormEventHandler } from "react";
 
@@ -12,12 +12,10 @@ import { CareerPageProps } from "../Index";
 
 export default function CreateOrEditCareerForm({
 	initialValues,
-	onSuccess,
 	isUpdate = false,
 	callToAction,
 }: {
 	initialValues: Partial<Career>;
-	onSuccess?: () => void;
 	isUpdate?: boolean;
 	callToAction: string;
 }) {
@@ -32,21 +30,10 @@ export default function CreateOrEditCareerForm({
 		// The id must be provided on update.
 		if (isUpdate && !initialValues.id) return;
 
-		// Update the career.
-		if (isUpdate) {
-			put(route("careers.update", initialValues.id), {
-				onSuccess,
-				preserveScroll: true,
-			});
-
-			return;
-		}
-
-		// Create the career.
-		post(route("careers.store"), {
-			onSuccess,
-			preserveScroll: true,
-		});
+		// Create or update the career.
+		isUpdate
+			? put(route("careers.update", initialValues.id))
+			: post(route("careers.store"));
 	};
 
 	// Build the headquarters options.
@@ -98,13 +85,17 @@ export default function CreateOrEditCareerForm({
 				/>
 			</div>
 
-			<div className="flex justify-end">
+			<div className="space-x-2">
 				<Button disabled={processing}>
 					{processing ? (
 						<Loader2 className="mr-2 h-4 w-4 animate-spin" />
 					) : null}
 
 					<span>{callToAction}</span>
+				</Button>
+
+				<Button disabled={processing} variant="outline" asChild>
+					<Link href={route("careers.index")}>Cancelar</Link>
 				</Button>
 			</div>
 		</form>

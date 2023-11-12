@@ -1,4 +1,4 @@
-import { Head } from "@inertiajs/react";
+import { Head, Link } from "@inertiajs/react";
 import { type ColumnDef } from "@tanstack/react-table";
 
 import type { Career, Headquarter, PageProps, Paginated } from "@/types";
@@ -9,9 +9,9 @@ import PageLayout from "@/Layouts/PageLayout";
 import { DataTable } from "@/Components/DataTable";
 import { DataTableColumnHeader } from "@/Components/DataTableColumnHeader";
 import { Badge } from "@/Components/ui/badge";
+import { Button } from "@/Components/ui/button";
 
 import CareerCellAction from "./Partials/CareerCellAction";
-import CreateCareerFormDialog from "./Partials/CreateCareerFormDialog";
 import { DataTableToolbar } from "./Partials/DataTableToolbar";
 
 export type CareerWithHeadquarters = Career & {
@@ -80,7 +80,11 @@ export default function Index({ careers }: CareerPageProps) {
 			headerProps={{
 				title: "Carreras",
 				description: "Las carreras que los estudiantes pueden cursar.",
-				actions: <CreateCareerFormDialog />,
+				actions: (
+					<Button asChild>
+						<Link href={route("careers.create")}>Crear</Link>
+					</Button>
+				),
 			}}
 		>
 			<Head title="Carreras" />

@@ -50,7 +50,9 @@ Route::middleware("auth")->group(function () {
 // Users routes.
 Route::resource("users", UserController::class)->only([
 	"index",
+	"create",
 	"store",
+	"edit",
 	"destroy",
 	"update",
 ]);
@@ -58,7 +60,9 @@ Route::resource("users", UserController::class)->only([
 // Headquarters routes.
 Route::resource("headquarters", HeadquarterController::class)->only([
 	"index",
+	"create",
 	"store",
+	"edit",
 	"destroy",
 	"update",
 ]);
@@ -70,7 +74,7 @@ Route::put("/headquarter/{headquarters}/unassign", [
 
 // Careers routes.
 Route::resource("careers", CareerController::class)
-	->only(["index", "store", "destroy", "update"])
+	->only(["index", "store", "destroy", "update", "create", "edit"])
 	->middleware(["auth", "verified"]);
 
 // Students routes.

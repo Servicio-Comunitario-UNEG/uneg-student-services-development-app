@@ -5,91 +5,22 @@ import { useState } from "react";
 import { PageProps } from "@/types";
 
 import ApplicationLogo from "@/Components/ApplicationLogo";
-import UserNavigation from "@/Components/UserNavigation";
 import { Button } from "@/Components/ui/button";
 
 import { useGate } from "@/hooks/useGate";
 
+import { links } from "@/lib/constants";
 import { cn } from "@/lib/utils";
-
-const links: {
-	title: string;
-	to: string;
-	permission?: string;
-	isMobileOnly?: boolean;
-}[] = [
-	{
-		title: "Dashboard",
-		to: "dashboard",
-	},
-	{
-		title: "Usuarios",
-		permission: "view users",
-		to: "users.index",
-	},
-	{
-		title: "Sedes",
-		permission: "view headquarters",
-		to: "headquarters.index",
-	},
-	{
-		title: "Carreras",
-		permission: "view careers",
-		to: "careers.index",
-	},
-	{
-		title: "Estudiantes",
-		permission: "view students",
-		to: "students.index",
-	},
-	{
-		title: "Perfil",
-		to: "profile.edit",
-		isMobileOnly: true,
-	},
-];
-
-function Menu({ className, ...props }: React.ComponentPropsWithoutRef<"ul">) {
-	const gate = useGate();
-
-	return (
-		<ul className={cn("flex items-center", className)} {...props}>
-			{links.map(({ title, to, permission, isMobileOnly }) => {
-				const isActive = route().current(to);
-
-				if (isMobileOnly || (permission && !gate.allows(permission))) {
-					return;
-				}
-
-				return (
-					<li className="block" key={to}>
-						<Link
-							href={route(to)}
-							className={cn(
-								"px-2 py-4 text-sm font-medium transition-colors hover:text-foreground/80",
-								isActive
-									? "text-foreground"
-									: "text-foreground/60",
-							)}
-						>
-							{title}
-						</Link>
-					</li>
-				);
-			})}
-		</ul>
-	);
-}
 
 function MobileLink({
 	children,
+	isActive,
 	to,
 }: {
 	children: React.ReactNode | React.ReactNode[];
+	isActive: boolean;
 	to: string;
 }) {
-	const isActive = route().current(to);
-
 	return (
 		<Link
 			href={route(to)}
@@ -110,19 +41,32 @@ function MobileMenu({
 	className,
 	...props
 }: React.ComponentPropsWithoutRef<"div">) {
-	const user = usePage<PageProps>().props.auth.user;
-
+	const {
+		props: {
+			auth: { user },
+		},
+		url,
+	} = usePage<PageProps>();
 	const gate = useGate();
 
 	return (
 		<div className={cn("flex flex-col gap-4", className)} {...props}>
 			<ul className="flex-col gap-4">
-				{links.map(({ title, to, permission }) => {
+				{links.map(({ title, to, permission, urlStartsWith }) => {
 					if (permission && !gate.allows(permission)) return;
 
 					return (
 						<li key={to}>
-							<MobileLink to={to}>{title}</MobileLink>
+							<MobileLink
+								to={to}
+								isActive={
+									urlStartsWith
+										? url.startsWith(urlStartsWith)
+										: route().current(to)
+								}
+							>
+								{title}
+							</MobileLink>
 						</li>
 					);
 				})}
@@ -166,38 +110,24 @@ export default function NavBar({
 			)}
 			{...props}
 		>
-			<div className="flex h-14 justify-between px-6 sm:container">
-				<div className="flex gap-6">
-					<div className="flex shrink-0 items-center">
-						<ApplicationLogo height={24} width={24} />
-					</div>
+			<div className="flex h-14 items-center justify-between px-6">
+				<ApplicationLogo height={24} width={24} />
 
-					<div className="hidden lg:flex">
-						<Menu />
-					</div>
-				</div>
-
-				<div className="hidden space-x-2 lg:ml-6 lg:flex lg:items-center">
-					<UserNavigation />
-				</div>
-
-				<div className="flex items-center gap-2 lg:hidden">
-					<Button
-						variant="ghost"
-						size="icon"
-						onClick={() =>
-							setShowingNavigationDropdown(
-								(previousState) => !previousState,
-							)
-						}
-					>
-						{showingNavigationDropdown ? (
-							<X className="h-4 w-4" />
-						) : (
-							<MenuIcon className="h-4 w-4" />
-						)}
-					</Button>
-				</div>
+				<Button
+					variant="ghost"
+					size="icon"
+					onClick={() =>
+						setShowingNavigationDropdown(
+							(previousState) => !previousState,
+						)
+					}
+				>
+					{showingNavigationDropdown ? (
+						<X className="h-4 w-4" />
+					) : (
+						<MenuIcon className="h-4 w-4" />
+					)}
+				</Button>
 			</div>
 
 			<div

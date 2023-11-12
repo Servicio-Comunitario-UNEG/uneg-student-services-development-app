@@ -34,15 +34,6 @@ class HeadquarterController extends Controller {
 			$perPage = 10;
 		}
 
-		// Get the unavailable representatives.
-		$unavailableRepresentativeIds = Headquarter::all()
-			->reject(
-				fn(Headquarter $headquarters) => is_null($headquarters->user),
-			)
-			->pluck("user_id")
-			->values()
-			->all();
-
 		return Inertia::render("Headquarters/Index", [
 			"headquarters" => Headquarter::with("user:id,name,identity_card")
 				->when($search, function (Builder $query, string $search) {
@@ -51,22 +42,6 @@ class HeadquarterController extends Controller {
 				})
 				->orderByRaw("name COLLATE NOCASE ASC")
 				->paginate($perPage),
-			"representatives" => User::role("representative")
-				->orderBy("name")
-				->get()
-				->transform(function (User $user) use (
-					$unavailableRepresentativeIds,
-				) {
-					return [
-						"id" => $user->id,
-						"name" => $user->name,
-						"identity_card" => $user->identity_card,
-						"is_available" => !in_array(
-							$user->id,
-							$unavailableRepresentativeIds,
-						),
-					];
-				}),
 			"filters" => [
 				"search" => $search,
 				"page" => $page,
@@ -80,6 +55,21 @@ class HeadquarterController extends Controller {
 	 */
 	public function create() {
 		$this->authorize("create", User::class);
+
+		return Inertia::render("Headquarters/Create", [
+			// Get the available representatives.
+			"representatives" => User::role("representative")
+				->doesntHave("headquarter")
+				->orderBy("name")
+				->get()
+				->transform(function (User $user) {
+					return [
+						"id" => $user->id,
+						"name" => $user->name,
+						"identity_card" => $user->identity_card,
+					];
+				}),
+		]);
 	}
 
 	/**
@@ -88,7 +78,7 @@ class HeadquarterController extends Controller {
 	public function store(StoreHeadquarterRequest $request) {
 		Headquarter::create($request->validated());
 
-		return redirect(url()->previous())->with(
+		return redirect(route("headquarters.index"))->with(
 			"message",
 			"Sede creada con éxito",
 		);
@@ -106,6 +96,24 @@ class HeadquarterController extends Controller {
 	 */
 	public function edit(Headquarter $headquarters) {
 		$this->authorize("update", $headquarters);
+
+		return Inertia::render("Headquarters/Edit", [
+			// Get the available representatives and the current
+			// headquarter's representative.
+			"representatives" => User::role("representative")
+				->where(function (Builder $query) use ($headquarters) {
+					if (is_null($headquarters->user)) {
+						return $query->doesntHave("headquarter");
+					}
+
+					$query
+						->doesntHave("headquarter", "or")
+						->orWhere("id", "=", $headquarters->user->id);
+				})
+				->orderBy("name")
+				->get(),
+			"headquarter" => $headquarters,
+		]);
 	}
 
 	/**
@@ -117,7 +125,7 @@ class HeadquarterController extends Controller {
 	) {
 		$headquarters->update($request->validated());
 
-		return redirect(url()->previous())->with(
+		return redirect(route("headquarters.index"))->with(
 			"message",
 			"Sede editada con éxito",
 		);
