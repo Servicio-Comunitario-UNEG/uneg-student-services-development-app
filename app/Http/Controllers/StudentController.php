@@ -6,38 +6,16 @@ use App\Http\Requests\StoreStudentRequest;
 use App\Http\Requests\UpdateStudentRequest;
 use App\Http\Utils;
 use App\Models\Career;
+use App\Models\CareerHeadquarter;
 use App\Models\Student;
 use App\Models\User;
 use Illuminate\Contracts\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 
 class StudentController extends Controller {
 	public function __construct() {
 		$this->middleware(["auth", "verified"]);
-	}
-
-	/**
-	 * Returns each career with the headquarter where it's present.
-	 */
-	private function getAcademicOffers() {
-		$careers = Career::whereHas("headquarters")->get();
-
-		/** @var Collection */
-		$careersByHeadquarter = new Collection();
-
-		foreach ($careers as $career) {
-			foreach ($career->headquarters as $headquarter) {
-				$careersByHeadquarter->push([
-					"career" => $career->setVisible(["id", "name"]),
-					"headquarter" => $headquarter->setVisible(["id", "name"]),
-					"id" => $headquarter->academic_offer->id,
-				]);
-			}
-		}
-
-		return $careersByHeadquarter;
 	}
 
 	/**
@@ -88,7 +66,10 @@ class StudentController extends Controller {
 		$this->authorize("create", User::class);
 
 		return Inertia::render("Students/Create", [
-			"careers_by_headquarter" => $this->getAcademicOffers(),
+			"career_by_headquarter" => CareerHeadquarter::with([
+				"career:id,name",
+				"headquarter:id,name",
+			])->get(),
 			"maximum_enrollable_birth_date" => Utils::getMaximumEnrollableBirthDate(),
 		]);
 	}
@@ -121,7 +102,10 @@ class StudentController extends Controller {
 
 		return Inertia::render("Students/Edit", [
 			"student" => $student,
-			"careers_by_headquarter" => $this->getAcademicOffers(),
+			"career_by_headquarter" => CareerHeadquarter::with([
+				"career:id,name",
+				"headquarter:id,name",
+			])->get(),
 			"maximum_enrollable_birth_date" => Utils::getMaximumEnrollableBirthDate(),
 		]);
 	}

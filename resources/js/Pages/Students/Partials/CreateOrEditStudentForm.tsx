@@ -2,10 +2,17 @@ import { Link, useForm, usePage } from "@inertiajs/react";
 import { Loader2 } from "lucide-react";
 import { FormEventHandler } from "react";
 
-import { Career, Headquarter, PageProps, Student } from "@/types";
+import {
+	Career,
+	CareerHeadquarter,
+	Headquarter,
+	PageProps,
+	Student,
+} from "@/types";
 
 import CardRadioGroupField from "@/Components/CardRadioGroupField";
 import { CheckboxField } from "@/Components/CheckboxField";
+import ComboboxField from "@/Components/ComboboxField";
 import IdentityCardField from "@/Components/IdentityCardField";
 import PhoneField from "@/Components/PhoneField";
 import TextField from "@/Components/TextField";
@@ -14,11 +21,12 @@ import { Button } from "@/Components/ui/button";
 import { Separator } from "@/Components/ui/separator";
 
 export type CreateOrEditStudentPageProps = PageProps<{
-	careers_by_headquarter: {
-		career: Pick<Career, "id" | "name">;
-		headquarter: Pick<Headquarter, "id" | "name">;
-		id: number;
-	}[];
+	career_by_headquarter: Array<
+		CareerHeadquarter & {
+			career: Pick<Career, "id" | "name">;
+			headquarter: Pick<Headquarter, "id" | "name">;
+		}
+	>;
 	maximum_enrollable_birth_date: string;
 }>;
 
@@ -31,7 +39,7 @@ export default function CreateOrEditStudentForm({
 	isUpdate?: boolean;
 	callToAction: string;
 }) {
-	const { maximum_enrollable_birth_date } =
+	const { maximum_enrollable_birth_date, career_by_headquarter } =
 		usePage<CreateOrEditStudentPageProps>().props;
 
 	const { data, setData, errors, processing, post, put } =
@@ -198,6 +206,39 @@ export default function CreateOrEditStudentForm({
 						],
 					}}
 					errorMessage={errors.sex}
+				/>
+			</fieldset>
+
+			<fieldset className="space-y-4">
+				<div className="space-y-2">
+					<legend className="font-heading font-medium text-foreground">
+						Información Académica
+					</legend>
+
+					<Separator className="w-full" />
+				</div>
+
+				<ComboboxField
+					id="career_by_headquarter"
+					labelProps={{
+						children: "Carrera",
+					}}
+					description="La carrera inscrita junto a su sede."
+					comboboxProps={{
+						placeholder: "Seleccione una carrera ",
+						value: data.career_headquarter_id
+							? String(data.career_headquarter_id)
+							: "",
+						setValue: (id) =>
+							setData("career_headquarter_id", Number(id)),
+						options: career_by_headquarter.map(
+							({ id, career, headquarter }) => ({
+								label: `${career.name} (${headquarter.name})`,
+								value: String(id),
+							}),
+						),
+					}}
+					errorMessage={errors.career_headquarter_id}
 				/>
 			</fieldset>
 

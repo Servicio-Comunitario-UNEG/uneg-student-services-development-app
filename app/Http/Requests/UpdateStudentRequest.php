@@ -47,6 +47,8 @@ class UpdateStudentRequest extends FormRequest {
 				"regex:/^(V|E){1,1}\d+$/",
 				Rule::unique(Student::class)->ignore($this->student->id),
 			],
+			"career_headquarter_id" =>
+				"required|integer|exists:career_headquarter,id",
 			"first_name" => "required|string|max:255",
 			"last_name" => "required|string|max:255",
 			"cell_phone" => "required|string|min:10",

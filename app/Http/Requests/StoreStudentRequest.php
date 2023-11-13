@@ -41,6 +41,8 @@ class StoreStudentRequest extends FormRequest {
 				"regex:/^(V|E){1,1}\d+$/",
 				"unique:" . Student::class,
 			],
+			"career_headquarter_id" =>
+				"required|integer|exists:career_headquarter,id",
 			"first_name" => "required|string|max:255",
 			"last_name" => "required|string|max:255",
 			"cell_phone" => "required|string|min:10",

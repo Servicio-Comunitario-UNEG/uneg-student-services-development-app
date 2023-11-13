@@ -27,6 +27,9 @@ export interface User {
 	permission_names: string[];
 }
 
+/**
+ * The navigation breadcrumb.
+ */
 export type Breadcrumb = {
 	title: string;
 	url: string;
@@ -94,12 +97,22 @@ export interface Career {
 }
 
 /**
+ * A career/headquarter pair.
+ */
+export interface CareerHeadquarter {
+	id: number;
+	career_id: number;
+	headquarter_id: number;
+}
+
+/**
  * An student of the university.
  */
 export interface Student {
 	id: number;
 	created_at: string;
 	updated_at: string;
+	career_headquarter_id: number | null;
 	email: string;
 	identity_card: IdentityCard;
 	first_name: string;
