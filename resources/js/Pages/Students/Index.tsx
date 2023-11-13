@@ -1,7 +1,14 @@
 import { Head, Link } from "@inertiajs/react";
 import { ColumnDef } from "@tanstack/react-table";
 
-import { PageProps, Paginated, Student } from "@/types";
+import {
+	Career,
+	CareerHeadquarter,
+	Headquarter,
+	PageProps,
+	Paginated,
+	Student,
+} from "@/types";
 
 import { AuthenticatedLayout } from "@/Layouts/AuthenticatedLayout";
 import PageLayout from "@/Layouts/PageLayout";
@@ -13,7 +20,7 @@ import { Button } from "@/Components/ui/button";
 import { DataTableToolbar } from "./Partials/DataTableToolbar";
 import StudentCellAction from "./Partials/StudentCellAction";
 
-const columns: ColumnDef<Student>[] = [
+const columns: ColumnDef<StudentWithCareerHeadquarter>[] = [
 	{
 		id: "full_name",
 		header: ({ column }) => (
@@ -71,13 +78,50 @@ const columns: ColumnDef<Student>[] = [
 		enableSorting: false,
 	},
 	{
+		id: "career",
+		header: ({ column }) => (
+			<DataTableColumnHeader column={column} title="Carrera" />
+		),
+		cell: ({ row }) => {
+			const { career_headquarter } = row.original;
+
+			if (!career_headquarter) return null;
+
+			return career_headquarter.career.name;
+		},
+		enableHiding: false,
+		enableSorting: false,
+	},
+	{
+		id: "headquarter",
+		header: ({ column }) => (
+			<DataTableColumnHeader column={column} title="Sede" />
+		),
+		cell: ({ row }) => {
+			const { career_headquarter } = row.original;
+
+			if (!career_headquarter) return null;
+
+			return career_headquarter.headquarter.name;
+		},
+		enableHiding: false,
+		enableSorting: false,
+	},
+	{
 		id: "actions",
 		cell: (cell) => <StudentCellAction {...cell} />,
 	},
 ];
 
+export type StudentWithCareerHeadquarter = Student & {
+	career_headquarter?: CareerHeadquarter & {
+		career: Career;
+		headquarter: Headquarter;
+	};
+};
+
 export type StudentsPageProps = PageProps<{
-	students: Paginated<Student>;
+	students: Paginated<StudentWithCareerHeadquarter>;
 	filters: {
 		search: string;
 		page: number;

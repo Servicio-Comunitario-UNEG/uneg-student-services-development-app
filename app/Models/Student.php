@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Student extends Model {
 	use HasFactory;
@@ -45,5 +46,12 @@ class Student extends Model {
 				];
 			},
 		);
+	}
+
+	/**
+	 * The career and headquarter where the student studies.
+	 */
+	public function career_headquarter(): BelongsTo {
+		return $this->belongsTo(CareerHeadquarter::class);
 	}
 }

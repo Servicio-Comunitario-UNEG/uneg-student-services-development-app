@@ -2,8 +2,6 @@ import { Link } from "@inertiajs/react";
 import { type CellContext } from "@tanstack/react-table";
 import { MoreHorizontal, Pencil, Trash } from "lucide-react";
 
-import { Student } from "@/types";
-
 import { Button } from "@/Components/ui/button";
 import {
 	DropdownMenu,
@@ -14,9 +12,11 @@ import {
 
 import { useGate } from "@/hooks/useGate";
 
+import { StudentWithCareerHeadquarter } from "../Index";
+
 export default function StudentCellAction({
 	row,
-}: CellContext<Student, unknown>) {
+}: CellContext<StudentWithCareerHeadquarter, unknown>) {
 	const student = row.original;
 	const gate = useGate();
 

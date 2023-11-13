@@ -38,7 +38,10 @@ class StudentController extends Controller {
 		}
 
 		return Inertia::render("Students/Index", [
-			"students" => Student::query()
+			"students" => Student::with(
+				"career_headquarter.career",
+				"career_headquarter.headquarter",
+			)
 				->when($search, function (Builder $query, string $search) {
 					// Filter by name.
 					$query
