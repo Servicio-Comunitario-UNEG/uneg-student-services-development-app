@@ -69,6 +69,8 @@ class SemesterController extends Controller {
 	 * Show the form for editing the specified resource.
 	 */
 	public function edit(Semester $semester) {
+		$this->authorize("update", $semester);
+
 		return Inertia::render("Semesters/Edit", [
 			"semester" => $semester,
 		]);
@@ -90,6 +92,13 @@ class SemesterController extends Controller {
 	 * Remove the specified resource from storage.
 	 */
 	public function destroy(Semester $semester) {
-		//
+		$this->authorize("delete", $semester);
+
+		$semester->delete();
+
+		return redirect(url()->previous())->with(
+			"message",
+			"Semestre eliminado con éxito",
+		);
 	}
 }

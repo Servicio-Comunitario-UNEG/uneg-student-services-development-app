@@ -43,6 +43,11 @@ export default function CreateOrEditSemesterForm({
 						autoComplete: "off",
 						autoFocus: true,
 						onChange: (e) => {
+							// Reset value.
+							if (!e.target.value) {
+								return setData("year", undefined);
+							}
+
 							const year = Number(e.target.value);
 
 							if (!Number.isNaN(year)) setData("year", year);
