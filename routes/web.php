@@ -99,4 +99,9 @@ Route::resource("semesters", SemesterController::class)->only([
 	"destroy",
 ]);
 
+Route::put("/semesters/{semester}/activate", [
+	SemesterController::class,
+	"activate",
+])->name("semesters.activate");
+
 require __DIR__ . "/auth.php";

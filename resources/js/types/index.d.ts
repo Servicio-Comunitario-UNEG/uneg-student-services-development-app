@@ -139,4 +139,5 @@ export interface Semester {
 	updated_at: string;
 	year: number;
 	lapse: number;
+	is_active: boolean;
 }

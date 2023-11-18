@@ -1,6 +1,6 @@
 import { Link } from "@inertiajs/react";
 import { type CellContext } from "@tanstack/react-table";
-import { MoreHorizontal, Pencil, Trash } from "lucide-react";
+import { Check, MoreHorizontal, Pencil, Trash } from "lucide-react";
 
 import { Semester } from "@/types";
 
@@ -38,6 +38,31 @@ export default function SemesterCellAction({
 							<Link href={route("semesters.edit", semester.id)}>
 								<Pencil className="mr-2 h-4 w-4" />
 								<span>Editar</span>
+							</Link>
+						</DropdownMenuItem>
+					) : null}
+
+					{!semester.is_active && gate.allows("edit semesters") ? (
+						<DropdownMenuItem asChild>
+							<Link
+								className="w-full"
+								as="button"
+								href={route("semesters.activate", semester.id)}
+								onClick={(e) => {
+									if (
+										!confirm(
+											"¿Desea activar este semestre?",
+										)
+									) {
+										e.preventDefault();
+									}
+								}}
+								method="put"
+								preserveScroll
+							>
+								<Check className="mr-2 h-4 w-4" />
+
+								<span>Activar</span>
 							</Link>
 						</DropdownMenuItem>
 					) : null}

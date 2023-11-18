@@ -1,5 +1,6 @@
 import { Head, Link } from "@inertiajs/react";
 import { ColumnDef } from "@tanstack/react-table";
+import { Check } from "lucide-react";
 
 import { PageProps, Paginated, Semester } from "@/types";
 
@@ -21,6 +22,7 @@ const columns: ColumnDef<Semester>[] = [
 			<DataTableColumnHeader column={column} title="Año" />
 		),
 		cell: ({ row }) => row.getValue("year"),
+		enableSorting: false,
 	},
 	{
 		accessorKey: "lapse",
@@ -28,6 +30,16 @@ const columns: ColumnDef<Semester>[] = [
 			<DataTableColumnHeader column={column} title="Lapso" />
 		),
 		cell: ({ row }) => row.getValue("lapse"),
+		enableSorting: false,
+	},
+	{
+		accessorKey: "is_active",
+		header: ({ column }) => (
+			<DataTableColumnHeader column={column} title="Activo" />
+		),
+		cell: ({ row }) =>
+			row.getValue("is_active") ? <Check className="h-4 w-4" /> : null,
+		enableSorting: false,
 	},
 	{
 		id: "actions",

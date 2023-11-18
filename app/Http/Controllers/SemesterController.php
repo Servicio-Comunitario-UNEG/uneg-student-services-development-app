@@ -29,7 +29,9 @@ class SemesterController extends Controller {
 		}
 
 		return Inertia::render("Semesters/Index", [
-			"semesters" => Semester::orderBy("year")->paginate($perPage),
+			"semesters" => Semester::orderBy("year", "desc")->paginate(
+				$perPage,
+			),
 			"filters" => [
 				"page" => $page,
 				"per_page" => $perPage,
@@ -99,6 +101,24 @@ class SemesterController extends Controller {
 		return redirect(url()->previous())->with(
 			"message",
 			"Semestre eliminado con éxito",
+		);
+	}
+
+	/**
+	 * Set semester as active.
+	 */
+	public function activate(Semester $semester) {
+		$previousActiveSemester = Semester::where("is_active", true)->first();
+
+		if (!is_null($previousActiveSemester)) {
+			$previousActiveSemester->update(["is_active" => false]);
+		}
+
+		$semester->update(["is_active" => true]);
+
+		return redirect(url()->previous())->with(
+			"message",
+			"Semestre ha sido establecido como activo",
 		);
 	}
 }

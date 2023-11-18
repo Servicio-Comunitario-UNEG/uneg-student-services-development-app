@@ -14,6 +14,7 @@ return new class extends Migration {
 			$table->timestamps();
 			$table->year("year");
 			$table->unsignedTinyInteger("lapse");
+			$table->boolean("is_active")->default(false);
 			$table->unique(["year", "lapse"]);
 		});
 	}

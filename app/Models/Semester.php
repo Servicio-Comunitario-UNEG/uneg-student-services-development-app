@@ -13,5 +13,5 @@ class Semester extends Model {
 	 *
 	 * @var array<int, string>
 	 */
-	protected $fillable = ["year", "lapse"];
+	protected $fillable = ["year", "lapse", "is_active"];
 }
