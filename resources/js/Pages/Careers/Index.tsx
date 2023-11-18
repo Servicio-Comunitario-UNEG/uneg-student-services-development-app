@@ -1,19 +1,31 @@
 import { Head, Link } from "@inertiajs/react";
 import { type ColumnDef } from "@tanstack/react-table";
 
-import type { Career, PageProps, Paginated } from "@/types";
+import type { Career, Headquarter, PageProps, Paginated } from "@/types";
 
 import { AuthenticatedLayout } from "@/Layouts/AuthenticatedLayout";
 import PageLayout from "@/Layouts/PageLayout";
 
 import { DataTable } from "@/Components/DataTable";
 import { DataTableColumnHeader } from "@/Components/DataTableColumnHeader";
+import { Badge } from "@/Components/ui/badge";
 import { Button } from "@/Components/ui/button";
 
 import CareerCellAction from "./Partials/CareerCellAction";
 import { DataTableToolbar } from "./Partials/DataTableToolbar";
 
-const columns: ColumnDef<Career>[] = [
+export type CareerWithHeadquarters = Career & {
+	headquarters: Array<
+		Pick<Headquarter, "id" | "name"> & {
+			pivot: {
+				career_id: number;
+				headquarter_id: number;
+			};
+		}
+	>;
+};
+
+const columns: ColumnDef<CareerWithHeadquarters>[] = [
 	{
 		accessorKey: "name",
 		header: ({ column }) => (
@@ -24,13 +36,37 @@ const columns: ColumnDef<Career>[] = [
 		enableSorting: false,
 	},
 	{
+		accessorKey: "headquarters",
+		header: ({ column }) => (
+			<DataTableColumnHeader column={column} title="Sedes" />
+		),
+		cell: ({ row }) => {
+			const headquarters = row.getValue(
+				"headquarters",
+			) as CareerWithHeadquarters["headquarters"];
+
+			return (
+				<div className="flex flex-wrap gap-1">
+					{headquarters.map((headquarter) => (
+						<Badge variant="secondary" key={headquarter.id}>
+							{headquarter.name}
+						</Badge>
+					))}
+				</div>
+			);
+		},
+		enableHiding: false,
+		enableSorting: false,
+	},
+	{
 		id: "actions",
 		cell: (cell) => <CareerCellAction {...cell} />,
 	},
 ];
 
 export type CareerPageProps = PageProps<{
-	careers: Paginated<Career>;
+	careers: Paginated<CareerWithHeadquarters>;
+	headquarters: Pick<Headquarter, "id" | "name">[];
 	filters: {
 		search: string;
 		page: string;

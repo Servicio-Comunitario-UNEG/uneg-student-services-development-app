@@ -1,38 +1,38 @@
-import { ComponentProps } from "react";
+import PhoneInput from "react-phone-number-input";
+import "react-phone-number-input/style.css";
 
 import { cn } from "@/lib/utils";
 
-import CardRadioGroup from "./CardRadioGroup";
 import InputError from "./InputError";
+import { Input } from "./ui/input";
 import { Label } from "./ui/label";
 
 interface Props {
-	legendProps: Omit<
-		React.LabelHTMLAttributes<HTMLLegendElement>,
-		"className"
+	id: string;
+	labelProps: Omit<
+		React.LabelHTMLAttributes<HTMLLabelElement>,
+		"className" | "htmlFor"
 	>;
-	cardRadioGroupProps: ComponentProps<typeof CardRadioGroup>;
-
+	phoneInputProps: React.ComponentProps<typeof PhoneInput>;
 	errorMessage?: string;
 	className?: string;
 	description?: string;
 	isOptional?: boolean;
 }
 
-export default function CardRadioGroupField({
-	legendProps,
-	cardRadioGroupProps,
+export default function PhoneField({
+	id,
+	labelProps,
+	phoneInputProps,
 	description,
 	errorMessage,
 	className,
 	isOptional = false,
 }: Props) {
 	return (
-		<fieldset className={cn("space-y-2", className)}>
+		<div className={cn("space-y-2", className)}>
 			<div className="flex items-center justify-between">
-				<Label asChild>
-					<legend {...legendProps} />
-				</Label>
+				<Label htmlFor={id} {...labelProps}></Label>
 
 				{isOptional ? (
 					<span className="text-xs text-muted-foreground">
@@ -45,12 +45,16 @@ export default function CardRadioGroupField({
 				<p className="text-sm text-muted-foreground">{description}</p>
 			) : null}
 
-			<CardRadioGroup
+			<PhoneInput
+				className="flex gap-x-2"
+				id={id}
+				name={id}
 				aria-invalid={errorMessage ? true : false}
-				{...cardRadioGroupProps}
+				inputComponent={Input}
+				{...phoneInputProps}
 			/>
 
 			<InputError message={errorMessage} />
-		</fieldset>
+		</div>
 	);
 }

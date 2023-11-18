@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\StoreUserRequest;
+use App\Http\Requests\UpdateUserRequest;
 use App\Models\User;
 use Hash;
 use Illuminate\Contracts\Database\Eloquent\Builder;
-use Illuminate\Validation\Rule;
-use Illuminate\Validation\Rules;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Spatie\Permission\Models\Role;
@@ -14,25 +14,6 @@ use Spatie\Permission\Models\Role;
 class UserController extends Controller {
 	public function __construct() {
 		$this->middleware(["auth", "verified"]);
-	}
-
-	/**
-	 * Returns the identity card from the nationality and serial.
-	 */
-	private function toIdentityCard(array $identity_card): string {
-		$nationality =
-			key_exists("nationality", $identity_card) &&
-			is_string($identity_card["nationality"])
-				? $identity_card["nationality"]
-				: "";
-
-		$serial =
-			key_exists("serial", $identity_card) &&
-			is_string($identity_card["serial"])
-				? $identity_card["serial"]
-				: "";
-
-		return $nationality . $serial;
 	}
 
 	/**
@@ -131,26 +112,8 @@ class UserController extends Controller {
 	/**
 	 * Store a newly created resource in storage.
 	 */
-	public function store(Request $request) {
-		$this->authorize("create", User::class);
-
-		// Set the generated identity card.
-		$data = $request->all();
-		$data["identity_card"] = $this->toIdentityCard($data["identity_card"]);
-		$request->merge($data);
-
-		$validated = $request->validate([
-			"name" => "required|string|max:255",
-			"email" => "required|string|email|max:255|unique:" . User::class,
-			"identity_card" => [
-				"required",
-				"string",
-				"regex:/^(V|E){1,1}\d+$/",
-				"unique:" . User::class,
-			],
-			"password" => ["required", Rules\Password::defaults()],
-			"role_name" => "required|exists:roles,name",
-		]);
+	public function store(StoreUserRequest $request) {
+		$validated = $request->validated();
 
 		// Create the user and assign its role.
 		$user = User::create([
@@ -190,40 +153,10 @@ class UserController extends Controller {
 	/**
 	 * Update the specified resource in storage.
 	 */
-	public function update(Request $request, User $user) {
-		$this->authorize("update", $user);
-
-		// Set the generated identity card.
-		$data = $request->all();
-		$data["identity_card"] = $this->toIdentityCard($data["identity_card"]);
-		$request->merge($data);
-
-		$validated = $request->validate([
-			"name" => "required|string|max:255",
-			"email" => [
-				"required",
-				"string",
-				"email",
-				"max:255",
-				Rule::unique(User::class)->ignore($user->id),
-			],
-			"identity_card" => [
-				"required",
-				"string",
-				"regex:/^(V|E){1,1}\d+$/",
-				Rule::unique(User::class)->ignore($user->id),
-			],
-			"role_name" => "required|exists:roles,name",
-		]);
-
+	public function update(UpdateUserRequest $request, User $user) {
 		// Update the user and sync the roles.
-		$user->update([
-			"name" => $validated["name"],
-			"email" => $validated["email"],
-			"identity_card" => $validated["identity_card"],
-		]);
-
-		$user->syncRoles([$validated["role_name"]]);
+		$user->update($request->safe()->except(["role_name"]));
+		$user->syncRoles([$request->validated("role_name")]);
 
 		return redirect(route("users.index"))->with(
 			"message",

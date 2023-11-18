@@ -2,8 +2,6 @@ import { Link } from "@inertiajs/react";
 import { type CellContext } from "@tanstack/react-table";
 import { MoreHorizontal, Pencil, Trash } from "lucide-react";
 
-import type { Career } from "@/types";
-
 import { Button } from "@/Components/ui/button";
 import {
 	DropdownMenu,
@@ -12,9 +10,11 @@ import {
 	DropdownMenuTrigger,
 } from "@/Components/ui/dropdown-menu";
 
+import { CareerWithHeadquarters } from "../Index";
+
 export default function CareerCellAction({
 	row,
-}: CellContext<Career, unknown>) {
+}: CellContext<CareerWithHeadquarters, unknown>) {
 	const career = row.original;
 
 	return (

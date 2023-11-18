@@ -2,10 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\StoreCareerRequest;
+use App\Http\Requests\UpdateCareerRequest;
 use App\Models\Career;
+use App\Models\Headquarter;
+use App\Models\User;
 use Illuminate\Contracts\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
-use Illuminate\Validation\Rule;
 use Inertia\Inertia;
 
 class CareerController extends Controller {
@@ -13,6 +16,8 @@ class CareerController extends Controller {
 	 * Display a listing of the resource.
 	 */
 	public function index(Request $request) {
+		$this->authorize("viewAny", User::class);
+
 		// Get the search queries.
 		$search = $request->query("search", "");
 		$page = $request->query("page");
@@ -33,6 +38,7 @@ class CareerController extends Controller {
 					$query->where("name", "like", "%$search%");
 				})
 				->orderByRaw("name COLLATE NOCASE ASC")
+				->with("headquarters:id,name")
 				->paginate($perPage)
 				->withQueryString(),
 			"filters" => [
@@ -47,18 +53,19 @@ class CareerController extends Controller {
 	 * Show the form for creating a new resource.
 	 */
 	public function create() {
-		return Inertia::render("Careers/Create");
+		return Inertia::render("Careers/Create", [
+			"headquarters" => Headquarter::all(["id", "name"]),
+		]);
 	}
 
 	/**
 	 * Store a newly created resource in storage.
 	 */
-	public function store(Request $request) {
-		$validated = $request->validate([
-			"name" => "required|string|unique:headquarters|max:255",
-		]);
+	public function store(StoreCareerRequest $request) {
+		$validated = $request->validated();
 
-		Career::create($validated);
+		$career = Career::create(["name" => $validated["name"]]);
+		$career->headquarters()->attach($validated["headquarters_id"]);
 
 		return redirect(route("careers.index"))->with(
 			"message",
@@ -79,23 +86,18 @@ class CareerController extends Controller {
 	public function edit(Career $career) {
 		return Inertia::render("Careers/Edit", [
 			"career" => $career,
+			"headquarters" => Headquarter::all(["id", "name"]),
 		]);
 	}
 
 	/**
 	 * Update the specified resource in storage.
 	 */
-	public function update(Request $request, Career $career) {
-		$validated = $request->validate([
-			"name" => [
-				"required",
-				"string",
-				Rule::unique("careers")->ignore($career->id),
-				"max:255",
-			],
-		]);
+	public function update(UpdateCareerRequest $request, Career $career) {
+		$validated = $request->validated();
 
-		$career->update($validated);
+		$career->update(["name" => $validated["name"]]);
+		$career->headquarters()->sync($validated["headquarters_id"]);
 
 		return redirect(route("careers.index"))->with(
 			"message",
@@ -107,6 +109,8 @@ class CareerController extends Controller {
 	 * Remove the specified resource from storage.
 	 */
 	public function destroy(Career $career) {
+		$this->authorize("delete", $career);
+
 		$career->delete();
 
 		return redirect(url()->previous())->with(

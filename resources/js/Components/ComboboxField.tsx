@@ -34,7 +34,7 @@ export default function ComboboxField({
 				<Label htmlFor={id} {...labelProps}></Label>
 
 				{isOptional ? (
-					<span className="text-sm text-muted-foreground">
+					<span className="text-xs text-muted-foreground">
 						Opcional
 					</span>
 				) : null}

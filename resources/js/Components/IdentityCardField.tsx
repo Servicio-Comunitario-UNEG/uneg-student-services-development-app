@@ -47,17 +47,19 @@ export default function IdentityCardField({
 				<Label htmlFor={id} {...labelProps}></Label>
 
 				{isOptional ? (
-					<span className="text-sm text-muted-foreground">
+					<span className="text-xs text-muted-foreground">
 						Opcional
 					</span>
 				) : null}
 			</div>
 
-			<p className="text-sm text-muted-foreground">{description}</p>
+			{description ? (
+				<p className="text-sm text-muted-foreground">{description}</p>
+			) : null}
 
 			<div className="flex gap-2">
 				<Select {...selectProps}>
-					<SelectTrigger id={id} className="w-[80px]">
+					<SelectTrigger id={id} className="w-16">
 						<SelectValue placeholder="N" />
 					</SelectTrigger>
 

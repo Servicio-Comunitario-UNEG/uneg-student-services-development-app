@@ -2,37 +2,36 @@ import { ComponentProps } from "react";
 
 import { cn } from "@/lib/utils";
 
-import CardRadioGroup from "./CardRadioGroup";
 import InputError from "./InputError";
+import MultiSelectCombobox from "./MultiSelectCombobox";
 import { Label } from "./ui/label";
 
 interface Props {
-	legendProps: Omit<
-		React.LabelHTMLAttributes<HTMLLegendElement>,
-		"className"
+	id: string;
+	labelProps: Omit<
+		React.LabelHTMLAttributes<HTMLLabelElement>,
+		"className" | "htmlFor"
 	>;
-	cardRadioGroupProps: ComponentProps<typeof CardRadioGroup>;
-
+	multiSelectComboboxProps: ComponentProps<typeof MultiSelectCombobox>;
 	errorMessage?: string;
 	className?: string;
 	description?: string;
 	isOptional?: boolean;
 }
 
-export default function CardRadioGroupField({
-	legendProps,
-	cardRadioGroupProps,
+export default function MultiSelectComboboxField({
+	id,
+	labelProps,
+	multiSelectComboboxProps,
 	description,
 	errorMessage,
 	className,
 	isOptional = false,
 }: Props) {
 	return (
-		<fieldset className={cn("space-y-2", className)}>
+		<div className={cn("space-y-2", className)}>
 			<div className="flex items-center justify-between">
-				<Label asChild>
-					<legend {...legendProps} />
-				</Label>
+				<Label htmlFor={id} {...labelProps}></Label>
 
 				{isOptional ? (
 					<span className="text-xs text-muted-foreground">
@@ -45,12 +44,16 @@ export default function CardRadioGroupField({
 				<p className="text-sm text-muted-foreground">{description}</p>
 			) : null}
 
-			<CardRadioGroup
-				aria-invalid={errorMessage ? true : false}
-				{...cardRadioGroupProps}
+			<MultiSelectCombobox
+				buttonProps={{
+					id,
+					"aria-invalid": Boolean(errorMessage),
+					name: id,
+				}}
+				{...multiSelectComboboxProps}
 			/>
 
 			<InputError message={errorMessage} />
-		</fieldset>
+		</div>
 	);
 }

@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class Headquarter extends Model {
 	use HasFactory;
@@ -21,5 +22,14 @@ class Headquarter extends Model {
 	 */
 	public function user(): BelongsTo {
 		return $this->belongsTo(User::class);
+	}
+
+	/**
+	 * The careers this headquarter offers.
+	 */
+	public function careers(): BelongsToMany {
+		return $this->belongsToMany(Career::class)
+			->as("academic_offer")
+			->withPivot(["id"]);
 	}
 }

@@ -90,7 +90,7 @@ export default function CreateOrEditUserForm({
 						},
 					}}
 					labelProps={{
-						children: "Cédula de Identidad",
+						children: "Cédula de identidad",
 					}}
 					inputProps={{
 						name: "serial",
