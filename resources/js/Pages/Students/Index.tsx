@@ -108,7 +108,11 @@ export type StudentWithCareerHeadquarter = Student & {
 
 export type StudentsPageProps = PageProps<{
 	students: Paginated<StudentWithCareerHeadquarter>;
+	careers: Pick<Career, "id" | "name">[];
+	headquarters: Pick<Headquarter, "id" | "name" | "user_id">[];
 	filters: {
+		careers: string[];
+		headquarters: string[];
 		search: string;
 		page: number;
 		per_page: number;

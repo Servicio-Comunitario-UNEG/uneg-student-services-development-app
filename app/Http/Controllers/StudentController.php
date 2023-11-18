@@ -7,6 +7,7 @@ use App\Http\Requests\UpdateStudentRequest;
 use App\Http\Utils;
 use App\Models\Career;
 use App\Models\CareerHeadquarter;
+use App\Models\Headquarter;
 use App\Models\Student;
 use App\Models\User;
 use Illuminate\Contracts\Database\Eloquent\Builder;
@@ -25,6 +26,8 @@ class StudentController extends Controller {
 		$this->authorize("viewAny", User::class);
 
 		// Get search queries.
+		$selectedCareers = $request->query("careers", []);
+		$selectedHeadquarters = $request->query("headquarters", []);
 		$search = $request->query("search", "");
 		$page = $request->query("page");
 		$perPage = $request->query("per_page");
@@ -42,8 +45,34 @@ class StudentController extends Controller {
 				"career_headquarter.career",
 				"career_headquarter.headquarter",
 			)
+				->when($selectedCareers, function (
+					Builder $query,
+					array $selectedCareers,
+				) {
+					// Filter by career.
+					$query->whereHas(
+						"career_headquarter",
+						fn(Builder $query) => $query->whereIn(
+							"career_id",
+							$selectedCareers,
+						),
+					);
+				})
+				->when($selectedHeadquarters, function (
+					Builder $query,
+					array $selectedHeadquarters,
+				) {
+					// Filter by headquarter.
+					$query->whereHas(
+						"career_headquarter",
+						fn(Builder $query) => $query->whereIn(
+							"headquarter_id",
+							$selectedHeadquarters,
+						),
+					);
+				})
 				->when($search, function (Builder $query, string $search) {
-					// Filter by name.
+					// Filter by full name, email or identity card.
 					$query
 						->where("first_name", "like", "%$search%")
 						->orWhere("second_name", "like", "%$search%")
@@ -54,7 +83,11 @@ class StudentController extends Controller {
 				})
 				->orderByRaw("first_name COLLATE NOCASE ASC")
 				->paginate($perPage),
+			"careers" => Career::all(["id", "name"]),
+			"headquarters" => Headquarter::all(["id", "name"]),
 			"filters" => [
+				"careers" => $selectedCareers,
+				"headquarters" => $selectedHeadquarters,
 				"search" => $search,
 				"page" => $page,
 				"per_page" => $perPage,
