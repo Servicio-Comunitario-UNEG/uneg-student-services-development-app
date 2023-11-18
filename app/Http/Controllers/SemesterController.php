@@ -3,63 +3,77 @@
 namespace App\Http\Controllers;
 
 use App\Models\Semester;
+use App\Models\User;
 use Illuminate\Http\Request;
+use Inertia\Inertia;
 
-class SemesterController extends Controller
-{
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
-    {
-        //
-    }
+class SemesterController extends Controller {
+	/**
+	 * Display a listing of the resource.
+	 */
+	public function index(Request $request) {
+		$this->authorize("viewAny", User::class);
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
+		// Get search queries.
+		$page = $request->query("page");
+		$perPage = $request->query("per_page");
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
-    {
-        //
-    }
+		if (is_null($page) || !is_numeric($page)) {
+			$page = 1;
+		}
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(Semester $semester)
-    {
-        //
-    }
+		if (is_null($perPage) || !is_numeric($perPage)) {
+			$perPage = 10;
+		}
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Semester $semester)
-    {
-        //
-    }
+		return Inertia::render("Semesters/Index", [
+			"semesters" => Semester::orderBy("year")->paginate($perPage),
+			"filters" => [
+				"page" => $page,
+				"per_page" => $perPage,
+			],
+		]);
+	}
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, Semester $semester)
-    {
-        //
-    }
+	/**
+	 * Show the form for creating a new resource.
+	 */
+	public function create() {
+		//
+	}
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(Semester $semester)
-    {
-        //
-    }
+	/**
+	 * Store a newly created resource in storage.
+	 */
+	public function store(Request $request) {
+		//
+	}
+
+	/**
+	 * Display the specified resource.
+	 */
+	public function show(Semester $semester) {
+		//
+	}
+
+	/**
+	 * Show the form for editing the specified resource.
+	 */
+	public function edit(Semester $semester) {
+		//
+	}
+
+	/**
+	 * Update the specified resource in storage.
+	 */
+	public function update(Request $request, Semester $semester) {
+		//
+	}
+
+	/**
+	 * Remove the specified resource from storage.
+	 */
+	public function destroy(Semester $semester) {
+		//
+	}
 }

@@ -43,6 +43,12 @@ class PermissionSeeder extends Seeder {
 			"view students",
 			"edit students",
 			"delete students",
+
+			// Semesters.
+			"create semesters",
+			"view semesters",
+			"edit semesters",
+			"delete semesters",
 		];
 
 		foreach ($permissionNames as $permission) {

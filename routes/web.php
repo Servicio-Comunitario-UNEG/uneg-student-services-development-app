@@ -3,6 +3,7 @@
 use App\Http\Controllers\CareerController;
 use App\Http\Controllers\HeadquarterController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\SemesterController;
 use App\Http\Controllers\StudentController;
 use App\Http\Controllers\UserController;
 use Illuminate\Foundation\Application;
@@ -87,5 +88,8 @@ Route::resource("students", StudentController::class)->only([
 	"destroy",
 	"show",
 ]);
+
+// Semesters routes.
+Route::resource("semesters", SemesterController::class)->only(["index"]);
 
 require __DIR__ . "/auth.php";

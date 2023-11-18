@@ -2,6 +2,7 @@ import {
 	BarChart3,
 	BookCopy,
 	Building,
+	Calendar,
 	GraduationCap,
 	LucideIcon,
 	Users,
@@ -47,6 +48,13 @@ export const links: {
 		to: "students.index",
 		Icon: GraduationCap,
 		urlStartsWith: "/students",
+	},
+	{
+		title: "Semestres",
+		permission: "view semesters",
+		to: "semesters.index",
+		Icon: Calendar,
+		urlStartsWith: "/semesters",
 	},
 	{
 		title: "Perfil",
