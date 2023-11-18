@@ -1,4 +1,4 @@
-import { Head } from "@inertiajs/react";
+import { Head, Link } from "@inertiajs/react";
 import { ColumnDef } from "@tanstack/react-table";
 
 import { PageProps, Paginated, Semester } from "@/types";
@@ -8,6 +8,9 @@ import PageLayout from "@/Layouts/PageLayout";
 
 import { DataTable } from "@/Components/DataTable";
 import { DataTableColumnHeader } from "@/Components/DataTableColumnHeader";
+import { Button } from "@/Components/ui/button";
+
+import { useGate } from "@/hooks/useGate";
 
 const columns: ColumnDef<Semester>[] = [
 	{
@@ -35,12 +38,19 @@ export type SemestersPageProps = PageProps<{
 }>;
 
 export default function Index({ semesters }: SemestersPageProps) {
+	const gate = useGate();
+
 	return (
 		<PageLayout
 			headerProps={{
 				title: "Semestres",
 				description:
 					"Los semestres actuales y pasados de la universidad.",
+				actions: gate.allows("create semesters") ? (
+					<Button asChild>
+						<Link href={route("semesters.create")}>Crear</Link>
+					</Button>
+				) : null,
 			}}
 		>
 			<Head title="Semestres" />

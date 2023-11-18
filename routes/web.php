@@ -90,6 +90,10 @@ Route::resource("students", StudentController::class)->only([
 ]);
 
 // Semesters routes.
-Route::resource("semesters", SemesterController::class)->only(["index"]);
+Route::resource("semesters", SemesterController::class)->only([
+	"index",
+	"create",
+	"store",
+]);
 
 require __DIR__ . "/auth.php";

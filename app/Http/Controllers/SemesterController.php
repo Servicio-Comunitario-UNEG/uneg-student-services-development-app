@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\StoreSemesterRequest;
 use App\Models\Semester;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -39,14 +40,21 @@ class SemesterController extends Controller {
 	 * Show the form for creating a new resource.
 	 */
 	public function create() {
-		//
+		$this->authorize("create", User::class);
+
+		return Inertia::render("Semesters/Create");
 	}
 
 	/**
 	 * Store a newly created resource in storage.
 	 */
-	public function store(Request $request) {
-		//
+	public function store(StoreSemesterRequest $request) {
+		Semester::create($request->validated());
+
+		return redirect(route("semesters.index"))->with(
+			"message",
+			"Semestre creado con éxito",
+		);
 	}
 
 	/**
