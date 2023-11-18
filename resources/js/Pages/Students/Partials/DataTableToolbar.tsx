@@ -11,8 +11,6 @@ export function DataTableToolbar() {
 	const { filters, careers, headquarters } =
 		usePage<StudentsPageProps>().props;
 
-	console.log(careers, headquarters);
-
 	// Updates the search query.
 	const onSearchTermChange = useMemo(
 		() =>

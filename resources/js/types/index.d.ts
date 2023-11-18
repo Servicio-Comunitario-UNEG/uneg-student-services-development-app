@@ -129,3 +129,15 @@ export interface Student {
 	graffar: number | null;
 	socioeconomic_situation: string | null;
 }
+
+/**
+ * A semester of the university.
+ */
+export interface Semester {
+	id: number;
+	created_at: string;
+	updated_at: string;
+	year: number;
+	lapse: number;
+	is_active: boolean;
+}
