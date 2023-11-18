@@ -88,3 +88,12 @@ Breadcrumbs::for("students.edit", function (
 	$trail->parent("students.index");
 	$trail->push("Editar", route("students.edit", $student));
 });
+
+// Students > Show
+Breadcrumbs::for("students.show", function (
+	BreadcrumbTrail $trail,
+	Student $student,
+) {
+	$trail->parent("students.index");
+	$trail->push("Estudiante", route("students.show", $student));
+});

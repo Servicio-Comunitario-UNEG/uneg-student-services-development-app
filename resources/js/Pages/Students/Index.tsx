@@ -17,6 +17,8 @@ import { DataTable } from "@/Components/DataTable";
 import { DataTableColumnHeader } from "@/Components/DataTableColumnHeader";
 import { Button } from "@/Components/ui/button";
 
+import { getFullName } from "@/lib/utils";
+
 import { DataTableToolbar } from "./Partials/DataTableToolbar";
 import StudentCellAction from "./Partials/StudentCellAction";
 
@@ -26,23 +28,7 @@ const columns: ColumnDef<StudentWithCareerHeadquarter>[] = [
 		header: ({ column }) => (
 			<DataTableColumnHeader column={column} title="Nombre Completo" />
 		),
-		cell: ({ row }) => {
-			const { first_name, second_name, last_name, second_last_name } =
-				row.original;
-
-			return [
-				first_name,
-				second_name,
-				last_name,
-				second_last_name,
-			].reduce((previous, current) => {
-				if (!previous) return current ?? "";
-
-				if (!current) return previous;
-
-				return previous.concat(` ${current}`);
-			}, "");
-		},
+		cell: ({ row }) => getFullName(row.original),
 	},
 	{
 		accessorKey: "identity_card",

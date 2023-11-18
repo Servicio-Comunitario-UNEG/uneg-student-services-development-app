@@ -1,6 +1,6 @@
 import { Link } from "@inertiajs/react";
 import { type CellContext } from "@tanstack/react-table";
-import { MoreHorizontal, Pencil, Trash } from "lucide-react";
+import { Eye, MoreHorizontal, Pencil, Trash } from "lucide-react";
 
 import { Button } from "@/Components/ui/button";
 import {
@@ -20,7 +20,8 @@ export default function StudentCellAction({
 	const student = row.original;
 	const gate = useGate();
 
-	if (!gate.any(["edit students", "delete students"])) return null;
+	if (!gate.any(["view students", "edit students", "delete students"]))
+		return null;
 
 	return (
 		<div className="flex justify-end">
@@ -33,6 +34,15 @@ export default function StudentCellAction({
 				</DropdownMenuTrigger>
 
 				<DropdownMenuContent align="end">
+					{gate.allows("view students") ? (
+						<DropdownMenuItem asChild>
+							<Link href={route("students.show", student.id)}>
+								<Eye className="mr-2 h-4 w-4" />
+								<span>Ver</span>
+							</Link>
+						</DropdownMenuItem>
+					) : null}
+
 					{gate.allows("edit students") ? (
 						<DropdownMenuItem asChild>
 							<Link href={route("students.edit", student.id)}>

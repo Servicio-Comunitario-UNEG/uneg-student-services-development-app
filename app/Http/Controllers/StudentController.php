@@ -94,7 +94,14 @@ class StudentController extends Controller {
 	 * Display the specified resource.
 	 */
 	public function show(Student $student) {
-		//
+		$this->authorize("view", $student);
+
+		return Inertia::render("Students/Student", [
+			"student" => $student->load([
+				"career_headquarter.career",
+				"career_headquarter.headquarter",
+			]),
+		]);
 	}
 
 	/**

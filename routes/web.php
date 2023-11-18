@@ -85,6 +85,7 @@ Route::resource("students", StudentController::class)->only([
 	"update",
 	"edit",
 	"destroy",
+	"show",
 ]);
 
 require __DIR__ . "/auth.php";
