@@ -108,11 +108,9 @@ class SemesterController extends Controller {
 	 * Set semester as active.
 	 */
 	public function activate(Semester $semester) {
-		$previousActiveSemester = Semester::where("is_active", true)->first();
-
-		if (!is_null($previousActiveSemester)) {
-			$previousActiveSemester->update(["is_active" => false]);
-		}
+		Semester::where("is_active", true)->update([
+			"is_active" => false,
+		]);
 
 		$semester->update(["is_active" => true]);
 
