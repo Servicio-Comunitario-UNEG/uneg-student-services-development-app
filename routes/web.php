@@ -94,6 +94,8 @@ Route::resource("semesters", SemesterController::class)->only([
 	"index",
 	"create",
 	"store",
+	"edit",
+	"update",
 ]);
 
 require __DIR__ . "/auth.php";

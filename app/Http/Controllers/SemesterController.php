@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreSemesterRequest;
+use App\Http\Requests\UpdateSemesterRequest;
 use App\Models\Semester;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -68,14 +69,21 @@ class SemesterController extends Controller {
 	 * Show the form for editing the specified resource.
 	 */
 	public function edit(Semester $semester) {
-		//
+		return Inertia::render("Semesters/Edit", [
+			"semester" => $semester,
+		]);
 	}
 
 	/**
 	 * Update the specified resource in storage.
 	 */
-	public function update(Request $request, Semester $semester) {
-		//
+	public function update(UpdateSemesterRequest $request, Semester $semester) {
+		$semester->update($request->validated());
+
+		return redirect(route("semesters.index"))->with(
+			"message",
+			"Semestre editado con éxito",
+		);
 	}
 
 	/**

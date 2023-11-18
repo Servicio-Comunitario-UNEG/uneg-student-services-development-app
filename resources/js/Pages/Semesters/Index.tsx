@@ -12,6 +12,8 @@ import { Button } from "@/Components/ui/button";
 
 import { useGate } from "@/hooks/useGate";
 
+import SemesterCellAction from "./Partials/CareerCellAction";
+
 const columns: ColumnDef<Semester>[] = [
 	{
 		accessorKey: "year",
@@ -26,6 +28,10 @@ const columns: ColumnDef<Semester>[] = [
 			<DataTableColumnHeader column={column} title="Lapso" />
 		),
 		cell: ({ row }) => row.getValue("lapse"),
+	},
+	{
+		id: "actions",
+		cell: (cell) => <SemesterCellAction {...cell} />,
 	},
 ];
 

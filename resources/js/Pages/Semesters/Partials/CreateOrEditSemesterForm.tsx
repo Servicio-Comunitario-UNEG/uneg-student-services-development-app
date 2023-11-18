@@ -63,10 +63,17 @@ export default function CreateOrEditSemesterForm({
 					inputProps={{
 						autoComplete: "off",
 						onChange: (e) => {
+							// Reset value.
+							if (!e.target.value) {
+								return setData("lapse", undefined);
+							}
+
 							const lapse = Number(e.target.value);
 
 							if (!Number.isNaN(lapse)) setData("lapse", lapse);
 						},
+						min: 1,
+						max: 2,
 						placeholder: "ej: 1",
 						type: "number",
 						required: true,
