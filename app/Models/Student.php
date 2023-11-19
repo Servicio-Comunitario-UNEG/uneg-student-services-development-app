@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Student extends Model {
 	use HasFactory;
@@ -53,5 +54,12 @@ class Student extends Model {
 	 */
 	public function career_headquarter(): BelongsTo {
 		return $this->belongsTo(CareerHeadquarter::class);
+	}
+
+	/**
+	 * The supports this student has received.
+	 */
+	public function supports(): HasMany {
+		return $this->hasMany(Support::class);
 	}
 }
