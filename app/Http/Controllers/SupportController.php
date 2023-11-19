@@ -3,63 +3,60 @@
 namespace App\Http\Controllers;
 
 use App\Models\Support;
+use App\Models\User;
 use Illuminate\Http\Request;
 
-class SupportController extends Controller
-{
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
-    {
-        //
-    }
+class SupportController extends Controller {
+	public function __construct() {
+		$this->middleware(["auth", "verified"]);
+	}
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
+	/**
+	 * Display a listing of the resource.
+	 */
+	public function index() {
+		$this->authorize("viewAny", User::class);
+	}
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
-    {
-        //
-    }
+	/**
+	 * Show the form for creating a new resource.
+	 */
+	public function create() {
+		$this->authorize("create", User::class);
+	}
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(Support $support)
-    {
-        //
-    }
+	/**
+	 * Store a newly created resource in storage.
+	 */
+	public function store(Request $request) {
+		//
+	}
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Support $support)
-    {
-        //
-    }
+	/**
+	 * Display the specified resource.
+	 */
+	public function show(Support $support) {
+		//
+	}
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, Support $support)
-    {
-        //
-    }
+	/**
+	 * Show the form for editing the specified resource.
+	 */
+	public function edit(Support $support) {
+		$this->authorize("update", $support);
+	}
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(Support $support)
-    {
-        //
-    }
+	/**
+	 * Update the specified resource in storage.
+	 */
+	public function update(Request $request, Support $support) {
+		//
+	}
+
+	/**
+	 * Remove the specified resource from storage.
+	 */
+	public function destroy(Support $support) {
+		$this->authorize("delete", $support);
+	}
 }
