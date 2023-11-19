@@ -20,6 +20,7 @@ class UserFactory extends Factory {
 					"admin",
 					"coordinator",
 					"representative",
+					"nurse",
 				]),
 			]);
 		});

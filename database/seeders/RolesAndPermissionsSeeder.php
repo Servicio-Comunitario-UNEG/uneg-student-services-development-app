@@ -7,7 +7,7 @@ use Illuminate\Database\Seeder;
 use Spatie\Permission\Models\Permission;
 use Spatie\Permission\Models\Role;
 
-class PermissionSeeder extends Seeder {
+class RolesAndPermissionsSeeder extends Seeder {
 	/**
 	 * Run the database seeds.
 	 */
@@ -49,6 +49,12 @@ class PermissionSeeder extends Seeder {
 			"view semesters",
 			"edit semesters",
 			"delete semesters",
+
+			// Supports.
+			"create supports",
+			"view supports",
+			"edit supports",
+			"delete supports",
 		];
 
 		foreach ($permissionNames as $permission) {
@@ -94,10 +100,31 @@ class PermissionSeeder extends Seeder {
 				"description" => "Representante",
 			],
 		)->syncPermissions([
+			// Supports.
+			"view supports",
+
+			// Students.
 			"create students",
 			"view students",
 			"edit students",
 			"delete students",
+		]);
+
+		Role::updateOrCreate(
+			["name" => "nurse"],
+			[
+				"name" => "nurse",
+				"description" => "Enfermero (a)",
+			],
+		)->syncPermissions([
+			// Students.
+			"view students",
+
+			// Supports.
+			"create supports",
+			"view supports",
+			"edit supports",
+			"delete supports",
 		]);
 	}
 }

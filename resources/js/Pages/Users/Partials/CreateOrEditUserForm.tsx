@@ -4,9 +4,9 @@ import type { FormEventHandler } from "react";
 
 import type { Role, User } from "@/types";
 
-import CardRadioGroupField from "@/Components/CardRadioGroupField";
 import IdentityCardField from "@/Components/IdentityCardField";
 import PasswordField from "@/Components/PasswordField";
+import RadioGroupField from "@/Components/RadioGroupField";
 import TextField from "@/Components/TextField";
 import { Button } from "@/Components/ui/button";
 
@@ -126,14 +126,11 @@ export default function CreateOrEditUserForm({
 					/>
 				)}
 
-				<CardRadioGroupField
+				<RadioGroupField
 					legendProps={{
 						children: "Rol",
 					}}
-					cardRadioGroupProps={{
-						style: {
-							gridTemplateColumns: `repeat(${roles.length}, minmax(0, 1fr))`,
-						},
+					radioGroupProps={{
 						name: "role",
 						value: data.role_name ?? "",
 						onValueChange: (value) => setData("role_name", value),
