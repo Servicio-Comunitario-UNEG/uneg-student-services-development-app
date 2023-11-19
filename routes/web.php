@@ -109,6 +109,7 @@ Route::put("/semesters/{semester}/activate", [
 Route::resource("supports", SupportController::class)->only([
 	"index",
 	"create",
+	"store",
 ]);
 
 require __DIR__ . "/auth.php";

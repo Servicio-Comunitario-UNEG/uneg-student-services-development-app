@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\StoreSupportRequest;
 use App\Models\Student;
 use App\Models\Support;
 use App\Models\User;
@@ -41,8 +42,16 @@ class SupportController extends Controller {
 	/**
 	 * Store a newly created resource in storage.
 	 */
-	public function store(Request $request) {
-		//
+	public function store(StoreSupportRequest $request) {
+		$request
+			->user()
+			->supports()
+			->create($request->validated());
+
+		return redirect(route("supports.index"))->with(
+			"message",
+			"Apoyo creado con éxito",
+		);
 	}
 
 	/**

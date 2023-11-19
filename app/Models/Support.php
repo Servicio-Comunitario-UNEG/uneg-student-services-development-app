@@ -14,13 +14,7 @@ class Support extends Model {
 	 *
 	 * @var array<int, string>
 	 */
-	protected $fillable = [
-		"user_id",
-		"student_id",
-		"date",
-		"type",
-		"description",
-	];
+	protected $fillable = ["student_id", "date", "type", "description"];
 
 	/**
 	 * The user that created this support.
