@@ -17,10 +17,33 @@ class SupportController extends Controller {
 	/**
 	 * Display a listing of the resource.
 	 */
-	public function index() {
+	public function index(Request $request) {
 		$this->authorize("viewAny", User::class);
 
-		return Inertia::render("Supports/Index");
+		// Get search queries.
+		$page = $request->query("page");
+		$perPage = $request->query("per_page");
+
+		if (is_null($page) || !is_numeric($page)) {
+			$page = 1;
+		}
+
+		if (is_null($perPage) || !is_numeric($perPage)) {
+			$perPage = 10;
+		}
+
+		return Inertia::render("Supports/Index", [
+			"supports" => Support::with([
+				"student:id,first_name,last_name,identity_card",
+				"user:id,name,identity_card",
+			])
+				->orderBy("date", "desc")
+				->paginate($perPage),
+			"filters" => [
+				"page" => $page,
+				"per_page" => $perPage,
+			],
+		]);
 	}
 
 	/**
