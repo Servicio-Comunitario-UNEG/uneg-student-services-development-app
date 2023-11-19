@@ -106,6 +106,9 @@ Route::put("/semesters/{semester}/activate", [
 ])->name("semesters.activate");
 
 // Supports routes.
-Route::resource("supports", SupportController::class)->only(["index"]);
+Route::resource("supports", SupportController::class)->only([
+	"index",
+	"create",
+]);
 
 require __DIR__ . "/auth.php";

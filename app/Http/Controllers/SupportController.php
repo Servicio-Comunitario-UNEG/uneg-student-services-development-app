@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Student;
 use App\Models\Support;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -26,6 +27,15 @@ class SupportController extends Controller {
 	 */
 	public function create() {
 		$this->authorize("create", User::class);
+
+		return Inertia::render("Supports/Create", [
+			"students" => Student::all([
+				"id",
+				"first_name",
+				"last_name",
+				"identity_card",
+			]),
+		]);
 	}
 
 	/**

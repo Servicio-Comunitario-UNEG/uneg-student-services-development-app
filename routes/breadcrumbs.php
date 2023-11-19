@@ -123,3 +123,9 @@ Breadcrumbs::for("semesters.edit", function (
 Breadcrumbs::for("supports.index", function (BreadcrumbTrail $trail) {
 	$trail->push("Apoyos", route("supports.index"));
 });
+
+// Supports > Create
+Breadcrumbs::for("supports.create", function (BreadcrumbTrail $trail) {
+	$trail->parent("supports.index");
+	$trail->push("Crear", route("supports.create"));
+});
