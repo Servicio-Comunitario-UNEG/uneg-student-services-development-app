@@ -118,3 +118,8 @@ Breadcrumbs::for("semesters.edit", function (
 	$trail->parent("semesters.index");
 	$trail->push("Editar", route("semesters.edit", $semester));
 });
+
+//* Supports
+Breadcrumbs::for("supports.index", function (BreadcrumbTrail $trail) {
+	$trail->push("Apoyos", route("supports.index"));
+});

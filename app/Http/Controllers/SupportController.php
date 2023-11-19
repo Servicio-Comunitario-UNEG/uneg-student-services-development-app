@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Support;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Inertia\Inertia;
 
 class SupportController extends Controller {
 	public function __construct() {
@@ -16,6 +17,8 @@ class SupportController extends Controller {
 	 */
 	public function index() {
 		$this->authorize("viewAny", User::class);
+
+		return Inertia::render("Supports/Index");
 	}
 
 	/**
