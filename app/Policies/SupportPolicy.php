@@ -4,7 +4,6 @@ namespace App\Policies;
 
 use App\Models\Support;
 use App\Models\User;
-use Illuminate\Auth\Access\Response;
 
 class SupportPolicy {
 	/**
@@ -32,13 +31,17 @@ class SupportPolicy {
 	 * Determine whether the user can update the model.
 	 */
 	public function update(User $user, Support $support): bool {
-		return $user->can("edit supports");
+		return $user->can("edit supports") &&
+			($support->user()->is($user) ||
+				$user->hasRole(["admin", "coordinator"]));
 	}
 
 	/**
 	 * Determine whether the user can delete the model.
 	 */
 	public function delete(User $user, Support $support): bool {
-		return $user->can("delete supports");
+		return $user->can("delete supports") &&
+			($support->user()->is($user) ||
+				$user->hasRole(["admin", "coordinator"]));
 	}
 }

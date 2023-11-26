@@ -1,6 +1,8 @@
-import { Link } from "@inertiajs/react";
+import { Link, usePage } from "@inertiajs/react";
 import { type CellContext } from "@tanstack/react-table";
 import { Eye, MoreHorizontal, Pencil, Trash } from "lucide-react";
+
+import { PageProps, Role } from "@/types";
 
 import { Button } from "@/Components/ui/button";
 import {
@@ -17,10 +19,21 @@ import type { SupportWithUserAndStudent } from "../Index";
 export default function SupportCellAction({
 	row,
 }: CellContext<SupportWithUserAndStudent, unknown>) {
+	const { user } = usePage<PageProps>().props.auth;
 	const gate = useGate();
 	const support = row.original;
 
-	if (!gate.any(["edit semesters", "delete semesters"])) return null;
+	// Allowed roles to override the author only.
+	const roles: Role["name"][] = ["admin", "coordinator"];
+
+	// Wether is the author of this support or has an authorized role.
+	const isAuthorized =
+		user.id === support.user_id || roles.includes(user.current_role.name);
+
+	// Must have at least one permission.
+	if (!gate.any(["view supports", "edit supports", "delete supports"])) {
+		return null;
+	}
 
 	return (
 		<div className="flex justify-end">
@@ -42,7 +55,7 @@ export default function SupportCellAction({
 						</DropdownMenuItem>
 					) : null}
 
-					{gate.allows("edit supports") ? (
+					{gate.allows("edit supports") && isAuthorized ? (
 						<DropdownMenuItem asChild>
 							<Link href={route("supports.edit", support.id)}>
 								<Pencil className="mr-2 h-4 w-4" />
@@ -51,7 +64,7 @@ export default function SupportCellAction({
 						</DropdownMenuItem>
 					) : null}
 
-					{gate.allows("delete supports") ? (
+					{gate.allows("delete supports") && isAuthorized ? (
 						<DropdownMenuItem className="text-destructive" asChild>
 							<Link
 								className="w-full"
