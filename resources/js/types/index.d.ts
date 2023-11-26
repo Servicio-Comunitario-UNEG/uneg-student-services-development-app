@@ -152,6 +152,6 @@ export interface Support {
 	user_id: number;
 	student_id: number;
 	date: string;
-	type: "medical" | "psycological";
+	type: "medical" | "psychological";
 	description: string;
 }

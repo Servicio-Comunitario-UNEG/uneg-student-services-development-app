@@ -2,16 +2,15 @@
 
 namespace App\Http\Requests;
 
-use App\Models\User;
 use Auth;
 use Illuminate\Foundation\Http\FormRequest;
 
-class StoreSupportRequest extends FormRequest {
+class UpdateSupportRequest extends FormRequest {
 	/**
 	 * Determine if the user is authorized to make this request.
 	 */
 	public function authorize(): bool {
-		return Auth::user()->can("create", User::class);
+		return Auth::user()->can("update", $this->support);
 	}
 
 	/**

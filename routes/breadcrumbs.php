@@ -6,6 +6,7 @@ use App\Models\Career;
 use App\Models\Headquarter;
 use App\Models\Semester;
 use App\Models\Student;
+use App\Models\Support;
 use App\Models\User;
 use Diglactic\Breadcrumbs\Breadcrumbs;
 
@@ -128,4 +129,13 @@ Breadcrumbs::for("supports.index", function (BreadcrumbTrail $trail) {
 Breadcrumbs::for("supports.create", function (BreadcrumbTrail $trail) {
 	$trail->parent("supports.index");
 	$trail->push("Crear", route("supports.create"));
+});
+
+// Supports > Edit
+Breadcrumbs::for("supports.edit", function (
+	BreadcrumbTrail $trail,
+	Support $support,
+) {
+	$trail->parent("supports.index");
+	$trail->push("Editar", route("supports.edit", $support));
 });

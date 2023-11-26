@@ -13,6 +13,8 @@ import { Button } from "@/Components/ui/button";
 
 import { useGate } from "@/hooks/useGate";
 
+import SupportCellAction from "./Partials/SupportCellAction";
+
 const columns: ColumnDef<SupportWithUserAndStudent>[] = [
 	{
 		accessorKey: "date",
@@ -20,6 +22,18 @@ const columns: ColumnDef<SupportWithUserAndStudent>[] = [
 			<DataTableColumnHeader column={column} title="Fecha" />
 		),
 		cell: ({ row }) => dayjs(row.getValue("date")).format("DD/MM/YYYY"),
+		enableSorting: false,
+	},
+	{
+		accessorKey: "date",
+		header: ({ column }) => (
+			<DataTableColumnHeader column={column} title="Tipo" />
+		),
+		cell: ({ row }) => {
+			const { type } = row.original;
+
+			return type === "medical" ? "Médico" : "Psicológico";
+		},
 		enableSorting: false,
 	},
 	{
@@ -66,9 +80,13 @@ const columns: ColumnDef<SupportWithUserAndStudent>[] = [
 		},
 		enableSorting: false,
 	},
+	{
+		id: "actions",
+		cell: (cell) => <SupportCellAction {...cell} />,
+	},
 ];
 
-type SupportWithUserAndStudent = Support & {
+export type SupportWithUserAndStudent = Support & {
 	user: Omit<User, "email_verified_at">;
 	student: Pick<Student, "id" | "first_name" | "last_name" | "identity_card">;
 };

@@ -78,7 +78,7 @@ export default function CreateOrEditSupportForm({
 							},
 							{
 								label: "Psicológico",
-								value: "psycological",
+								value: "psychological",
 								Icon: Brain,
 							},
 						],

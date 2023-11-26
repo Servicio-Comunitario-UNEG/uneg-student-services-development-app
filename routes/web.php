@@ -110,6 +110,9 @@ Route::resource("supports", SupportController::class)->only([
 	"index",
 	"create",
 	"store",
+	"edit",
+	"update",
+	"destroy",
 ]);
 
 require __DIR__ . "/auth.php";

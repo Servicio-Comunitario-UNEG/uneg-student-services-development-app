@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreSupportRequest;
+use App\Http\Requests\UpdateSupportRequest;
 use App\Models\Student;
 use App\Models\Support;
 use App\Models\User;
@@ -89,13 +90,28 @@ class SupportController extends Controller {
 	 */
 	public function edit(Support $support) {
 		$this->authorize("update", $support);
+
+		return Inertia::render("Supports/Edit", [
+			"support" => $support,
+			"students" => Student::all([
+				"id",
+				"first_name",
+				"last_name",
+				"identity_card",
+			]),
+		]);
 	}
 
 	/**
 	 * Update the specified resource in storage.
 	 */
-	public function update(Request $request, Support $support) {
-		//
+	public function update(UpdateSupportRequest $request, Support $support) {
+		$support->update($request->validated());
+
+		return redirect(route("supports.index"))->with(
+			"message",
+			"Apoyo editado con éxito",
+		);
 	}
 
 	/**
@@ -103,5 +119,12 @@ class SupportController extends Controller {
 	 */
 	public function destroy(Support $support) {
 		$this->authorize("delete", $support);
+
+		$support->delete();
+
+		return redirect(url()->previous())->with(
+			"message",
+			"Apoyo eliminado con éxito",
+		);
 	}
 }
