@@ -25,7 +25,7 @@ const columns: ColumnDef<SupportWithUserAndStudent>[] = [
 		enableSorting: false,
 	},
 	{
-		accessorKey: "date",
+		accessorKey: "type",
 		header: ({ column }) => (
 			<DataTableColumnHeader column={column} title="Tipo" />
 		),

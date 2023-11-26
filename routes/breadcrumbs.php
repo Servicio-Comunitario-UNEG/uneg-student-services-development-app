@@ -139,3 +139,12 @@ Breadcrumbs::for("supports.edit", function (
 	$trail->parent("supports.index");
 	$trail->push("Editar", route("supports.edit", $support));
 });
+
+// Supports > Show
+Breadcrumbs::for("supports.show", function (
+	BreadcrumbTrail $trail,
+	Support $support,
+) {
+	$trail->parent("supports.index");
+	$trail->push("Apoyo", route("supports.show", $support));
+});

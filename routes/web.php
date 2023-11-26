@@ -113,6 +113,7 @@ Route::resource("supports", SupportController::class)->only([
 	"edit",
 	"update",
 	"destroy",
+	"show",
 ]);
 
 require __DIR__ . "/auth.php";

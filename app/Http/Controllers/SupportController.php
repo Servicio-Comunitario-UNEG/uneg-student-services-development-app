@@ -82,7 +82,14 @@ class SupportController extends Controller {
 	 * Display the specified resource.
 	 */
 	public function show(Support $support) {
-		//
+		$this->authorize("view", $support);
+
+		return Inertia::render("Supports/Support", [
+			"support" => $support->load([
+				"user",
+				"student:id,first_name,last_name,identity_card",
+			]),
+		]);
 	}
 
 	/**
