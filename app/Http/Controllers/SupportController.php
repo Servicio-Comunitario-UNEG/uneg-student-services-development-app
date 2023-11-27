@@ -24,6 +24,9 @@ class SupportController extends Controller {
 		// Get search queries.
 		$page = $request->query("page");
 		$perPage = $request->query("per_page");
+		$range = $request->query("range");
+		$from = array_key_exists("from", $range) ? $range["from"] : "";
+		$to = array_key_exists("to", $range) ? $range["to"] : "";
 
 		if (is_null($page) || !is_numeric($page)) {
 			$page = 1;
@@ -43,6 +46,10 @@ class SupportController extends Controller {
 			"filters" => [
 				"page" => $page,
 				"per_page" => $perPage,
+				"range" => [
+					"from" => $from,
+					"to" => $to,
+				],
 			],
 		]);
 	}

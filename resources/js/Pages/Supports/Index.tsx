@@ -13,6 +13,7 @@ import { Button } from "@/Components/ui/button";
 
 import { useGate } from "@/hooks/useGate";
 
+import { DataTableToolbar } from "./Partials/DataTableToolbar";
 import SupportCellAction from "./Partials/SupportCellAction";
 
 const columns: ColumnDef<SupportWithUserAndStudent>[] = [
@@ -96,6 +97,10 @@ export type SupportsPageProps = PageProps<{
 	filters: {
 		page: number;
 		per_page: number;
+		range: {
+			from: string | null;
+			to: string | null;
+		};
 	};
 }>;
 
@@ -117,7 +122,11 @@ export default function Index({ supports }: SupportsPageProps) {
 		>
 			<Head title="Apoyos" />
 
-			<DataTable columns={columns} paginatedData={supports} />
+			<DataTable
+				columns={columns}
+				paginatedData={supports}
+				toolbar={<DataTableToolbar />}
+			/>
 		</PageLayout>
 	);
 }
