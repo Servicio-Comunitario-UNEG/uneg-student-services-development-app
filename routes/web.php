@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\BenefitController;
 use App\Http\Controllers\CareerController;
 use App\Http\Controllers\HeadquarterController;
 use App\Http\Controllers\ProfileController;
@@ -115,5 +116,8 @@ Route::resource("supports", SupportController::class)->only([
 	"destroy",
 	"show",
 ]);
+
+// Benefits routes.
+Route::resource("benefits", BenefitController::class)->only(["index"]);
 
 require __DIR__ . "/auth.php";

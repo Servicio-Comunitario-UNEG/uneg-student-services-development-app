@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
-class Semester extends Model {
+class Benefit extends Model {
 	use HasFactory;
 
 	/**
@@ -14,12 +14,12 @@ class Semester extends Model {
 	 *
 	 * @var array<int, string>
 	 */
-	protected $fillable = ["year", "lapse", "is_active"];
+	protected $fillable = ["name"];
 
 	/**
-	 * The benefits that are offered in this semester.
+	 * The semesters this benefit is offered.
 	 */
-	public function benefits(): BelongsToMany {
-		return $this->belongsToMany(Benefit::class, "benefit_semester");
+	public function semesters(): BelongsToMany {
+		return $this->belongsToMany(Semester::class, "benefit_semester");
 	}
 }

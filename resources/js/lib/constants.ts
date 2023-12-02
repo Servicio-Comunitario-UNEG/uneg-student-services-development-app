@@ -5,6 +5,7 @@ import {
 	Calendar,
 	GraduationCap,
 	HeartHandshake,
+	HelpingHand,
 	LucideIcon,
 	Users,
 } from "lucide-react";
@@ -66,6 +67,13 @@ export const links: {
 		to: "supports.index",
 		Icon: HeartHandshake,
 		urlStartsWith: "/supports",
+	},
+	{
+		title: "Beneficios",
+		permission: "view benefits",
+		to: "benefits.index",
+		Icon: HelpingHand,
+		urlStartsWith: "/benefits",
 	},
 	{
 		title: "Perfil",
