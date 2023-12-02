@@ -55,6 +55,13 @@ class RolesAndPermissionsSeeder extends Seeder {
 			"view supports",
 			"edit supports",
 			"delete supports",
+
+			// Benefits.
+			"create benefits",
+			"view benefits",
+			"edit benefits",
+			"delete benefits",
+			"assign benefits",
 		];
 
 		foreach ($permissionNames as $permission) {
@@ -108,6 +115,9 @@ class RolesAndPermissionsSeeder extends Seeder {
 			"view students",
 			"edit students",
 			"delete students",
+
+			// Benefits.
+			"assign benefits",
 		]);
 
 		Role::updateOrCreate(
