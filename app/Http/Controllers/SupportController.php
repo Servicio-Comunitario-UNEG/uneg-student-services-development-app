@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
+use Illuminate\Contracts\Database\Eloquent\Builder;
 
 use App\Http\Requests\StoreSupportRequest;
 use App\Http\Requests\UpdateSupportRequest;
@@ -24,7 +25,9 @@ class SupportController extends Controller {
 		// Get search queries.
 		$page = $request->query("page");
 		$perPage = $request->query("per_page");
-		$range = $request->query("range");
+		$range = $request->query("range", []);
+		$types = $request->query("types", []);
+
 		$from = array_key_exists("from", $range) ? $range["from"] : "";
 		$to = array_key_exists("to", $range) ? $range["to"] : "";
 
@@ -41,6 +44,18 @@ class SupportController extends Controller {
 				"student:id,first_name,last_name,identity_card",
 				"user:id,name,identity_card",
 			])
+				->when($from, function (Builder $query, string $from) {
+					// Get all where the date is equal or after from.
+					$query->whereDate("date", ">=", $from);
+				})
+				->when($to, function (Builder $query, string $to) {
+					// Get all where the date is equal or before to.
+					$query->whereDate("date", "<=", $to);
+				})
+				->when($types, function (Builder $query, array $types) {
+					// Filter by type.
+					$query->whereIn("type", $types);
+				})
 				->orderBy("date", "desc")
 				->paginate($perPage),
 			"filters" => [
@@ -50,6 +65,7 @@ class SupportController extends Controller {
 					"from" => $from,
 					"to" => $to,
 				],
+				"types" => $types,
 			],
 		]);
 	}

@@ -22,6 +22,7 @@ interface DataTableFacetedFilterProps {
 	defaultValues?: string[];
 	onChange?: (selectedValues: Set<string>) => void;
 	title?: string;
+	className?: string;
 	options: {
 		label: string;
 		value: string;
@@ -34,6 +35,7 @@ export function DataTableFacetedFilter({
 	title,
 	options,
 	defaultValues = [],
+	className,
 }: DataTableFacetedFilterProps) {
 	const selectedValues = useSet<string>(defaultValues);
 
@@ -43,7 +45,7 @@ export function DataTableFacetedFilter({
 				<Button
 					variant="outline"
 					size="sm"
-					className="h-8 border-dashed"
+					className={cn("h-8 border-dashed", className)}
 				>
 					<PlusCircleIcon className="mr-2 h-4 w-4" />
 

@@ -101,6 +101,7 @@ export type SupportsPageProps = PageProps<{
 			from: string | null;
 			to: string | null;
 		};
+		types: string[];
 	};
 }>;
 
