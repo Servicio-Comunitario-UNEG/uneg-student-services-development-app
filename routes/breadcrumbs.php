@@ -2,6 +2,7 @@
 
 // Note: Laravel will automatically resolve `Breadcrumbs::` without
 // this import. This is nice for IDE syntax and refactoring.
+use App\Models\Benefit;
 use App\Models\Career;
 use App\Models\Headquarter;
 use App\Models\Semester;
@@ -147,4 +148,24 @@ Breadcrumbs::for("supports.show", function (
 ) {
 	$trail->parent("supports.index");
 	$trail->push("Apoyo", route("supports.show", $support));
+});
+
+//* Benefits
+Breadcrumbs::for("benefits.index", function (BreadcrumbTrail $trail) {
+	$trail->push("Beneficios", route("benefits.index"));
+});
+
+// Supports > Create
+Breadcrumbs::for("benefits.create", function (BreadcrumbTrail $trail) {
+	$trail->parent("benefits.index");
+	$trail->push("Crear", route("benefits.create"));
+});
+
+// Supports > Edit
+Breadcrumbs::for("benefits.edit", function (
+	BreadcrumbTrail $trail,
+	Benefit $benefit,
+) {
+	$trail->parent("benefits.index");
+	$trail->push("Editar", route("benefits.edit", $benefit));
 });

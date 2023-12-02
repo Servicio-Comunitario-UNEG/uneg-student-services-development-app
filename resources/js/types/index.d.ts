@@ -155,3 +155,13 @@ export interface Support {
 	type: "medical" | "psychological";
 	description: string;
 }
+
+/**
+ * The benefits the univerisity offers.
+ */
+export interface Benefit {
+	id: number;
+	created_at: string;
+	updated_at: string;
+	name: string;
+}

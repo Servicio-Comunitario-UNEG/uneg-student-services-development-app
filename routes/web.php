@@ -118,6 +118,13 @@ Route::resource("supports", SupportController::class)->only([
 ]);
 
 // Benefits routes.
-Route::resource("benefits", BenefitController::class)->only(["index"]);
+Route::resource("benefits", BenefitController::class)->only([
+	"index",
+	"create",
+	"store",
+	"edit",
+	"update",
+	"destroy",
+]);
 
 require __DIR__ . "/auth.php";
