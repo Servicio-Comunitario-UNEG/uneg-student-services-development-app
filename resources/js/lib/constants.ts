@@ -4,10 +4,14 @@ import {
 	Building,
 	Calendar,
 	GraduationCap,
+	HeartHandshake,
 	LucideIcon,
 	Users,
 } from "lucide-react";
 
+/**
+ * The pages links when the user is authed.
+ */
 export const links: {
 	title: string;
 	to: string;
@@ -55,6 +59,13 @@ export const links: {
 		to: "semesters.index",
 		Icon: Calendar,
 		urlStartsWith: "/semesters",
+	},
+	{
+		title: "Apoyos",
+		permission: "view supports",
+		to: "supports.index",
+		Icon: HeartHandshake,
+		urlStartsWith: "/supports",
 	},
 	{
 		title: "Perfil",

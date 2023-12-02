@@ -6,10 +6,12 @@ namespace App\Providers;
 use App\Models\Career;
 use App\Models\Headquarter;
 use App\Models\Student;
+use App\Models\Support;
 use App\Models\User;
 use App\Policies\CareerPolicy;
 use App\Policies\HeadquarterPolicy;
 use App\Policies\StudentPolicy;
+use App\Policies\SupportPolicy;
 use App\Policies\UserPolicy;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 
@@ -24,6 +26,7 @@ class AuthServiceProvider extends ServiceProvider {
 		Headquarter::class => HeadquarterPolicy::class,
 		Career::class => CareerPolicy::class,
 		Student::class => StudentPolicy::class,
+		Support::class => SupportPolicy::class,
 	];
 
 	/**

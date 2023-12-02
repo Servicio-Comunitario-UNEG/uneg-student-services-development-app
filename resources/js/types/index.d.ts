@@ -141,3 +141,17 @@ export interface Semester {
 	lapse: number;
 	is_active: boolean;
 }
+
+/**
+ * The supports an student has received.
+ */
+export interface Support {
+	id: number;
+	created_at: string;
+	updated_at: string;
+	user_id: number;
+	student_id: number;
+	date: string;
+	type: "medical" | "psychological";
+	description: string;
+}

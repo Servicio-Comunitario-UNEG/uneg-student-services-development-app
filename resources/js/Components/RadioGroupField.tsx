@@ -2,8 +2,8 @@ import { ComponentProps } from "react";
 
 import { cn } from "@/lib/utils";
 
-import CardRadioGroup from "./CardRadioGroup";
 import InputError from "./InputError";
+import RadioGroup from "./RadioGroup";
 import { Label } from "./ui/label";
 
 interface Props {
@@ -11,23 +11,23 @@ interface Props {
 		React.LabelHTMLAttributes<HTMLLegendElement>,
 		"className"
 	>;
-	cardRadioGroupProps: ComponentProps<typeof CardRadioGroup>;
+	radioGroupProps: ComponentProps<typeof RadioGroup>;
 	errorMessage?: string;
 	className?: string;
 	description?: string;
 	isOptional?: boolean;
 }
 
-export default function CardRadioGroupField({
+export default function RadioGroupField({
 	legendProps,
-	cardRadioGroupProps,
 	description,
 	errorMessage,
 	className,
+	radioGroupProps,
 	isOptional = false,
 }: Props) {
 	return (
-		<fieldset className={cn("space-y-2", className)}>
+		<fieldset className={cn("space-y-3", className)}>
 			<div className="flex items-center justify-between">
 				<Label asChild>
 					<legend {...legendProps} />
@@ -44,9 +44,9 @@ export default function CardRadioGroupField({
 				<p className="text-sm text-muted-foreground">{description}</p>
 			) : null}
 
-			<CardRadioGroup
-				aria-invalid={errorMessage ? true : false}
-				{...cardRadioGroupProps}
+			<RadioGroup
+				aria-invalid={Boolean(errorMessage)}
+				{...radioGroupProps}
 			/>
 
 			<InputError message={errorMessage} />
