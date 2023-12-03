@@ -165,3 +165,15 @@ export interface Benefit {
 	updated_at: string;
 	name: string;
 }
+
+/**
+ * The relation between a benefit and a semester.
+ */
+export interface BenefitSemester {
+	id: number;
+	created_at: string;
+	updated_at: string;
+	benefit_id: number;
+	semester_id: number;
+	amount: number;
+}

@@ -16,19 +16,19 @@ class BenefitSemester extends Model {
 	 *
 	 * @var array<int, string>
 	 */
-	protected $fillable = ["amount"];
+	protected $fillable = ["benefit_id", "semester_id", "amount"];
 
 	/**
 	 * The career that is given in a headquarter.
 	 */
 	public function benefit(): HasOne {
-		return $this->hasOne(Benefit::class);
+		return $this->hasOne(Benefit::class, "id", "benefit_id");
 	}
 
 	/**
 	 * The headquarter that is paired to a career.
 	 */
 	public function semester(): HasOne {
-		return $this->hasOne(Semester::class);
+		return $this->hasOne(Semester::class, "id", "semester_id");
 	}
 }

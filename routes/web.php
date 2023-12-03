@@ -132,6 +132,8 @@ Route::resource("benefits", BenefitController::class)->only([
 // Benefits Semesters routes.
 Route::resource("benefits-semesters", BenefitSemesterController::class)->only([
 	"index",
+	"create",
+	"store",
 ]);
 
 require __DIR__ . "/auth.php";
