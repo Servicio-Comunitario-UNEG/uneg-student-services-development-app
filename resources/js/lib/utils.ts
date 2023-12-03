@@ -24,3 +24,28 @@ export function getFullName({
 		"",
 	);
 }
+
+/**
+ * Wether the link is active.
+ */
+export function isActiveLink({
+	url,
+	isParent,
+	to,
+	urlStartsWith,
+}: {
+	url: string;
+	isParent: boolean;
+	to: string;
+	urlStartsWith?: string;
+}) {
+	if (!urlStartsWith) return route().current(to);
+
+	if (!isParent) return url.startsWith(urlStartsWith);
+
+	// Get the the tag, e.g. /tags/create, it will get the tags string.
+	const [, parentTag = ""] = url.split("/");
+
+	// As the urlStartsWith starts with /, then ignore them and take the rest.
+	return parentTag === urlStartsWith.substring(1);
+}

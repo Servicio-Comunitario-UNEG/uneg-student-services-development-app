@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\BenefitController;
+use App\Http\Controllers\BenefitSemesterController;
 use App\Http\Controllers\CareerController;
 use App\Http\Controllers\HeadquarterController;
 use App\Http\Controllers\ProfileController;
@@ -8,6 +9,7 @@ use App\Http\Controllers\SemesterController;
 use App\Http\Controllers\StudentController;
 use App\Http\Controllers\SupportController;
 use App\Http\Controllers\UserController;
+use App\Models\BenefitSemester;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -125,6 +127,11 @@ Route::resource("benefits", BenefitController::class)->only([
 	"edit",
 	"update",
 	"destroy",
+]);
+
+// Benefits Semesters routes.
+Route::resource("benefits-semesters", BenefitSemesterController::class)->only([
+	"index",
 ]);
 
 require __DIR__ . "/auth.php";

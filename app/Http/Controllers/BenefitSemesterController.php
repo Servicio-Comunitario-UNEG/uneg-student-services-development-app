@@ -3,63 +3,59 @@
 namespace App\Http\Controllers;
 
 use App\Models\BenefitSemester;
+use App\Models\User;
 use Illuminate\Http\Request;
+use Inertia\Inertia;
 
-class BenefitSemesterController extends Controller
-{
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
-    {
-        //
-    }
+class BenefitSemesterController extends Controller {
+	/**
+	 * Display a listing of the resource.
+	 */
+	public function index() {
+		$this->authorize("viewAny", User::class);
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
+		return Inertia::render("Benefits/Semesters/Index");
+	}
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
-    {
-        //
-    }
+	/**
+	 * Show the form for creating a new resource.
+	 */
+	public function create() {
+		//
+	}
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(BenefitSemester $benefitSemester)
-    {
-        //
-    }
+	/**
+	 * Store a newly created resource in storage.
+	 */
+	public function store(Request $request) {
+		//
+	}
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(BenefitSemester $benefitSemester)
-    {
-        //
-    }
+	/**
+	 * Display the specified resource.
+	 */
+	public function show(BenefitSemester $benefitSemester) {
+		//
+	}
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, BenefitSemester $benefitSemester)
-    {
-        //
-    }
+	/**
+	 * Show the form for editing the specified resource.
+	 */
+	public function edit(BenefitSemester $benefitSemester) {
+		//
+	}
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(BenefitSemester $benefitSemester)
-    {
-        //
-    }
+	/**
+	 * Update the specified resource in storage.
+	 */
+	public function update(Request $request, BenefitSemester $benefitSemester) {
+		//
+	}
+
+	/**
+	 * Remove the specified resource from storage.
+	 */
+	public function destroy(BenefitSemester $benefitSemester) {
+		//
+	}
 }

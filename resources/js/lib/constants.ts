@@ -10,17 +10,20 @@ import {
 	Users,
 } from "lucide-react";
 
-/**
- * The pages links when the user is authed.
- */
-export const links: {
+export type MobileLink = {
 	title: string;
 	to: string;
 	permission?: string;
 	isMobileOnly?: boolean;
 	Icon?: LucideIcon;
 	urlStartsWith?: string;
-}[] = [
+	sublinks?: Omit<MobileLink, "sublinks">[];
+};
+
+/**
+ * The pages links when the user is authed.
+ */
+export const links: MobileLink[] = [
 	{
 		title: "Dashboard",
 		to: "dashboard",
@@ -74,6 +77,14 @@ export const links: {
 		to: "benefits.index",
 		Icon: HelpingHand,
 		urlStartsWith: "/benefits",
+		sublinks: [
+			{
+				title: "Por Semestre",
+				permission: "view benefits",
+				urlStartsWith: "/benefits-semesters",
+				to: "benefits-semesters.index",
+			},
+		],
 	},
 	{
 		title: "Perfil",
