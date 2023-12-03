@@ -3,11 +3,17 @@
 namespace App\Providers;
 
 // use Illuminate\Support\Facades\Gate;
+use App\Models\Benefit;
+use App\Models\BenefitSemester;
+use App\Models\BenefitSemesterHeadquarter;
 use App\Models\Career;
 use App\Models\Headquarter;
 use App\Models\Student;
 use App\Models\Support;
 use App\Models\User;
+use App\Policies\BenefitPolicy;
+use App\Policies\BenefitSemesterHeadquarterPolicy;
+use App\Policies\BenefitSemesterPolicy;
 use App\Policies\CareerPolicy;
 use App\Policies\HeadquarterPolicy;
 use App\Policies\StudentPolicy;
@@ -27,6 +33,10 @@ class AuthServiceProvider extends ServiceProvider {
 		Career::class => CareerPolicy::class,
 		Student::class => StudentPolicy::class,
 		Support::class => SupportPolicy::class,
+		Benefit::class => BenefitPolicy::class,
+		BenefitSemester::class => BenefitSemesterPolicy::class,
+		BenefitSemesterHeadquarter::class =>
+			BenefitSemesterHeadquarterPolicy::class,
 	];
 
 	/**

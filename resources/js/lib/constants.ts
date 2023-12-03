@@ -10,20 +10,20 @@ import {
 	Users,
 } from "lucide-react";
 
-export type MobileLink = {
+export type MenuLink = {
 	title: string;
 	to: string;
 	permission?: string;
 	Icon?: LucideIcon;
 	urlStartsWith?: string;
 	sublinksParentTitle?: string;
-	sublinks?: Omit<MobileLink, "sublinks">[];
+	sublinks?: Omit<MenuLink, "sublinks">[];
 };
 
 /**
  * The pages links when the user is authed.
  */
-export const links: MobileLink[] = [
+export const links: MenuLink[] = [
 	{
 		title: "Dashboard",
 		to: "dashboard",
@@ -84,6 +84,12 @@ export const links: MobileLink[] = [
 				permission: "view benefits",
 				urlStartsWith: "/benefits-semesters",
 				to: "benefits-semesters.index",
+			},
+			{
+				title: "Por Sede",
+				permission: "view benefits",
+				urlStartsWith: "/benefits-semesters-headquarters",
+				to: "benefits-semesters-headquarters.index",
 			},
 		],
 	},

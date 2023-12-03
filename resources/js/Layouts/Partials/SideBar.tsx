@@ -13,7 +13,7 @@ import {
 
 import { useGate } from "@/hooks/useGate";
 
-import { MobileLink, links } from "@/lib/constants";
+import { MenuLink, links } from "@/lib/constants";
 import { cn, isActiveLink } from "@/lib/utils";
 
 export default function SideBar({ className }: { className?: string }) {
@@ -50,7 +50,6 @@ export default function SideBar({ className }: { className?: string }) {
 											Icon={Icon}
 											title={title}
 											urlStartsWith={urlStartsWith}
-											isParent
 										/>
 									</li>
 								);
@@ -89,7 +88,6 @@ export default function SideBar({ className }: { className?: string }) {
 														urlStartsWith={
 															urlStartsWith
 														}
-														isParent
 														isIconOnActiveOnly
 													/>
 												</li>
@@ -131,17 +129,14 @@ function ItemLink({
 	title,
 	to,
 	urlStartsWith,
-	isParent = false,
 	isIconOnActiveOnly = false,
-}: Pick<MobileLink, "Icon" | "title" | "to" | "urlStartsWith"> & {
-	isParent?: boolean;
+}: Pick<MenuLink, "Icon" | "title" | "to" | "urlStartsWith"> & {
 	isIconOnActiveOnly?: boolean;
 }) {
 	const { url } = usePage<PageProps>();
 
 	const isActive = isActiveLink({
 		url,
-		isParent,
 		to,
 		urlStartsWith,
 	});

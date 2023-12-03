@@ -30,18 +30,14 @@ export function getFullName({
  */
 export function isActiveLink({
 	url,
-	isParent,
 	to,
 	urlStartsWith,
 }: {
 	url: string;
-	isParent: boolean;
 	to: string;
 	urlStartsWith?: string;
 }) {
 	if (!urlStartsWith) return route().current(to);
-
-	if (!isParent) return url.startsWith(urlStartsWith);
 
 	// Get the the tag, e.g. /tags/create, it will get the tags string.
 	const [, parentTag = ""] = url.split("/");

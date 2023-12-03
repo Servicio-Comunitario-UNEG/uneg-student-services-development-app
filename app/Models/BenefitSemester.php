@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class BenefitSemester extends Model {
@@ -30,5 +31,16 @@ class BenefitSemester extends Model {
 	 */
 	public function semester(): HasOne {
 		return $this->hasOne(Semester::class, "id", "semester_id");
+	}
+
+	/**
+	 * The headquarters that offers this benefit in a semester.
+	 */
+	public function benefit_semester_headquarters(): HasMany {
+		return $this->hasMany(
+			BenefitSemesterHeadquarter::class,
+			"benefit_semester_id",
+			"id",
+		);
 	}
 }
