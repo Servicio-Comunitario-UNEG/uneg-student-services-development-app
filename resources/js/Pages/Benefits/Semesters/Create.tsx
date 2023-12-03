@@ -1,6 +1,6 @@
 import { Head } from "@inertiajs/react";
 
-import { Benefit, PageProps, Semester } from "@/types";
+import { Benefit, Headquarter, PageProps, Semester } from "@/types";
 
 import { AuthenticatedLayout } from "@/Layouts/AuthenticatedLayout";
 import PageLayout from "@/Layouts/PageLayout";
@@ -10,9 +10,11 @@ import CreateOrEditBenefitSemesterForm from "./Partials/CreateOrEditBenefitSemes
 export default function Create({
 	benefits,
 	semesters,
+	headquarters,
 }: PageProps<{
 	benefits: Benefit[];
 	semesters: Semester[];
+	headquarters: Headquarter[];
 }>) {
 	return (
 		<PageLayout
@@ -27,6 +29,7 @@ export default function Create({
 				callToAction="Asignar"
 				benefits={benefits}
 				semesters={semesters}
+				headquarters={headquarters}
 				initialValues={{
 					amount: 0,
 				}}

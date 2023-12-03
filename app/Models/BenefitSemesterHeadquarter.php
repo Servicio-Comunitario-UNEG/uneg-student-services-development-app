@@ -26,6 +26,7 @@ class BenefitSemesterHeadquarter extends Model {
 			BenefitSemester::class,
 			"id",
 			"benefit_semester_id",
+			"benefit_semester",
 		);
 	}
 }

@@ -85,12 +85,6 @@ export const links: MenuLink[] = [
 				urlStartsWith: "/benefits-semesters",
 				to: "benefits-semesters.index",
 			},
-			{
-				title: "Por Sede",
-				permission: "view benefits",
-				urlStartsWith: "/benefits-semesters-headquarters",
-				to: "benefits-semesters-headquarters.index",
-			},
 		],
 	},
 ];

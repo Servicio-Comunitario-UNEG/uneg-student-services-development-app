@@ -14,7 +14,31 @@ class UpdateBenefitSemesterRequest extends FormRequest {
 	 * Determine if the user is authorized to make this request.
 	 */
 	public function authorize(): bool {
-		return Auth::user()->can("create", User::class);
+		return Auth::user()->can("update", $this->benefits_semester);
+	}
+
+	/**
+	 * Prepare the data for validation.
+	 */
+	protected function prepareForValidation(): void {
+		$benefitSemesterHeadquarters =
+			$this->benefit_semester_headquarters ?? [];
+
+		$amount = 0;
+
+		foreach ($benefitSemesterHeadquarters as $benefitSemesterHeadquarter) {
+			if (array_key_exists("amount", $benefitSemesterHeadquarter)) {
+				$headquarterAmount = $benefitSemesterHeadquarter["amount"];
+
+				$amount += is_numeric($headquarterAmount)
+					? (int) $headquarterAmount
+					: 0;
+			}
+		}
+
+		$this->merge([
+			"total_headquarters_amount" => $amount,
+		]);
 	}
 
 	/**
@@ -36,9 +60,42 @@ class UpdateBenefitSemesterRequest extends FormRequest {
 					) {
 						return $query->where("benefit_id", $benefitId);
 					})
-					->ignore($this->benefitSemester->id),
+					->ignore($this->benefits_semester->id),
 			],
 			"amount" => "required|integer|min:1",
+			"benefit_semester_headquarters.*.headquarter_id" => [
+				"required",
+				"integer",
+				"distinct",
+				"exists:headquarters,id",
+			],
+			"benefit_semester_headquarters.*.amount" => [
+				"required",
+				"integer",
+				"min:1",
+			],
+			"total_headquarters_amount" => [
+				Rule::requiredIf(fn() => is_numeric($this->amount)),
+				"lte:" . $this->amount,
+			],
+		];
+	}
+
+	/**
+	 * Get the error messages for the defined validation rules.
+	 *
+	 * @return array<string, string>
+	 */
+	public function messages(): array {
+		return [
+			"benefit_semester_headquarters.*.headquarter_id.required" =>
+				"A headquarter is required.",
+			"benefit_semester_headquarters.*.amount.required" =>
+				"The amount is required.",
+			"benefit_semester_headquarters.*.amount.integer" =>
+				"The amount must be an integer.",
+			"benefit_semester_headquarters.*.amount.min" =>
+				"The amount must be greater than :min.",
 		];
 	}
 }

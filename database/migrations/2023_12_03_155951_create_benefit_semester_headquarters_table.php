@@ -15,8 +15,8 @@ return new class extends Migration {
 			$table->id();
 			$table->timestamps();
 			$table
-				->foreignId("benefit_semester_id")
-				->constrained()
+				->foreignId("benefit_semester")
+				->constrained("benefit_semester")
 				->cascadeOnDelete();
 			$table
 				->foreignId("headquarter_id")

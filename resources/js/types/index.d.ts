@@ -177,3 +177,15 @@ export interface BenefitSemester {
 	semester_id: number;
 	amount: number;
 }
+
+/**
+ * The relation between a benefit in a semester in a headquarter.
+ */
+export interface BenefitSemesterHeadquarter {
+	id: number;
+	created_at: string;
+	updated_at: string;
+	benefit_semester_id: number;
+	headquarter_id: number;
+	amount: number;
+}

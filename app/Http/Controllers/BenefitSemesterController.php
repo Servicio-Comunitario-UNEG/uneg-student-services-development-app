@@ -6,6 +6,7 @@ use App\Http\Requests\StoreBenefitSemesterRequest;
 use App\Http\Requests\UpdateBenefitSemesterRequest;
 use App\Models\Benefit;
 use App\Models\BenefitSemester;
+use App\Models\Headquarter;
 use App\Models\Semester;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -51,6 +52,7 @@ class BenefitSemesterController extends Controller {
 		return Inertia::render("Benefits/Semesters/Create", [
 			"benefits" => Benefit::all(),
 			"semesters" => Semester::all(),
+			"headquarters" => Headquarter::all(),
 		]);
 	}
 
@@ -58,11 +60,16 @@ class BenefitSemesterController extends Controller {
 	 * Store a newly created resource in storage.
 	 */
 	public function store(StoreBenefitSemesterRequest $request) {
-		BenefitSemester::create($request->validated());
+		/** @var BenefitSemester */
+		$benefitSemester = BenefitSemester::create($request->validated());
+
+		$benefitSemester
+			->benefit_semester_headquarters()
+			->createMany($request->validated("benefit_semester_headquarters"));
 
 		return redirect(route("benefits-semesters.index"))->with(
 			"message",
-			"Beneficio ha sido asignado al semestre con éxito",
+			"Beneficio ha sido asignado con éxito",
 		);
 	}
 
@@ -80,9 +87,12 @@ class BenefitSemesterController extends Controller {
 		$this->authorize("update", $benefits_semester);
 
 		return Inertia::render("Benefits/Semesters/Edit", [
-			"benefit_semester" => $benefits_semester,
+			"benefit_semester" => $benefits_semester->load(
+				"benefit_semester_headquarters",
+			),
 			"benefits" => Benefit::all(),
 			"semesters" => Semester::all(),
+			"headquarters" => Headquarter::all(),
 		]);
 	}
 
@@ -94,6 +104,45 @@ class BenefitSemesterController extends Controller {
 		BenefitSemester $benefits_semester,
 	) {
 		$benefits_semester->update($request->validated());
+
+		$headquartersToKeep = [];
+
+		$benefitSemesterHeadquarters =
+			$request["benefit_semester_headquarters"];
+
+		// Keep the ids that remain.
+		foreach ($benefitSemesterHeadquarters as $benefitSemesterHeadquarter) {
+			array_push(
+				$headquartersToKeep,
+				$benefitSemesterHeadquarter["headquarter_id"],
+			);
+		}
+
+		// Delete headquarters relation that weren't passed.
+		$benefits_semester
+			->benefit_semester_headquarters()
+			->whereNotIn("headquarter_id", $headquartersToKeep)
+			->delete();
+
+		// Filter by update/create.
+		$toUpdate = array_filter(
+			$benefitSemesterHeadquarters,
+			fn($value) => array_key_exists("id", $value),
+		);
+
+		$toCreate = array_filter(
+			$benefitSemesterHeadquarters,
+			fn($value) => !array_key_exists("id", $value),
+		);
+
+		// Update or create the relations.
+		$benefits_semester
+			->benefit_semester_headquarters()
+			->upsert($toUpdate, "id");
+
+		$benefits_semester
+			->benefit_semester_headquarters()
+			->createMany($toCreate);
 
 		return redirect(route("benefits-semesters.index"))->with(
 			"message",

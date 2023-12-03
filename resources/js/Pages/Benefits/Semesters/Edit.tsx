@@ -1,20 +1,24 @@
 import { Head } from "@inertiajs/react";
 
-import { Benefit, BenefitSemester, PageProps, Semester } from "@/types";
+import { Benefit, Headquarter, PageProps, Semester } from "@/types";
 
 import { AuthenticatedLayout } from "@/Layouts/AuthenticatedLayout";
 import PageLayout from "@/Layouts/PageLayout";
 
-import CreateOrEditBenefitSemesterForm from "./Partials/CreateOrEditBenefitSemesterForm";
+import CreateOrEditBenefitSemesterForm, {
+	BenefitSemesterWithHeadquarters,
+} from "./Partials/CreateOrEditBenefitSemesterForm";
 
 export default function Edit({
 	benefit_semester,
 	benefits,
 	semesters,
+	headquarters,
 }: PageProps<{
-	benefit_semester: BenefitSemester;
+	benefit_semester: BenefitSemesterWithHeadquarters;
 	benefits: Benefit[];
 	semesters: Semester[];
+	headquarters: Headquarter[];
 }>) {
 	return (
 		<PageLayout
@@ -28,6 +32,7 @@ export default function Edit({
 				callToAction="Guardar cambios"
 				benefits={benefits}
 				semesters={semesters}
+				headquarters={headquarters}
 				initialValues={benefit_semester}
 				isUpdate
 			/>
