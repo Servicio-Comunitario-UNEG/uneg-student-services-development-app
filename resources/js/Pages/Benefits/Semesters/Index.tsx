@@ -8,7 +8,8 @@ export default function Index() {
 		<PageLayout
 			headerProps={{
 				title: "Beneficios por Semestre",
-				description: "Administra los beneficios para cada semestre.",
+				description:
+					"Administra los beneficios para cada semestre y su cantidad.",
 			}}
 		>
 			<Head title="Beneficios por Semestre" />

@@ -32,16 +32,13 @@ export default function SideBar({ className }: { className?: string }) {
 						({
 							title,
 							to,
-							isMobileOnly,
 							permission,
 							Icon,
 							urlStartsWith,
+							sublinksParentTitle,
 							sublinks,
 						}) => {
-							if (
-								isMobileOnly ||
-								(permission && !gate.allows(permission))
-							) {
+							if (permission && !gate.allows(permission)) {
 								return;
 							}
 
@@ -85,7 +82,10 @@ export default function SideBar({ className }: { className?: string }) {
 													<ItemLink
 														to={to}
 														Icon={Dot}
-														title="General"
+														title={
+															sublinksParentTitle ??
+															"General"
+														}
 														urlStartsWith={
 															urlStartsWith
 														}

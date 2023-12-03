@@ -14,9 +14,9 @@ export type MobileLink = {
 	title: string;
 	to: string;
 	permission?: string;
-	isMobileOnly?: boolean;
 	Icon?: LucideIcon;
 	urlStartsWith?: string;
+	sublinksParentTitle?: string;
 	sublinks?: Omit<MobileLink, "sublinks">[];
 };
 
@@ -77,6 +77,7 @@ export const links: MobileLink[] = [
 		to: "benefits.index",
 		Icon: HelpingHand,
 		urlStartsWith: "/benefits",
+		sublinksParentTitle: "Todos",
 		sublinks: [
 			{
 				title: "Por Semestre",
@@ -85,10 +86,5 @@ export const links: MobileLink[] = [
 				to: "benefits-semesters.index",
 			},
 		],
-	},
-	{
-		title: "Perfil",
-		to: "profile.edit",
-		isMobileOnly: true,
 	},
 ];

@@ -46,7 +46,7 @@ export default function Index({ benefits }: BenefitsPageProps) {
 			headerProps={{
 				title: "Beneficios",
 				description:
-					"Administra los beneficios para cada sede y estudiante en un semestre.",
+					"Los beneficios que pueden ser ofrecidos en cualquier semestre.",
 				actions: gate.allows("create benefits") ? (
 					<Button asChild>
 						<Link href={route("benefits.create")}>Crear</Link>

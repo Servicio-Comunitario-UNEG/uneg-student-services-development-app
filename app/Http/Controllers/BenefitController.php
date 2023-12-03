@@ -28,7 +28,7 @@ class BenefitController extends Controller {
 			$perPage = 10;
 		}
 
-		return Inertia::render("Benefits/Index", [
+		return Inertia::render("Benefits/General/Index", [
 			"benefits" => Benefit::query()->paginate($perPage),
 			"filters" => [
 				"page" => $page,
@@ -43,7 +43,7 @@ class BenefitController extends Controller {
 	public function create() {
 		$this->authorize("create", User::class);
 
-		return Inertia::render("Benefits/Create");
+		return Inertia::render("Benefits/General/Create");
 	}
 
 	/**
@@ -71,7 +71,7 @@ class BenefitController extends Controller {
 	public function edit(Benefit $benefit) {
 		$this->authorize("update", $benefit);
 
-		return Inertia::render("Benefits/Edit", [
+		return Inertia::render("Benefits/General/Edit", [
 			"benefit" => $benefit,
 		]);
 	}
