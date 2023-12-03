@@ -8,7 +8,7 @@ import ComboboxField from "@/Components/ComboboxField";
 import TextField from "@/Components/TextField";
 import { Button } from "@/Components/ui/button";
 
-export default function CreateOrEditBenefitSemester({
+export default function CreateOrEditBenefitSemesterForm({
 	initialValues,
 	isUpdate = false,
 	callToAction,

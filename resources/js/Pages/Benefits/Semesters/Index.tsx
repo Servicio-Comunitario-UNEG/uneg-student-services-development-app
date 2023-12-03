@@ -18,6 +18,8 @@ import { Button } from "@/Components/ui/button";
 
 import { useGate } from "@/hooks/useGate";
 
+import BenefitSemesterCellAction from "./Partials/BenefitSemesterCellAction";
+
 const columns: ColumnDef<BenefitSemesterWithRelation>[] = [
 	{
 		accessorKey: "benefit",
@@ -54,9 +56,13 @@ const columns: ColumnDef<BenefitSemesterWithRelation>[] = [
 		enableHiding: false,
 		enableSorting: false,
 	},
+	{
+		id: "actions",
+		cell: (cell) => <BenefitSemesterCellAction {...cell} />,
+	},
 ];
 
-type BenefitSemesterWithRelation = BenefitSemester & {
+export type BenefitSemesterWithRelation = BenefitSemester & {
 	benefit: Benefit;
 	semester: Semester;
 };

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreBenefitSemesterRequest;
+use App\Http\Requests\UpdateBenefitSemesterRequest;
 use App\Models\Benefit;
 use App\Models\BenefitSemester;
 use App\Models\Semester;
@@ -68,28 +69,49 @@ class BenefitSemesterController extends Controller {
 	/**
 	 * Display the specified resource.
 	 */
-	public function show(BenefitSemester $benefitSemester) {
+	public function show(BenefitSemester $benefits_semester) {
 		//
 	}
 
 	/**
 	 * Show the form for editing the specified resource.
 	 */
-	public function edit(BenefitSemester $benefitSemester) {
-		//
+	public function edit(BenefitSemester $benefits_semester) {
+		$this->authorize("update", $benefits_semester);
+
+		return Inertia::render("Benefits/Semesters/Edit", [
+			"benefit_semester" => $benefits_semester,
+			"benefits" => Benefit::all(),
+			"semesters" => Semester::all(),
+		]);
 	}
 
 	/**
 	 * Update the specified resource in storage.
 	 */
-	public function update(Request $request, BenefitSemester $benefitSemester) {
-		//
+	public function update(
+		UpdateBenefitSemesterRequest $request,
+		BenefitSemester $benefits_semester,
+	) {
+		$benefits_semester->update($request->validated());
+
+		return redirect(route("benefits-semesters.index"))->with(
+			"message",
+			"Asignación de beneficio ha sido editado con éxito",
+		);
 	}
 
 	/**
 	 * Remove the specified resource from storage.
 	 */
-	public function destroy(BenefitSemester $benefitSemester) {
-		//
+	public function destroy(BenefitSemester $benefits_semester) {
+		$this->authorize("delete", $benefits_semester);
+
+		$benefits_semester->delete();
+
+		return redirect(route("benefits-semesters.index"))->with(
+			"message",
+			"Beneficio ha sido desasignado al semestre",
+		);
 	}
 }

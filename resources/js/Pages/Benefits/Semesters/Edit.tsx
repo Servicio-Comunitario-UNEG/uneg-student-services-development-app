@@ -1,38 +1,38 @@
 import { Head } from "@inertiajs/react";
 
-import { Benefit, PageProps, Semester } from "@/types";
+import { Benefit, BenefitSemester, PageProps, Semester } from "@/types";
 
 import { AuthenticatedLayout } from "@/Layouts/AuthenticatedLayout";
 import PageLayout from "@/Layouts/PageLayout";
 
 import CreateOrEditBenefitSemesterForm from "./Partials/CreateOrEditBenefitSemesterForm";
 
-export default function Create({
+export default function Edit({
+	benefit_semester,
 	benefits,
 	semesters,
 }: PageProps<{
+	benefit_semester: BenefitSemester;
 	benefits: Benefit[];
 	semesters: Semester[];
 }>) {
 	return (
 		<PageLayout
 			headerProps={{
-				title: "Asignar Beneficio",
-				description: "Asigna un beneficio a un semestre.",
+				title: "Editar Asignación de Beneficio",
 			}}
 		>
-			<Head title="Asignar Beneficio" />
+			<Head title="Editar Asignación Beneficio" />
 
 			<CreateOrEditBenefitSemesterForm
-				callToAction="Asignar"
+				callToAction="Guardar cambios"
 				benefits={benefits}
 				semesters={semesters}
-				initialValues={{
-					amount: 0,
-				}}
+				initialValues={benefit_semester}
+				isUpdate
 			/>
 		</PageLayout>
 	);
 }
 
-Create.layout = (page: JSX.Element) => <AuthenticatedLayout children={page} />;
+Edit.layout = (page: JSX.Element) => <AuthenticatedLayout children={page} />;
