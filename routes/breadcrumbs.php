@@ -195,3 +195,15 @@ Breadcrumbs::for("benefits-semesters.edit", function (
 		route("benefits-semesters.edit", $benefits_semester),
 	);
 });
+
+// Benefits Semestes > Details
+Breadcrumbs::for("benefits-semesters.show", function (
+	BreadcrumbTrail $trail,
+	BenefitSemester $benefits_semester,
+) {
+	$trail->parent("benefits-semesters.index");
+	$trail->push(
+		"Detalle",
+		route("benefits-semesters.show", $benefits_semester),
+	);
+});

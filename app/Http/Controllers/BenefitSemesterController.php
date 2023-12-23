@@ -77,7 +77,14 @@ class BenefitSemesterController extends Controller {
 	 * Display the specified resource.
 	 */
 	public function show(BenefitSemester $benefits_semester) {
-		//
+		$this->authorize("view", $benefits_semester);
+
+		return Inertia::render("Benefits/Semesters/View", [
+			"benefit_semester" => $benefits_semester->load([
+				"benefit_semester_headquarters.headquarter",
+				"benefit",
+			]),
+		]);
 	}
 
 	/**
