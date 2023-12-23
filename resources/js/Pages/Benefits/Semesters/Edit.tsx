@@ -26,7 +26,7 @@ export default function Edit({
 				title: "Editar Asignación de Beneficio",
 			}}
 		>
-			<Head title="Editar Asignación Beneficio" />
+			<Head title="Editar Asignación de Beneficio" />
 
 			<CreateOrEditBenefitSemesterForm
 				callToAction="Guardar cambios"
