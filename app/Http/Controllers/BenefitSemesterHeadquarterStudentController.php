@@ -3,63 +3,68 @@
 namespace App\Http\Controllers;
 
 use App\Models\BenefitSemesterHeadquarterStudent;
+use App\Models\User;
 use Illuminate\Http\Request;
+use Inertia\Inertia;
 
-class BenefitSemesterHeadquarterStudentController extends Controller
-{
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
-    {
-        //
-    }
+class BenefitSemesterHeadquarterStudentController extends Controller {
+	/**
+	 * Display a listing of the resource.
+	 */
+	public function index(Request $request) {
+		$this->authorize("viewAny", User::class);
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
+		return Inertia::render("Benefits/Students/Index");
+	}
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
-    {
-        //
-    }
+	/**
+	 * Show the form for creating a new resource.
+	 */
+	public function create() {
+		//
+	}
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(BenefitSemesterHeadquarterStudent $benefitSemesterHeadquarterStudent)
-    {
-        //
-    }
+	/**
+	 * Store a newly created resource in storage.
+	 */
+	public function store(Request $request) {
+		//
+	}
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(BenefitSemesterHeadquarterStudent $benefitSemesterHeadquarterStudent)
-    {
-        //
-    }
+	/**
+	 * Display the specified resource.
+	 */
+	public function show(
+		BenefitSemesterHeadquarterStudent $benefitSemesterHeadquarterStudent,
+	) {
+		//
+	}
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, BenefitSemesterHeadquarterStudent $benefitSemesterHeadquarterStudent)
-    {
-        //
-    }
+	/**
+	 * Show the form for editing the specified resource.
+	 */
+	public function edit(
+		BenefitSemesterHeadquarterStudent $benefitSemesterHeadquarterStudent,
+	) {
+		//
+	}
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(BenefitSemesterHeadquarterStudent $benefitSemesterHeadquarterStudent)
-    {
-        //
-    }
+	/**
+	 * Update the specified resource in storage.
+	 */
+	public function update(
+		Request $request,
+		BenefitSemesterHeadquarterStudent $benefitSemesterHeadquarterStudent,
+	) {
+		//
+	}
+
+	/**
+	 * Remove the specified resource from storage.
+	 */
+	public function destroy(
+		BenefitSemesterHeadquarterStudent $benefitSemesterHeadquarterStudent,
+	) {
+		//
+	}
 }

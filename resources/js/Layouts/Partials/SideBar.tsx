@@ -18,6 +18,7 @@ import { cn, isActiveLink } from "@/lib/utils";
 
 export default function SideBar({ className }: { className?: string }) {
 	const gate = useGate();
+	const page = usePage();
 
 	return (
 		<div
@@ -55,9 +56,27 @@ export default function SideBar({ className }: { className?: string }) {
 								);
 							}
 
+							// Wether the parent or any sublink is active to initialize collapsible as open.
+							const defaultOpen =
+								isActiveLink({
+									url: page.url,
+									to,
+									urlStartsWith,
+								}) ||
+								sublinks.some(({ to, urlStartsWith }) =>
+									isActiveLink({
+										url: page.url,
+										to,
+										urlStartsWith,
+									}),
+								);
+
 							return (
 								<li key={to}>
-									<Collapsible className="space-y-1">
+									<Collapsible
+										defaultOpen={defaultOpen}
+										className="space-y-1"
+									>
 										<CollapsibleTrigger asChild>
 											<Button
 												variant="ghost"

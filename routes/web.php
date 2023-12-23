@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\BenefitController;
 use App\Http\Controllers\BenefitSemesterController;
+use App\Http\Controllers\BenefitSemesterHeadquarterStudentController;
 use App\Http\Controllers\CareerController;
 use App\Http\Controllers\HeadquarterController;
 use App\Http\Controllers\ProfileController;
@@ -138,5 +139,11 @@ Route::resource("benefits-semesters", BenefitSemesterController::class)->only([
 	"destroy",
 	"show",
 ]);
+
+// Benefits by student routes.
+Route::resource(
+	"benefits-students",
+	BenefitSemesterHeadquarterStudentController::class,
+)->only(["index"]);
 
 require __DIR__ . "/auth.php";
