@@ -40,7 +40,7 @@ export function isActiveLink({
 	if (!urlStartsWith) return route().current(to);
 
 	// Get the the tag, e.g. /tags/create, it will get the tags string.
-	const [, parentTag = ""] = url.split("/");
+	const [, parentTag = ""] = url.split(RegExp(/\/|\?/));
 
 	// As the urlStartsWith starts with /, then ignore them and take the rest.
 	return parentTag === urlStartsWith.substring(1);
