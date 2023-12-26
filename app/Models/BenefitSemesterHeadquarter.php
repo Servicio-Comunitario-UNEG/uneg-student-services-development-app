@@ -33,8 +33,8 @@ class BenefitSemesterHeadquarter extends Model {
 	public function benefit_semester(): BelongsTo {
 		return $this->belongsTo(
 			BenefitSemester::class,
-			"id",
 			"benefit_semester_id",
+			"id",
 			"benefit_semester",
 		);
 	}
