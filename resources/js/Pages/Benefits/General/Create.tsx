@@ -24,4 +24,6 @@ export default function Create() {
 	);
 }
 
-Create.layout = (page: JSX.Element) => <AuthenticatedLayout children={page} />;
+Create.layout = (page: React.JSX.Element) => (
+	<AuthenticatedLayout children={page} />
+);

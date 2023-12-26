@@ -61,4 +61,6 @@ export default function Index({ benefits }: BenefitsPageProps) {
 	);
 }
 
-Index.layout = (page: JSX.Element) => <AuthenticatedLayout children={page} />;
+Index.layout = (page: React.JSX.Element) => (
+	<AuthenticatedLayout children={page} />
+);

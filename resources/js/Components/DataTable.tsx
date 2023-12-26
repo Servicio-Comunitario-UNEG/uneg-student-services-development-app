@@ -35,7 +35,7 @@ interface DataTableProps<TData, TValue> {
 	initialState?: InitialTableState;
 	data?: TData[];
 	paginatedData?: Paginated<TData>;
-	toolbar?: JSX.Element;
+	toolbar?: React.JSX.Element;
 }
 
 export function DataTable<TData, TValue>({

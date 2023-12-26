@@ -83,4 +83,6 @@ export default function View({
 	);
 }
 
-View.layout = (page: JSX.Element) => <AuthenticatedLayout children={page} />;
+View.layout = (page: React.JSX.Element) => (
+	<AuthenticatedLayout children={page} />
+);

@@ -78,4 +78,6 @@ export default function Index({ semesters }: SemestersPageProps) {
 	);
 }
 
-Index.layout = (page: JSX.Element) => <AuthenticatedLayout children={page} />;
+Index.layout = (page: React.JSX.Element) => (
+	<AuthenticatedLayout children={page} />
+);

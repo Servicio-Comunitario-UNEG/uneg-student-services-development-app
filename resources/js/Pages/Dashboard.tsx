@@ -15,6 +15,6 @@ export default function Dashboard() {
 	);
 }
 
-Dashboard.layout = (page: JSX.Element) => (
+Dashboard.layout = (page: React.JSX.Element) => (
 	<AuthenticatedLayout children={page} />
 );

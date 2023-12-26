@@ -132,4 +132,6 @@ export default function Index({ supports }: SupportsPageProps) {
 	);
 }
 
-Index.layout = (page: JSX.Element) => <AuthenticatedLayout children={page} />;
+Index.layout = (page: React.JSX.Element) => (
+	<AuthenticatedLayout children={page} />
+);

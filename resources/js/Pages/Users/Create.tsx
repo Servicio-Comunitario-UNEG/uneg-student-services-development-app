@@ -34,4 +34,6 @@ export default function Create({ roles }: PageProps<{ roles: Role[] }>) {
 	);
 }
 
-Create.layout = (page: JSX.Element) => <AuthenticatedLayout children={page} />;
+Create.layout = (page: React.JSX.Element) => (
+	<AuthenticatedLayout children={page} />
+);

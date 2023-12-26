@@ -104,4 +104,6 @@ export default function Student({
 	);
 }
 
-Student.layout = (page: JSX.Element) => <AuthenticatedLayout children={page} />;
+Student.layout = (page: React.JSX.Element) => (
+	<AuthenticatedLayout children={page} />
+);

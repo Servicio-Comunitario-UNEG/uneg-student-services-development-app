@@ -143,4 +143,6 @@ export default function Index({ students }: StudentsPageProps) {
 	);
 }
 
-Index.layout = (page: JSX.Element) => <AuthenticatedLayout children={page} />;
+Index.layout = (page: React.JSX.Element) => (
+	<AuthenticatedLayout children={page} />
+);
