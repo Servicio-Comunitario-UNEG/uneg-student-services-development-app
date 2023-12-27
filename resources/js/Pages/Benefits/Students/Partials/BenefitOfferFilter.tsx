@@ -1,6 +1,6 @@
 import { router, usePage } from "@inertiajs/react";
 import debounce from "lodash.debounce";
-import { useMemo } from "react";
+import { useEffect, useMemo } from "react";
 
 import Select from "@/Components/Select";
 
@@ -18,6 +18,7 @@ export default function BenefitOfferFilter() {
 					route("benefits-students.index"),
 					{
 						...filters,
+						page: 1,
 						semester,
 					},
 					{
@@ -38,6 +39,7 @@ export default function BenefitOfferFilter() {
 					route("benefits-students.index"),
 					{
 						...filters,
+						page: 1,
 						headquarter,
 					},
 					{
@@ -69,6 +71,14 @@ export default function BenefitOfferFilter() {
 			}, 500),
 		[filters],
 	);
+
+	useEffect(() => {
+		return () => {
+			onSemesterChange.cancel();
+			onHeadquarterChange.cancel();
+			onBenefitChange.cancel();
+		};
+	}, [onSemesterChange, onHeadquarterChange, onBenefitChange]);
 
 	return (
 		<div className="flex gap-2">

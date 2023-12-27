@@ -24,6 +24,16 @@ class BenefitSemesterHeadquarterStudentController extends Controller {
 		$semester = $request->query("semester");
 		$headquarter = $request->query("headquarter");
 		$benefit = $request->query("benefit");
+		$page = $request->query("page");
+		$perPage = $request->query("per_page");
+
+		if (!is_numeric($page)) {
+			$page = 1;
+		}
+
+		if (!is_numeric($perPage)) {
+			$perPage = 10;
+		}
 
 		if (!is_numeric($semester)) {
 			$semester = null;
@@ -57,7 +67,7 @@ class BenefitSemesterHeadquarterStudentController extends Controller {
 						->get()
 						->load("benefit_semester.benefit"),
 			"students" => is_null($headquarter)
-				? new Paginator([], 10)
+				? new Paginator([], $perPage)
 				: Student::query()
 					->where(function (Builder $query) use ($headquarter) {
 						$query->whereHas(
@@ -69,7 +79,8 @@ class BenefitSemesterHeadquarterStudentController extends Controller {
 							),
 						);
 					})
-					->paginate(),
+					->paginate($perPage)
+					->withQueryString(),
 			"filters" => [
 				"semester" => $semester,
 				"headquarter" => $headquarter,

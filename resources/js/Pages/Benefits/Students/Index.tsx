@@ -78,6 +78,8 @@ export type BenefitsStudentsPageProps = PageProps<{
 		semester: string | null;
 		headquarter: string | null;
 		benefit: string | null;
+		page: number;
+		per_page: number;
 	};
 }>;
 
