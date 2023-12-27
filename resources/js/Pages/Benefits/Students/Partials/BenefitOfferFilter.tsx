@@ -23,7 +23,7 @@ export default function BenefitOfferFilter() {
 					{
 						preserveState: true,
 						replace: true,
-						only: ["benefits", "filters"],
+						only: ["benefits", "students", "filters"],
 					},
 				);
 			}, 500),
@@ -43,7 +43,7 @@ export default function BenefitOfferFilter() {
 					{
 						preserveState: true,
 						replace: true,
-						only: ["benefits", "filters"],
+						only: ["benefits", "students", "filters"],
 					},
 				);
 			}, 500),

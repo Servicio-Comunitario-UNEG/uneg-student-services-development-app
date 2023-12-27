@@ -6,9 +6,11 @@ use App\Models\BenefitSemesterHeadquarter;
 use App\Models\BenefitSemesterHeadquarterStudent;
 use App\Models\Headquarter;
 use App\Models\Semester;
+use App\Models\Student;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
+use Illuminate\Pagination\Paginator;
 use Inertia\Inertia;
 
 class BenefitSemesterHeadquarterStudentController extends Controller {
@@ -37,7 +39,9 @@ class BenefitSemesterHeadquarterStudentController extends Controller {
 
 		return Inertia::render("Benefits/Students/Index", [
 			"semesters" => Semester::all()->sortByDesc("year"),
-			"headquarters" => Headquarter::all(),
+			"headquarters" => Headquarter::all()
+				->sortBy("name")
+				->values(),
 			"benefits" =>
 				is_null($semester) || is_null($headquarter)
 					? []
@@ -48,10 +52,24 @@ class BenefitSemesterHeadquarterStudentController extends Controller {
 						) {
 							$query
 								->where("semester_id", "=", $semester)
-								->orWhere("headquarter_id", "=", $headquarter);
+								->where("headquarter_id", "=", $headquarter);
 						})
 						->get()
 						->load("benefit_semester.benefit"),
+			"students" => is_null($headquarter)
+				? new Paginator([], 10)
+				: Student::query()
+					->where(function (Builder $query) use ($headquarter) {
+						$query->whereHas(
+							"career_headquarter",
+							fn(Builder $query) => $query->where(
+								"headquarter_id",
+								"=",
+								$headquarter,
+							),
+						);
+					})
+					->paginate(),
 			"filters" => [
 				"semester" => $semester,
 				"headquarter" => $headquarter,
