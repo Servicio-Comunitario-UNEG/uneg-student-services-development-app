@@ -32,7 +32,7 @@ class BenefitSemesterHeadquarterStudentController extends Controller {
 		}
 
 		if (!is_numeric($perPage)) {
-			$perPage = 10;
+			$perPage = 1;
 		}
 
 		if (!is_numeric($semester)) {

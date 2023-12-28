@@ -136,7 +136,7 @@ export default function Index({ students }: StudentsPageProps) {
 
 			<DataTable
 				columns={columns}
-				paginatedData={students}
+				data={students}
 				toolbar={<DataTableToolbar />}
 			/>
 		</PageLayout>

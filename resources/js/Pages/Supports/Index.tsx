@@ -125,7 +125,7 @@ export default function Index({ supports }: SupportsPageProps) {
 
 			<DataTable
 				columns={columns}
-				paginatedData={supports}
+				data={supports}
 				toolbar={<DataTableToolbar />}
 			/>
 		</PageLayout>

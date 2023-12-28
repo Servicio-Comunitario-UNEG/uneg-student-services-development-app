@@ -93,7 +93,7 @@ export default function Index({
 		>
 			<Head title="Beneficios por Semestre" />
 
-			<DataTable columns={columns} paginatedData={benefits_semesters} />
+			<DataTable columns={columns} data={benefits_semesters} />
 		</PageLayout>
 	);
 }

@@ -73,7 +73,7 @@ export default function Index({ semesters }: SemestersPageProps) {
 		>
 			<Head title="Semestres" />
 
-			<DataTable columns={columns} paginatedData={semesters} />
+			<DataTable columns={columns} data={semesters} />
 		</PageLayout>
 	);
 }

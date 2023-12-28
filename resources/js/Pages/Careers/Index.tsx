@@ -91,7 +91,7 @@ export default function Index({ careers }: CareerPageProps) {
 
 			<DataTable
 				columns={columns}
-				paginatedData={careers}
+				data={careers}
 				toolbar={<DataTableToolbar />}
 			/>
 		</PageLayout>

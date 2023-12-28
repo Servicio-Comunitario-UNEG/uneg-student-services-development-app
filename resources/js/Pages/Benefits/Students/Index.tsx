@@ -17,12 +17,26 @@ import PageLayout from "@/Layouts/PageLayout";
 
 import { DataTable } from "@/Components/DataTable";
 import { DataTableColumnHeader } from "@/Components/DataTableColumnHeader";
+import { Checkbox } from "@/Components/ui/checkbox";
 
 import { getFullName } from "@/lib/utils";
 
 import BenefitOfferFilter from "./Partials/BenefitOfferFilter";
 
 const columns: ColumnDef<Student>[] = [
+	{
+		id: "select",
+		cell: ({ row }) => (
+			<Checkbox
+				checked={row.getIsSelected()}
+				onCheckedChange={(value) => row.toggleSelected(!!value)}
+				aria-label="Select row"
+				className="translate-y-[2px]"
+			/>
+		),
+		enableSorting: false,
+		enableHiding: false,
+	},
 	{
 		id: "full_name",
 		header: ({ column }) => (
@@ -96,8 +110,9 @@ export default function Index({ students }: BenefitsStudentsPageProps) {
 
 			<DataTable
 				columns={columns}
-				paginatedData={students}
+				data={students}
 				toolbar={<BenefitOfferFilter />}
+				getRowId={(row) => String(row.id)}
 			/>
 		</PageLayout>
 	);

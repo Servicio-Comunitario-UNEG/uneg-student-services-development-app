@@ -56,7 +56,7 @@ export default function Index({ benefits }: BenefitsPageProps) {
 		>
 			<Head title="Beneficios" />
 
-			<DataTable columns={columns} paginatedData={benefits} />
+			<DataTable columns={columns} data={benefits} />
 		</PageLayout>
 	);
 }

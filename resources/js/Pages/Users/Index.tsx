@@ -99,7 +99,7 @@ export default function Index({ users }: UserPageProps) {
 			<DataTable
 				toolbar={<DataTableToolbar />}
 				columns={columns}
-				paginatedData={users}
+				data={users}
 			/>
 		</PageLayout>
 	);

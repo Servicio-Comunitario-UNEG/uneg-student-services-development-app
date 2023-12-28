@@ -86,7 +86,7 @@ export default function Index({ headquarters }: HeadquarterPageProps) {
 
 			<DataTable
 				columns={columns}
-				paginatedData={headquarters}
+				data={headquarters}
 				toolbar={<DataTableToolbar />}
 			/>
 		</PageLayout>
