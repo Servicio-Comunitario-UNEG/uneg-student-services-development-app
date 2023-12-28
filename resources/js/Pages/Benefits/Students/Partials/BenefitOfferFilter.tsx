@@ -4,9 +4,13 @@ import { useEffect, useMemo } from "react";
 
 import Select from "@/Components/Select";
 
+import { useSelection } from "@/hooks/useSelection";
+
 import { BenefitsStudentsPageProps } from "../Index";
 
 export default function BenefitOfferFilter() {
+	const selection = useSelection();
+
 	const { benefits, headquarters, semesters, filters } =
 		usePage<BenefitsStudentsPageProps>().props;
 
@@ -14,11 +18,14 @@ export default function BenefitOfferFilter() {
 	const onSemesterChange = useMemo(
 		() =>
 			debounce((semester: string) => {
+				selection.clear();
+
 				router.get(
 					route("benefits-students.index"),
 					{
 						...filters,
 						page: 1,
+						benefit: "",
 						semester,
 					},
 					{
@@ -28,18 +35,21 @@ export default function BenefitOfferFilter() {
 					},
 				);
 			}, 500),
-		[filters],
+		[filters, selection],
 	);
 
 	// Updates the headquarter query.
 	const onHeadquarterChange = useMemo(
 		() =>
 			debounce((headquarter: string) => {
+				selection.clear();
+
 				router.get(
 					route("benefits-students.index"),
 					{
 						...filters,
 						page: 1,
+						benefit: "",
 						headquarter,
 					},
 					{
@@ -49,7 +59,7 @@ export default function BenefitOfferFilter() {
 					},
 				);
 			}, 500),
-		[filters],
+		[filters, selection],
 	);
 
 	// Updates the benefit query.
@@ -60,6 +70,7 @@ export default function BenefitOfferFilter() {
 					route("benefits-students.index"),
 					{
 						...filters,
+						page: 1,
 						benefit,
 					},
 					{

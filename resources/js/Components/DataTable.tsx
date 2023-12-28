@@ -37,6 +37,7 @@ interface DataTableProps<TData, TValue> {
 	initialState?: InitialTableState;
 	toolbar?: React.JSX.Element;
 	getRowId?: TableOptions<TData>["getRowId"];
+	getIsSelected?: (value: TData) => boolean;
 }
 
 export function DataTable<TData, TValue>({
@@ -45,15 +46,15 @@ export function DataTable<TData, TValue>({
 	initialState,
 	toolbar,
 	getRowId,
+	getIsSelected,
 }: DataTableProps<TData, TValue>) {
-    const isPaginated = !Array.isArray(data);
+	const isPaginated = !Array.isArray(data);
 
 	const [columnVisibility, setColumnVisibility] = useState<VisibilityState>(
 		{},
 	);
 	const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
 	const [sorting, setSorting] = useState<SortingState>([]);
-
 
 	const table = useReactTable({
 		data: isPaginated ? data.data : data,
@@ -65,7 +66,7 @@ export function DataTable<TData, TValue>({
 		},
 		initialState,
 		manualPagination: isPaginated,
-		enableRowSelection: true,
+		pageCount: isPaginated ? data.last_page : undefined,
 		getRowId,
 		onSortingChange: setSorting,
 		onColumnFiltersChange: setColumnFilters,
@@ -79,7 +80,6 @@ export function DataTable<TData, TValue>({
 		getFacetedRowModel: getFacetedRowModel(),
 		getFacetedUniqueValues: getFacetedUniqueValues(),
 	});
-
 
 	const headerGroups = table.getHeaderGroups();
 	const columnsSpan = headerGroups[headerGroups.length - 1].headers.length;
@@ -111,7 +111,7 @@ export function DataTable<TData, TValue>({
 														header.column.columnDef
 															.header,
 														header.getContext(),
-												  )}
+													)}
 										</TableHead>
 									);
 								})}
@@ -125,7 +125,9 @@ export function DataTable<TData, TValue>({
 								<TableRow
 									key={row.id}
 									data-state={
-										row.getIsSelected() && "selected"
+										(row.getIsSelected() ||
+											getIsSelected?.(row.original)) &&
+										"selected"
 									}
 								>
 									{row.getVisibleCells().map((cell) => (
@@ -157,7 +159,6 @@ export function DataTable<TData, TValue>({
 			) : (
 				<DataTablePagination table={table} />
 			)}
-
 		</div>
 	);
 }

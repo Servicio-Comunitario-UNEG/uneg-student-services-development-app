@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\BenefitSemester;
 use App\Models\BenefitSemesterHeadquarter;
 use App\Models\BenefitSemesterHeadquarterStudent;
 use App\Models\Headquarter;
@@ -32,7 +33,7 @@ class BenefitSemesterHeadquarterStudentController extends Controller {
 		}
 
 		if (!is_numeric($perPage)) {
-			$perPage = 1;
+			$perPage = 10;
 		}
 
 		if (!is_numeric($semester)) {
@@ -47,6 +48,14 @@ class BenefitSemesterHeadquarterStudentController extends Controller {
 			$benefit = null;
 		}
 
+		// Get the benefits given in the semester selected.
+		if ($semester != null) {
+			$benefitSemesterIds = BenefitSemester::query()
+				->where("semester_id", "=", $semester)
+				->get()
+				->pluck("id");
+		}
+
 		return Inertia::render("Benefits/Students/Index", [
 			"semesters" => Semester::all()->sortByDesc("year"),
 			"headquarters" => Headquarter::all()
@@ -56,14 +65,8 @@ class BenefitSemesterHeadquarterStudentController extends Controller {
 				is_null($semester) || is_null($headquarter)
 					? []
 					: BenefitSemesterHeadquarter::query()
-						->where(function (Builder $query) use (
-							$semester,
-							$headquarter,
-						) {
-							$query
-								->where("semester_id", "=", $semester)
-								->where("headquarter_id", "=", $headquarter);
-						})
+						->whereIn("benefit_semester_id", $benefitSemesterIds)
+						->where("headquarter_id", "=", $headquarter)
 						->get()
 						->load("benefit_semester.benefit"),
 			"students" => is_null($headquarter)

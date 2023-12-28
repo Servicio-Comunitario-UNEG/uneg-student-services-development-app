@@ -33,7 +33,7 @@ export default function Select({
 	useEffect(() => {
 		const hasOption = options.some((option) => option.value === value);
 
-		if (options.length === 0 || !hasOption) setValue("");
+		if (!hasOption && value) setValue("");
 	}, [options, value]);
 
 	return (
