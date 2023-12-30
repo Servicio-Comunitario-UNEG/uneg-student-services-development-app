@@ -71,17 +71,15 @@ class BenefitSemesterHeadquarterStudentController extends Controller {
 						->load("benefit_semester.benefit"),
 			"students" => is_null($headquarter)
 				? new Paginator([], $perPage)
-				: Student::query()
-					->where(function (Builder $query) use ($headquarter) {
-						$query->whereHas(
-							"career_headquarter",
-							fn(Builder $query) => $query->where(
-								"headquarter_id",
-								"=",
-								$headquarter,
-							),
-						);
-					})
+				: Student::with("benefits")
+					->whereHas(
+						"career_headquarter",
+						fn(Builder $query) => $query->where(
+							"headquarter_id",
+							"=",
+							$headquarter,
+						),
+					)
 					->paginate($perPage)
 					->withQueryString(),
 			"filters" => [

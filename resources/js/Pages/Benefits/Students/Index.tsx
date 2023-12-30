@@ -1,3 +1,4 @@
+import SelectionCheckbox from "@/Pages/Benefits/Students/Partials/SelectionCheckbox";
 import { SelectionProvider } from "@/context/SelectionProvider";
 import { Head } from "@inertiajs/react";
 import { ColumnDef } from "@tanstack/react-table";
@@ -18,7 +19,6 @@ import PageLayout from "@/Layouts/PageLayout";
 
 import { DataTable } from "@/Components/DataTable";
 import { DataTableColumnHeader } from "@/Components/DataTableColumnHeader";
-import SelectionCheckbox from "@/Components/SelectionCheckbox";
 import { Button } from "@/Components/ui/button";
 
 import { useSelection } from "@/hooks/useSelection";
@@ -30,7 +30,6 @@ import BenefitOfferFilter from "./Partials/BenefitOfferFilter";
 const columns: ColumnDef<Student>[] = [
 	{
 		id: "select",
-
 		cell: ({ row }) => <SelectionCheckbox id={row.original.id} />,
 		enableSorting: false,
 		enableHiding: false,
@@ -85,7 +84,7 @@ export type BenefitsStudentsPageProps = PageProps<{
 			benefit_semester: BenefitSemester & { benefit: Benefit };
 		}
 	>;
-	students: Paginated<Student>;
+	students: Paginated<Student & { benefits: BenefitSemesterHeadquarter[] }>;
 	filters: {
 		semester: string | null;
 		headquarter: string | null;
@@ -109,10 +108,11 @@ export default function Index({
 				description:
 					"Administra los beneficios asignados a cada estudiante.",
 				actions:
-					selection.selected.length &&
+					(selection.data.selected.length ||
+						selection.data.unselected.length) &&
 					filters.benefit &&
 					benefits.length ? (
-						<Button>Asignar beneficio</Button>
+						<Button>Guardar cambios</Button>
 					) : null,
 			}}
 		>
@@ -123,7 +123,9 @@ export default function Index({
 				data={students}
 				toolbar={<BenefitOfferFilter />}
 				getRowId={(row) => String(row.id)}
-				getIsSelected={(row) => selection.selected.includes(row.id)}
+				getIsSelected={(row) =>
+					selection.data.selected.includes(row.id)
+				}
 			/>
 		</PageLayout>
 	);

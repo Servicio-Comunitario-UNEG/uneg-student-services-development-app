@@ -1,7 +1,10 @@
 import { createContext, useState } from "react";
 
 type SelectionProviderState = {
-	selected: number[];
+	data: {
+		selected: number[];
+		unselected: number[];
+	};
 	toggle: (key: number) => void;
 	clear: () => void;
 };
@@ -11,22 +14,41 @@ export const SelectionProviderContext = createContext<SelectionProviderState>(
 );
 
 export function SelectionProvider({ children }: { children: React.ReactNode }) {
-	const [selected, setSelected] = useState<number[]>([]);
+	const [selection, setSelection] = useState<SelectionProviderState["data"]>({
+		selected: [],
+		unselected: [],
+	});
 
 	return (
 		<SelectionProviderContext.Provider
 			value={{
-				selected,
+				data: selection,
 				toggle(key) {
-					setSelected((previous) => {
-						if (previous.includes(key)) {
-							return previous.filter((item) => item !== key);
+					setSelection((previous) => {
+						// Pass key to unselected.
+						if (previous.selected.includes(key)) {
+							return {
+								selected: previous.selected.filter(
+									(item) => item !== key,
+								),
+								unselected: [...previous.unselected, key],
+							};
 						}
 
-						return [...previous, key];
+						// Pass key to selected.
+						return {
+							selected: [...previous.selected, key],
+							unselected: previous.unselected.filter(
+								(item) => item !== key,
+							),
+						};
 					});
 				},
-				clear: () => setSelected([]),
+				clear: () =>
+					setSelection({
+						selected: [],
+						unselected: [],
+					}),
 			}}
 		>
 			{children}
