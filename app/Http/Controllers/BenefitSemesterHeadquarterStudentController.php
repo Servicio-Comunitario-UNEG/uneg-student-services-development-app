@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Benefit;
 use App\Models\BenefitSemester;
 use App\Models\BenefitSemesterHeadquarter;
 use App\Models\BenefitSemesterHeadquarterStudent;
@@ -10,6 +11,8 @@ use App\Models\Semester;
 use App\Models\Student;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Http\Request;
 use Illuminate\Pagination\Paginator;
 use Inertia\Inertia;
@@ -71,7 +74,7 @@ class BenefitSemesterHeadquarterStudentController extends Controller {
 						->load("benefit_semester.benefit"),
 			"students" => is_null($headquarter)
 				? new Paginator([], $perPage)
-				: Student::with("benefits")
+				: Student::with("benefits.benefit_semester.benefit")
 					->whereHas(
 						"career_headquarter",
 						fn(Builder $query) => $query->where(
@@ -139,5 +142,45 @@ class BenefitSemesterHeadquarterStudentController extends Controller {
 		BenefitSemesterHeadquarterStudent $benefitSemesterHeadquarterStudent,
 	) {
 		//
+	}
+
+	/**
+	 * Assign or unassign the benefit semester headquarter to a group of students.
+	 */
+	public function toggle(
+		Request $request,
+		BenefitSemesterHeadquarter $benefitSemesterHeadquarter,
+	) {
+		$selectedStudents = $request->json("selected", []);
+		$unselectedStudents = $request->json("unselected", []);
+
+		// Remove assignment.
+		$benefitSemesterHeadquarter->students()->detach($unselectedStudents);
+
+		// Take the maximum of assignments that can be made.
+		$maxAssignable =
+			$benefitSemesterHeadquarter->amount -
+			$benefitSemesterHeadquarter->students()->count();
+
+		// Avoid assignment as its completed.
+		if ($maxAssignable <= 0) {
+			return redirect(route("benefits-students.index"))->with(
+				"message",
+				"El beneficio no puede ser asignado a más estudiantes",
+			);
+		}
+
+		$selectedStudents =
+			count($selectedStudents) > $maxAssignable
+				? array_slice($selectedStudents, 0, $maxAssignable)
+				: $selectedStudents;
+
+		// Assign the benefits.
+		$benefitSemesterHeadquarter->students()->sync($selectedStudents);
+
+		return redirect(route("benefits-students.index"))->with(
+			"message",
+			"Se han guardado los cambios con éxito",
+		);
 	}
 }

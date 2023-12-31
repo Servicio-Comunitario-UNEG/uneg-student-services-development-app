@@ -1,6 +1,6 @@
-import SelectionCheckbox from "@/Pages/Benefits/Students/Partials/SelectionCheckbox";
+import CheckboxCellAction from "@/Pages/Benefits/Students/Partials/CheckboxCellAction";
 import { SelectionProvider } from "@/context/SelectionProvider";
-import { Head } from "@inertiajs/react";
+import { Head, router } from "@inertiajs/react";
 import { ColumnDef } from "@tanstack/react-table";
 
 import {
@@ -25,12 +25,13 @@ import { useSelection } from "@/hooks/useSelection";
 
 import { getFullName } from "@/lib/utils";
 
+import BenefitCell from "./Partials/BenefitCell";
 import BenefitOfferFilter from "./Partials/BenefitOfferFilter";
 
-const columns: ColumnDef<Student>[] = [
+const columns: ColumnDef<StudentWithBenefits>[] = [
 	{
 		id: "select",
-		cell: ({ row }) => <SelectionCheckbox id={row.original.id} />,
+		cell: (cell) => <CheckboxCellAction {...cell} />,
 		enableSorting: false,
 		enableHiding: false,
 	},
@@ -66,15 +67,23 @@ const columns: ColumnDef<Student>[] = [
 		enableSorting: false,
 	},
 	{
-		accessorKey: "cell_phone",
+		accessorKey: "benefits",
 		header: ({ column }) => (
-			<DataTableColumnHeader column={column} title="Teléfono" />
+			<DataTableColumnHeader column={column} title="Beneficio" />
 		),
-		cell: ({ row }) => row.getValue("cell_phone"),
+		cell: (cell) => <BenefitCell {...cell} />,
 		enableHiding: false,
 		enableSorting: false,
 	},
 ];
+
+export type StudentWithBenefits = Student & {
+	benefits: Array<
+		BenefitSemesterHeadquarter & {
+			benefit_semester: BenefitSemester & { benefit: Benefit };
+		}
+	>;
+};
 
 export type BenefitsStudentsPageProps = PageProps<{
 	semesters: Semester[];
@@ -84,7 +93,7 @@ export type BenefitsStudentsPageProps = PageProps<{
 			benefit_semester: BenefitSemester & { benefit: Benefit };
 		}
 	>;
-	students: Paginated<Student & { benefits: BenefitSemesterHeadquarter[] }>;
+	students: Paginated<StudentWithBenefits>;
 	filters: {
 		semester: string | null;
 		headquarter: string | null;
@@ -112,7 +121,26 @@ export default function Index({
 						selection.data.unselected.length) &&
 					filters.benefit &&
 					benefits.length ? (
-						<Button>Guardar cambios</Button>
+						<Button
+							onClick={() => {
+								const currentBenefit = benefits.find(
+									(benefit) =>
+										String(benefit.id) === filters.benefit,
+								);
+
+								if (!currentBenefit) return;
+
+								router.post(
+									route(
+										"benefits-students.toggle",
+										currentBenefit.id,
+									),
+									selection.data,
+								);
+							}}
+						>
+							Guardar cambios
+						</Button>
 					) : null,
 			}}
 		>

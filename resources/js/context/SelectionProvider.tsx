@@ -1,3 +1,4 @@
+import { CheckedState } from "@radix-ui/react-checkbox";
 import { createContext, useState } from "react";
 
 type SelectionProviderState = {
@@ -5,7 +6,7 @@ type SelectionProviderState = {
 		selected: number[];
 		unselected: number[];
 	};
-	toggle: (key: number) => void;
+	toggle: (key: number, checked: CheckedState) => void;
 	clear: () => void;
 };
 
@@ -23,10 +24,10 @@ export function SelectionProvider({ children }: { children: React.ReactNode }) {
 		<SelectionProviderContext.Provider
 			value={{
 				data: selection,
-				toggle(key) {
+				toggle(key, checkedState) {
 					setSelection((previous) => {
-						// Pass key to unselected.
-						if (previous.selected.includes(key)) {
+						if (!checkedState) {
+							// Pass key to unselected.
 							return {
 								selected: previous.selected.filter(
 									(item) => item !== key,

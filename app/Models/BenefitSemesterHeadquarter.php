@@ -46,8 +46,8 @@ class BenefitSemesterHeadquarter extends Model {
 		return $this->belongsToMany(
 			Student::class,
 			"benefit_semester_headquarter_student",
+			"benefit_semester_headquarter_id",
 			"student_id",
-			"id",
 		);
 	}
 }

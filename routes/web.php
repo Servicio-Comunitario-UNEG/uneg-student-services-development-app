@@ -146,4 +146,14 @@ Route::resource(
 	BenefitSemesterHeadquarterStudentController::class,
 )->only(["index"]);
 
+Route::post("/benefits-students/{benefitSemesterHeadquarter}", [
+	BenefitSemesterHeadquarterStudentController::class,
+	"toggle",
+])->name("benefits-students.toggle");
+
+Route::resource(
+	"benefits-students",
+	BenefitSemesterHeadquarterStudentController::class,
+)->only(["index"]);
+
 require __DIR__ . "/auth.php";
