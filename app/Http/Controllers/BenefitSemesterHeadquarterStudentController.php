@@ -164,7 +164,7 @@ class BenefitSemesterHeadquarterStudentController extends Controller {
 
 		// Avoid assignment as its completed.
 		if ($maxAssignable <= 0) {
-			return redirect(route("benefits-students.index"))->with(
+			return redirect(url()->previous())->with(
 				"message",
 				"El beneficio no puede ser asignado a más estudiantes",
 			);
@@ -178,7 +178,7 @@ class BenefitSemesterHeadquarterStudentController extends Controller {
 		// Assign the benefits.
 		$benefitSemesterHeadquarter->students()->sync($selectedStudents);
 
-		return redirect(route("benefits-students.index"))->with(
+		return redirect(url()->previous())->with(
 			"message",
 			"Se han guardado los cambios con éxito",
 		);

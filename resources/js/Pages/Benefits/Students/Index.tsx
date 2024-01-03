@@ -136,6 +136,9 @@ export default function Index({
 										currentBenefit.id,
 									),
 									selection.data,
+									{
+										onSuccess: () => selection.clear(),
+									},
 								);
 							}}
 						>
