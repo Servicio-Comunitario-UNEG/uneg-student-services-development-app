@@ -31,7 +31,12 @@ export default function BenefitOfferFilter() {
 					{
 						preserveState: true,
 						replace: true,
-						only: ["benefits", "students", "filters"],
+						only: [
+							"benefits",
+							"students",
+							"filters",
+							"default_selected_students",
+						],
 					},
 				);
 			}, 500),
@@ -55,7 +60,12 @@ export default function BenefitOfferFilter() {
 					{
 						preserveState: true,
 						replace: true,
-						only: ["benefits", "students", "filters"],
+						only: [
+							"benefits",
+							"students",
+							"filters",
+							"default_selected_students",
+						],
 					},
 				);
 			}, 500),
@@ -66,6 +76,8 @@ export default function BenefitOfferFilter() {
 	const onBenefitChange = useMemo(
 		() =>
 			debounce((benefit: string) => {
+				selection.clear();
+
 				router.get(
 					route("benefits-students.index"),
 					{
@@ -76,11 +88,11 @@ export default function BenefitOfferFilter() {
 					{
 						preserveState: true,
 						replace: true,
-						only: ["filters"],
+						only: ["filters", "students"],
 					},
 				);
 			}, 500),
-		[filters],
+		[filters, selection],
 	);
 
 	useEffect(() => {

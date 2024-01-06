@@ -2,6 +2,7 @@ import CheckboxCellAction from "@/Pages/Benefits/Students/Partials/CheckboxCellA
 import { SelectionProvider } from "@/context/SelectionProvider";
 import { Head, router } from "@inertiajs/react";
 import { ColumnDef } from "@tanstack/react-table";
+import { useEffect } from "react";
 
 import {
 	Benefit,
@@ -94,6 +95,7 @@ export type BenefitsStudentsPageProps = PageProps<{
 		}
 	>;
 	students: Paginated<StudentWithBenefits>;
+	default_selected_students: number[];
 	filters: {
 		semester: string | null;
 		headquarter: string | null;
@@ -107,8 +109,14 @@ export default function Index({
 	students,
 	benefits,
 	filters,
+	default_selected_students,
 }: BenefitsStudentsPageProps) {
 	const selection = useSelection();
+
+	useEffect(() => {
+		selection.setDefault(default_selected_students);
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [default_selected_students]);
 
 	return (
 		<PageLayout

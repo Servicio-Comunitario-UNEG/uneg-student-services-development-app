@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Benefit;
 use App\Models\BenefitSemester;
 use App\Models\BenefitSemesterHeadquarter;
 use App\Models\BenefitSemesterHeadquarterStudent;
@@ -11,8 +10,6 @@ use App\Models\Semester;
 use App\Models\Student;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Http\Request;
 use Illuminate\Pagination\Paginator;
 use Inertia\Inertia;
@@ -59,6 +56,36 @@ class BenefitSemesterHeadquarterStudentController extends Controller {
 				->pluck("id");
 		}
 
+		// Get the current benefit semester in a headquarter.
+		$defaultSelectedStudents = [];
+
+		if (!is_null($semester) && !is_null($headquarter)) {
+			$benefitSemesterIds = BenefitSemester::query()
+				->where("semester_id", "=", $semester)
+				->get()
+				->pluck("id")
+				->all();
+
+			$benefitSemesterHeadquarterList = BenefitSemesterHeadquarter::query()
+				->where("headquarter_id", "=", $headquarter)
+				->whereIn("benefit_semester_id", $benefitSemesterIds)
+				->get();
+
+			// Get the students that have a benefit in the current semester in the headquarter.
+			foreach (
+				$benefitSemesterHeadquarterList
+				as $benefitSemesterHeadquarter
+			) {
+				$defaultSelectedStudents = array_merge(
+					$defaultSelectedStudents,
+					$benefitSemesterHeadquarter
+						->students()
+						->pluck("students.id")
+						->all(),
+				);
+			}
+		}
+
 		return Inertia::render("Benefits/Students/Index", [
 			"semesters" => Semester::all()->sortByDesc("year"),
 			"headquarters" => Headquarter::all()
@@ -85,10 +112,13 @@ class BenefitSemesterHeadquarterStudentController extends Controller {
 					)
 					->paginate($perPage)
 					->withQueryString(),
+			"default_selected_students" => $defaultSelectedStudents,
 			"filters" => [
 				"semester" => $semester,
 				"headquarter" => $headquarter,
 				"benefit" => $benefit,
+				"page" => $page,
+				"per_page" => $perPage,
 			],
 		]);
 	}
@@ -176,7 +206,7 @@ class BenefitSemesterHeadquarterStudentController extends Controller {
 				: $selectedStudents;
 
 		// Assign the benefits.
-		$benefitSemesterHeadquarter->students()->sync($selectedStudents);
+		$benefitSemesterHeadquarter->students()->sync($selectedStudents, false);
 
 		return redirect(url()->previous())->with(
 			"message",

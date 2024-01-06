@@ -46,6 +46,9 @@ export type PageProps<
 	auth: {
 		user: User;
 	};
+	ziggy: {
+		full_url: string;
+	};
 	flash: {
 		message: string | null;
 	};
