@@ -13,7 +13,7 @@ type SelectionProviderState = {
 	/** Switches the element to selected or unselected based on checked. */
 	toggle: (key: number, checked: CheckedState) => void;
 	/** Clears all the values from the data. */
-	clear: () => void;
+	clear: (shouldClearDefault?: boolean) => void;
 	/** Sets the default selected data. */
 	setDefault: (keys: number[]) => void;
 };
@@ -69,12 +69,14 @@ export function SelectionProvider({ children }: { children: React.ReactNode }) {
 						...previous,
 						defaultSelected: keys,
 					})),
-				clear: () =>
-					setSelection({
+				clear: (shouldClearDefault = true) =>
+					setSelection((previous) => ({
 						selected: [],
 						unselected: [],
-						defaultSelected: [],
-					}),
+						defaultSelected: shouldClearDefault
+							? []
+							: previous.defaultSelected,
+					})),
 			}}
 		>
 			{children}

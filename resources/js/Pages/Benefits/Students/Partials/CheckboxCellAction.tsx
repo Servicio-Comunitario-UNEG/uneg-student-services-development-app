@@ -35,7 +35,11 @@ export default function CheckboxCellAction({
 
 	return (
 		<Checkbox
-			defaultChecked={hasAnyBenefitAssigned}
+			checked={
+				selection.data.selected.includes(studentWithBenefits.id) ||
+				(hasAnyBenefitAssigned &&
+					!selection.data.unselected.includes(studentWithBenefits.id))
+			}
 			onCheckedChange={(checked) =>
 				selection.toggle(studentWithBenefits.id, checked)
 			}

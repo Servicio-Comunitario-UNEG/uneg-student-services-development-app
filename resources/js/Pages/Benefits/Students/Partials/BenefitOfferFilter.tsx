@@ -76,7 +76,7 @@ export default function BenefitOfferFilter() {
 	const onBenefitChange = useMemo(
 		() =>
 			debounce((benefit: string) => {
-				selection.clear();
+				selection.clear(false);
 
 				router.get(
 					route("benefits-students.index"),

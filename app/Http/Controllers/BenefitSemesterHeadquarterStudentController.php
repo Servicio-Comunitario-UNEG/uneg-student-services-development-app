@@ -100,7 +100,7 @@ class BenefitSemesterHeadquarterStudentController extends Controller {
 						->get()
 						->load("benefit_semester.benefit"),
 			"students" => is_null($headquarter)
-				? new Paginator([], $perPage)
+				? []
 				: Student::with("benefits.benefit_semester.benefit")
 					->whereHas(
 						"career_headquarter",
