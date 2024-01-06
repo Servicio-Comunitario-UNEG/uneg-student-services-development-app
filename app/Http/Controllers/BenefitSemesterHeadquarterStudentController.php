@@ -49,7 +49,7 @@ class BenefitSemesterHeadquarterStudentController extends Controller {
 		}
 
 		// Get the benefits given in the semester selected.
-		if ($semester != null) {
+		if (!is_null($semester)) {
 			$benefitSemesterIds = BenefitSemester::query()
 				->where("semester_id", "=", $semester)
 				->get()
@@ -86,6 +86,11 @@ class BenefitSemesterHeadquarterStudentController extends Controller {
 			}
 		}
 
+		// Get the current benefit semester.
+		$currentBenefit = is_null($benefit)
+			? null
+			: BenefitSemesterHeadquarter::find($benefit);
+
 		return Inertia::render("Benefits/Students/Index", [
 			"semesters" => Semester::all()->sortByDesc("year"),
 			"headquarters" => Headquarter::all()
@@ -112,6 +117,14 @@ class BenefitSemesterHeadquarterStudentController extends Controller {
 					)
 					->paginate($perPage)
 					->withQueryString(),
+			"current_benefit" => is_null($currentBenefit)
+				? null
+				: [
+					"available" =>
+						$currentBenefit->amount -
+						$currentBenefit->students()->count(),
+					"benefit" => $currentBenefit,
+				],
 			"default_selected_students" => $defaultSelectedStudents,
 			"filters" => [
 				"semester" => $semester,

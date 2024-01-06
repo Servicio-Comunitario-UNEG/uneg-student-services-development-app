@@ -94,6 +94,10 @@ export type BenefitsStudentsPageProps = PageProps<{
 			benefit_semester: BenefitSemester & { benefit: Benefit };
 		}
 	>;
+	current_benefit: {
+		available: number;
+		benefit: BenefitSemesterHeadquarter;
+	} | null;
 	students: Paginated<StudentWithBenefits>;
 	default_selected_students: number[];
 	filters: {
@@ -109,6 +113,7 @@ export default function Index({
 	students,
 	benefits,
 	filters,
+	current_benefit,
 	default_selected_students,
 }: BenefitsStudentsPageProps) {
 	const selection = useSelection();
@@ -117,6 +122,13 @@ export default function Index({
 		selection.setDefault(default_selected_students);
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [default_selected_students]);
+
+	// Current amount of benefits available.
+	const availableBenefits = current_benefit
+		? current_benefit.available -
+			selection.data.selected.length +
+			selection.data.unselected.length
+		: 0;
 
 	return (
 		<PageLayout
@@ -131,17 +143,12 @@ export default function Index({
 					benefits.length ? (
 						<Button
 							onClick={() => {
-								const currentBenefit = benefits.find(
-									(benefit) =>
-										String(benefit.id) === filters.benefit,
-								);
-
-								if (!currentBenefit) return;
+								if (!current_benefit) return;
 
 								router.post(
 									route(
 										"benefits-students.toggle",
-										currentBenefit.id,
+										current_benefit.benefit.id,
 									),
 									selection.data,
 									{
@@ -160,7 +167,19 @@ export default function Index({
 			<DataTable
 				columns={columns}
 				data={students}
-				toolbar={<BenefitOfferFilter />}
+				toolbar={
+					<div className="space-y-2">
+						<BenefitOfferFilter />
+
+						{current_benefit ? (
+							<p>
+								Hay {availableBenefits} de{" "}
+								{current_benefit.benefit.amount} beneficios
+								disponibles
+							</p>
+						) : null}
+					</div>
+				}
 				getRowId={(row) => String(row.id)}
 				getIsSelected={(row) =>
 					selection.data.selected.includes(row.id)

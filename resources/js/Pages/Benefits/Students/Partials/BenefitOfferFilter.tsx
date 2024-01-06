@@ -36,6 +36,7 @@ export default function BenefitOfferFilter() {
 							"students",
 							"filters",
 							"default_selected_students",
+							"current_benefit",
 						],
 					},
 				);
@@ -65,6 +66,7 @@ export default function BenefitOfferFilter() {
 							"students",
 							"filters",
 							"default_selected_students",
+							"current_benefit",
 						],
 					},
 				);
@@ -88,7 +90,7 @@ export default function BenefitOfferFilter() {
 					{
 						preserveState: true,
 						replace: true,
-						only: ["filters", "students"],
+						only: ["filters", "students", "current_benefit"],
 					},
 				);
 			}, 500),

@@ -11,40 +11,60 @@ export default function CheckboxCellAction({
 	row,
 }: CellContext<StudentWithBenefits, unknown>) {
 	const {
-		filters: { benefit, semester },
+		current_benefit,
+		filters: { semester },
 	} = usePage<BenefitsStudentsPageProps>().props;
 	const selection = useSelection();
 	const studentWithBenefits = row.original;
 
 	// Wether it has any benefit assigned in the semester.
-	const hasAnyBenefitAssigned = Boolean(
+	const hasAnotherBenefitAssigned = Boolean(
 		semester &&
-			studentWithBenefits.benefits.find(
-				(item) =>
-					String(item.benefit_semester.semester_id) === semester,
-			),
+			studentWithBenefits.benefits.find((benefit) => {
+				const isFromSelectedSemester =
+					String(benefit.benefit_semester.semester_id) === semester;
+
+				return current_benefit
+					? isFromSelectedSemester &&
+							benefit.id !== current_benefit.benefit.id
+					: isFromSelectedSemester;
+			}),
 	);
 
 	// Wether the selected benefit is already given.
 	const hasCurrentBenefitAssigned = Boolean(
-		benefit &&
+		current_benefit &&
 			studentWithBenefits.benefits.find(
-				(item) => String(item.benefit_semester_id) === benefit,
+				(benefit) => benefit.id === current_benefit.benefit.id,
 			),
 	);
 
+	// Wether the current student is selected.
+	const isChecked =
+		hasAnotherBenefitAssigned ||
+		(hasCurrentBenefitAssigned &&
+			!selection.data.unselected.includes(studentWithBenefits.id)) ||
+		selection.data.selected.includes(studentWithBenefits.id);
+
+	// Current amount of benefits available.
+	const availableBenefits = current_benefit
+		? current_benefit.available -
+			selection.data.selected.length +
+			selection.data.unselected.length
+		: 0;
+
 	return (
 		<Checkbox
-			checked={
-				selection.data.selected.includes(studentWithBenefits.id) ||
-				(hasAnyBenefitAssigned &&
-					!selection.data.unselected.includes(studentWithBenefits.id))
-			}
+			checked={isChecked}
 			onCheckedChange={(checked) =>
 				selection.toggle(studentWithBenefits.id, checked)
 			}
 			aria-label="Seleccionar fila"
-			disabled={!hasCurrentBenefitAssigned && hasAnyBenefitAssigned}
+			disabled={
+				hasAnotherBenefitAssigned
+					? true
+					: !isChecked && availableBenefits <= 0
+			}
 		/>
 	);
 }
