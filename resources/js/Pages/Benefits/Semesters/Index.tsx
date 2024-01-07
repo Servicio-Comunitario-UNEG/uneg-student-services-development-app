@@ -19,6 +19,7 @@ import { Button } from "@/Components/ui/button";
 import { useGate } from "@/hooks/useGate";
 
 import BenefitSemesterCellAction from "./Partials/BenefitSemesterCellAction";
+import { DataTableToolbar } from "./Partials/DataTableToolbar";
 
 const columns: ColumnDef<BenefitSemesterWithRelation>[] = [
 	{
@@ -69,6 +70,15 @@ export type BenefitSemesterWithRelation = BenefitSemester & {
 
 export type BenefitSemesterPageProps = PageProps<{
 	benefits_semesters: Paginated<BenefitSemesterWithRelation>;
+	benefits: Benefit[];
+	semesters: Semester[];
+	filters: {
+		page: string | null;
+		per_page: string | null;
+		search: string;
+		benefits: string[];
+		semesters: string[];
+	};
 }>;
 
 export default function Index({
@@ -93,7 +103,11 @@ export default function Index({
 		>
 			<Head title="Beneficios por Semestre" />
 
-			<DataTable columns={columns} data={benefits_semesters} />
+			<DataTable
+				columns={columns}
+				toolbar={<DataTableToolbar />}
+				data={benefits_semesters}
+			/>
 		</PageLayout>
 	);
 }

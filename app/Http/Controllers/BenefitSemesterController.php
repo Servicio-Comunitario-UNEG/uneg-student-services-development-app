@@ -9,6 +9,7 @@ use App\Models\BenefitSemester;
 use App\Models\Headquarter;
 use App\Models\Semester;
 use App\Models\User;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 
@@ -22,6 +23,9 @@ class BenefitSemesterController extends Controller {
 		// Get the search queries.
 		$page = $request->query("page");
 		$perPage = $request->query("per_page");
+		$search = $request->query("search", "");
+		$selectedBenefits = $request->query("benefits", []);
+		$selectedSemesters = $request->query("semesters", []);
 
 		if (is_null($page) || !is_numeric($page)) {
 			$page = 1;
@@ -32,13 +36,54 @@ class BenefitSemesterController extends Controller {
 		}
 
 		return Inertia::render("Benefits/Semesters/Index", [
-			"benefits_semesters" => BenefitSemester::with([
-				"benefit",
-				"semester",
-			])->paginate($perPage),
+			"benefits_semesters" => BenefitSemester::query()
+				->with(["benefit", "semester"])
+				->when($search, function (Builder $query, string $search) {
+					// Filter by name.
+					$query->whereHas(
+						"benefit",
+						fn(Builder $query) => $query->where(
+							"name",
+							"like",
+							"%$search%",
+						),
+					);
+				})
+				->when($selectedBenefits, function (
+					Builder $query,
+					array $selectedBenefits,
+				) {
+					// Filter by benefit.
+					$query->whereHas(
+						"benefit",
+						fn(Builder $query) => $query->whereIn(
+							"id",
+							$selectedBenefits,
+						),
+					);
+				})
+				->when($selectedSemesters, function (
+					Builder $query,
+					array $selectedSemesters,
+				) {
+					// Filter by semester.
+					$query->whereHas(
+						"semester",
+						fn(Builder $query) => $query->whereIn(
+							"id",
+							$selectedSemesters,
+						),
+					);
+				})
+				->paginate($perPage),
+			"benefits" => Benefit::all(),
+			"semesters" => Semester::all(),
 			"filters" => [
 				"page" => $page,
 				"per_page" => $perPage,
+				"search" => $search,
+				"benefits" => $selectedBenefits,
+				"semesters" => $selectedSemesters,
 			],
 		]);
 	}
