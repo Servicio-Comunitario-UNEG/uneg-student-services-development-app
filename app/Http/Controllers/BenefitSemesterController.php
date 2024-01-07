@@ -83,6 +83,7 @@ class BenefitSemesterController extends Controller {
 			"benefit_semester" => $benefits_semester->load([
 				"benefit_semester_headquarters.headquarter",
 				"benefit",
+				"semester",
 			]),
 		]);
 	}

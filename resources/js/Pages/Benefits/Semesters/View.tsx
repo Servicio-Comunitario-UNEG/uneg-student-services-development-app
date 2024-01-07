@@ -6,6 +6,7 @@ import {
 	BenefitSemesterHeadquarter,
 	Headquarter,
 	PageProps,
+	Semester,
 } from "@/types";
 
 import { AuthenticatedLayout } from "@/Layouts/AuthenticatedLayout";
@@ -21,6 +22,7 @@ export default function View({
 }: PageProps<{
 	benefit_semester: BenefitSemester & {
 		benefit: Benefit;
+		semester: Semester;
 		benefit_semester_headquarters: Array<
 			BenefitSemesterHeadquarter & {
 				headquarter: Headquarter;
@@ -57,6 +59,10 @@ export default function View({
 					{
 						title: "Nombre",
 						children: benefit_semester.benefit.name,
+					},
+					{
+						title: "Semestre",
+						children: `${benefit_semester.semester.year}-${benefit_semester.semester.lapse}`,
 					},
 					{
 						title: "Cantidad",
