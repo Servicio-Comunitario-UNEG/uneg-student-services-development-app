@@ -11,9 +11,23 @@ export default function CheckboxHeaderAction({
 	table,
 }: HeaderContext<StudentWithBenefits, unknown>) {
 	const selection = useSelection();
-	const { current_benefit } = usePage<BenefitsStudentsPageProps>().props;
+	const {
+		current_benefit,
+		filters: { semester },
+	} = usePage<BenefitsStudentsPageProps>().props;
 
-	const ids = table.getCoreRowModel().rows.map((row) => row.original.id);
+	const ids = table
+		.getCoreRowModel()
+		.rows.map((row) => row.original)
+		.filter((student) => {
+			return student.benefits.every((benefit) => {
+				return (
+					benefit.id === current_benefit?.benefit.id ||
+					String(benefit.benefit_semester.semester_id) !== semester
+				);
+			});
+		})
+		.map((student) => student.id);
 
 	// Wether some row is selected.
 	const hasSomeRowsSelected = ids.some(
@@ -24,12 +38,13 @@ export default function CheckboxHeaderAction({
 	);
 
 	// Wether all rows are selected.
-	const hasAllRowsSelected = ids.every(
-		(id) =>
-			selection.data.selected.includes(id) ||
-			(selection.data.defaultSelected.includes(id) &&
-				!selection.data.unselected.includes(id)),
-	);
+	const hasAllRowsSelected =
+		ids.every(
+			(id) =>
+				selection.data.selected.includes(id) ||
+				(selection.data.defaultSelected.includes(id) &&
+					!selection.data.unselected.includes(id)),
+		) && ids.length > 0;
 
 	// Current amount of benefits available.
 	const availableBenefits = current_benefit

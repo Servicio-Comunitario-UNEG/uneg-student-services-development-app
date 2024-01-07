@@ -2,7 +2,7 @@
 
 use App\Http\Controllers\BenefitController;
 use App\Http\Controllers\BenefitSemesterController;
-use App\Http\Controllers\BenefitSemesterHeadquarterStudentController;
+use App\Http\Controllers\BenefitSemesterHeadquarterController;
 use App\Http\Controllers\CareerController;
 use App\Http\Controllers\HeadquarterController;
 use App\Http\Controllers\ProfileController;
@@ -142,18 +142,13 @@ Route::resource("benefits-semesters", BenefitSemesterController::class)->only([
 
 // Benefits by student routes.
 Route::resource(
-	"benefits-students",
-	BenefitSemesterHeadquarterStudentController::class,
+	"benefits-headquarters",
+	BenefitSemesterHeadquarterController::class,
 )->only(["index"]);
 
-Route::post("/benefits-students/{benefitSemesterHeadquarter}", [
-	BenefitSemesterHeadquarterStudentController::class,
+Route::post("/benefits-headquarters/{benefitSemesterHeadquarter}", [
+	BenefitSemesterHeadquarterController::class,
 	"toggle",
-])->name("benefits-students.toggle");
-
-Route::resource(
-	"benefits-students",
-	BenefitSemesterHeadquarterStudentController::class,
-)->only(["index"]);
+])->name("benefits-headquarters.toggle");
 
 require __DIR__ . "/auth.php";

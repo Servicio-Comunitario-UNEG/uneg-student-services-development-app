@@ -149,7 +149,7 @@ export default function Index({
 
 								router.post(
 									route(
-										"benefits-students.toggle",
+										"benefits-headquarters.toggle",
 										current_benefit.benefit.id,
 									),
 									selection.data,

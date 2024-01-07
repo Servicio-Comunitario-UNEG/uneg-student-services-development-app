@@ -6,7 +6,6 @@ namespace App\Providers;
 use App\Models\Benefit;
 use App\Models\BenefitSemester;
 use App\Models\BenefitSemesterHeadquarter;
-use App\Models\BenefitSemesterHeadquarterStudent;
 use App\Models\Career;
 use App\Models\Headquarter;
 use App\Models\Student;
@@ -14,7 +13,6 @@ use App\Models\Support;
 use App\Models\User;
 use App\Policies\BenefitPolicy;
 use App\Policies\BenefitSemesterHeadquarterPolicy;
-use App\Policies\BenefitSemesterHeadquarterStudentPolicy;
 use App\Policies\BenefitSemesterPolicy;
 use App\Policies\CareerPolicy;
 use App\Policies\HeadquarterPolicy;
@@ -39,8 +37,6 @@ class AuthServiceProvider extends ServiceProvider {
 		BenefitSemester::class => BenefitSemesterPolicy::class,
 		BenefitSemesterHeadquarter::class =>
 			BenefitSemesterHeadquarterPolicy::class,
-		BenefitSemesterHeadquarterStudent::class =>
-			BenefitSemesterHeadquarterStudentPolicy::class,
 	];
 
 	/**

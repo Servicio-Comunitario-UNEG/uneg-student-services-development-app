@@ -21,7 +21,7 @@ export default function BenefitOfferFilter() {
 				selection.clear();
 
 				router.get(
-					route("benefits-students.index"),
+					route("benefits-headquarters.index"),
 					{
 						...filters,
 						page: 1,
@@ -51,7 +51,7 @@ export default function BenefitOfferFilter() {
 				selection.clear();
 
 				router.get(
-					route("benefits-students.index"),
+					route("benefits-headquarters.index"),
 					{
 						...filters,
 						page: 1,
@@ -81,7 +81,7 @@ export default function BenefitOfferFilter() {
 				selection.clear(false);
 
 				router.get(
-					route("benefits-students.index"),
+					route("benefits-headquarters.index"),
 					{
 						...filters,
 						page: 1,

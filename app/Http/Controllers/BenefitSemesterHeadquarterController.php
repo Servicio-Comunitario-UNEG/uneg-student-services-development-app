@@ -4,17 +4,15 @@ namespace App\Http\Controllers;
 
 use App\Models\BenefitSemester;
 use App\Models\BenefitSemesterHeadquarter;
-use App\Models\BenefitSemesterHeadquarterStudent;
 use App\Models\Headquarter;
 use App\Models\Semester;
 use App\Models\Student;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
-use Illuminate\Pagination\Paginator;
 use Inertia\Inertia;
 
-class BenefitSemesterHeadquarterStudentController extends Controller {
+class BenefitSemesterHeadquarterController extends Controller {
 	/**
 	 * Display a listing of the resource.
 	 */
@@ -134,57 +132,6 @@ class BenefitSemesterHeadquarterStudentController extends Controller {
 				"per_page" => $perPage,
 			],
 		]);
-	}
-
-	/**
-	 * Show the form for creating a new resource.
-	 */
-	public function create() {
-		//
-	}
-
-	/**
-	 * Store a newly created resource in storage.
-	 */
-	public function store(Request $request) {
-		//
-	}
-
-	/**
-	 * Display the specified resource.
-	 */
-	public function show(
-		BenefitSemesterHeadquarterStudent $benefitSemesterHeadquarterStudent,
-	) {
-		//
-	}
-
-	/**
-	 * Show the form for editing the specified resource.
-	 */
-	public function edit(
-		BenefitSemesterHeadquarterStudent $benefitSemesterHeadquarterStudent,
-	) {
-		//
-	}
-
-	/**
-	 * Update the specified resource in storage.
-	 */
-	public function update(
-		Request $request,
-		BenefitSemesterHeadquarterStudent $benefitSemesterHeadquarterStudent,
-	) {
-		//
-	}
-
-	/**
-	 * Remove the specified resource from storage.
-	 */
-	public function destroy(
-		BenefitSemesterHeadquarterStudent $benefitSemesterHeadquarterStudent,
-	) {
-		//
 	}
 
 	/**
