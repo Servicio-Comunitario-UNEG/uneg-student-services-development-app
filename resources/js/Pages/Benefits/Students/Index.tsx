@@ -24,7 +24,7 @@ import { Button } from "@/Components/ui/button";
 
 import { useSelection } from "@/hooks/useSelection";
 
-import { getFullName } from "@/lib/utils";
+import { cn, getFullName } from "@/lib/utils";
 
 import BenefitCell from "./Partials/BenefitCell";
 import BenefitOfferFilter from "./Partials/BenefitOfferFilter";
@@ -172,11 +172,22 @@ export default function Index({
 						<BenefitOfferFilter />
 
 						{current_benefit ? (
-							<p>
-								Hay {availableBenefits} de{" "}
-								{current_benefit.benefit.amount} beneficios
-								disponibles
-							</p>
+							<div className="flex items-center gap-2">
+								<span
+									className={cn(
+										"flex h-2 w-2 rounded-full",
+										availableBenefits > 0
+											? "bg-green-500"
+											: "bg-red-500",
+									)}
+								/>
+
+								<p className="text-muted-foreground">
+									Hay {availableBenefits} de{" "}
+									{current_benefit.benefit.amount} beneficios
+									disponibles
+								</p>
+							</div>
 						) : null}
 					</div>
 				}
