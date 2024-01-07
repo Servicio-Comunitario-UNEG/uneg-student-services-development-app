@@ -28,10 +28,12 @@ import { cn, getFullName } from "@/lib/utils";
 
 import BenefitCell from "./Partials/BenefitCell";
 import BenefitOfferFilter from "./Partials/BenefitOfferFilter";
+import CheckboxHeaderAction from "./Partials/CheckboxHeaderAction";
 
 const columns: ColumnDef<StudentWithBenefits>[] = [
 	{
 		id: "select",
+		header: (cell) => <CheckboxHeaderAction {...cell} />,
 		cell: (cell) => <CheckboxCellAction {...cell} />,
 		enableSorting: false,
 		enableHiding: false,

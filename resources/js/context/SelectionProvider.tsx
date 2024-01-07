@@ -12,6 +12,8 @@ type SelectionProviderState = {
 	};
 	/** Switches the element to selected or unselected based on checked. */
 	toggle: (key: number, checked: CheckedState) => void;
+	/** Switches all elements to selected or unselected. */
+	toggleAll: (keys: number[], checked: CheckedState) => void;
 	/** Clears all the values from the data. */
 	clear: (shouldClearDefault?: boolean) => void;
 	/** Sets the default selected data. */
@@ -33,9 +35,9 @@ export function SelectionProvider({ children }: { children: React.ReactNode }) {
 		<SelectionProviderContext.Provider
 			value={{
 				data: selection,
-				toggle(key, checkedState) {
+				toggle(key, checked) {
 					setSelection((previous) => {
-						if (!checkedState) {
+						if (!checked) {
 							// Add to unselected when is selected by default.
 							return {
 								...previous,
@@ -61,6 +63,50 @@ export function SelectionProvider({ children }: { children: React.ReactNode }) {
 							unselected: previous.unselected.filter(
 								(item) => item !== key,
 							),
+						};
+					});
+				},
+				toggleAll(keys, checked) {
+					/** @ts-expect-error - The values are filtered as number, but TS doesn't recognize it as number. */
+					setSelection((previous) => {
+						if (!checked) {
+							const selected = previous.selected.filter(
+								(value) => !keys.includes(value),
+							);
+
+							const unselected = keys
+								.map((key) => {
+									return previous.defaultSelected.includes(
+										key,
+									)
+										? key
+										: null;
+								})
+								.filter((value) => typeof value === "number");
+
+							return {
+								...previous,
+								selected,
+								unselected,
+							};
+						}
+
+						const selected = keys
+							.map((key) => {
+								return previous.defaultSelected.includes(key)
+									? null
+									: key;
+							})
+							.filter((value) => typeof value === "number");
+
+						const unselected = previous.unselected.filter(
+							(value) => !keys.includes(value),
+						);
+
+						return {
+							...previous,
+							selected,
+							unselected,
 						};
 					});
 				},

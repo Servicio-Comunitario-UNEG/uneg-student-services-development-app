@@ -61,10 +61,10 @@ export default function CheckboxCellAction({
 			}
 			aria-label="Seleccionar fila"
 			disabled={
-				hasAnotherBenefitAssigned
-					? true
-					: !isChecked && availableBenefits <= 0
+				hasAnotherBenefitAssigned ||
+				(!isChecked && availableBenefits <= 0)
 			}
+			className="translate-y-[2px]"
 		/>
 	);
 }
