@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use App\Models\BenefitSemester;
+use App\Models\BenefitSemesterHeadquarter;
 use App\Models\User;
 use Auth;
 use Illuminate\Foundation\Http\FormRequest;
@@ -73,6 +74,34 @@ class UpdateBenefitSemesterRequest extends FormRequest {
 				"required",
 				"integer",
 				"min:1",
+			],
+			"benefit_semester_headquarters.*" => [
+				function ($attribute, $current, $failure) {
+					$id = isset($current["id"]) ? $current["id"] : null;
+					$amount = isset($current["amount"])
+						? $current["amount"]
+						: null;
+
+					$benefitSemesterHeadquarter =
+						is_null($id) || !is_numeric($amount)
+							? null
+							: BenefitSemesterHeadquarter::find($id);
+
+					if (is_null($benefitSemesterHeadquarter)) {
+						return;
+					}
+
+					$studentsWithBenefit = $benefitSemesterHeadquarter
+						->students()
+						->count();
+
+					if ($studentsWithBenefit > $amount) {
+						$failure(
+							$attribute . ".amount",
+							"The amount can't be less than the current students with the benefit assigned ($studentsWithBenefit).",
+						);
+					}
+				},
 			],
 			"total_headquarters_amount" => [
 				Rule::requiredIf(fn() => is_numeric($this->amount)),
