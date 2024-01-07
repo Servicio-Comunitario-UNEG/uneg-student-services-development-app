@@ -53,7 +53,7 @@ export default function Combobox({
 					{value
 						? options.find((framework) => {
 								return framework.value === value;
-						  })?.label
+							})?.label
 						: placeholder}
 
 					<ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
