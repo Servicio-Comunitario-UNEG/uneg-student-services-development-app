@@ -65,11 +65,10 @@ export default function CreateOrEditCareerForm({
 					}}
 					description="Las sedes donde impartirán la carrera."
 					multiSelectComboboxProps={{
-						selectedValues: options.filter(
-							(option) =>
-								data.headquarters_id?.includes(
-									Number(option.value),
-								),
+						selectedValues: options.filter((option) =>
+							data.headquarters_id?.includes(
+								Number(option.value),
+							),
 						),
 						setSelectedValues: (options) =>
 							setData(

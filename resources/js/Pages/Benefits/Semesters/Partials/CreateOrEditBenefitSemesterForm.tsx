@@ -66,7 +66,7 @@ export default function CreateOrEditBenefitSemesterForm({
 		const lastHeadquarter = data.benefit_semester_headquarters.length
 			? data.benefit_semester_headquarters[
 					data.benefit_semester_headquarters.length - 1
-			  ]
+				]
 			: undefined;
 
 		if (
@@ -256,7 +256,7 @@ export default function CreateOrEditBenefitSemesterForm({
 															headquarter_id
 																? String(
 																		headquarter_id,
-																  )
+																	)
 																: ""
 														}
 														setValue={(id) => {
@@ -321,7 +321,7 @@ export default function CreateOrEditBenefitSemesterForm({
 																)
 																	? currentHeadquarters[
 																			index
-																	  ].amount
+																		].amount
 																	: parsed;
 
 															setData(
