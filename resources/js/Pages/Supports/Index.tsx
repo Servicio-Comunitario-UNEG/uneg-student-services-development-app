@@ -125,11 +125,13 @@ export default function Index({ supports }: SupportsPageProps) {
 
 			<DataTable
 				columns={columns}
-				paginatedData={supports}
+				data={supports}
 				toolbar={<DataTableToolbar />}
 			/>
 		</PageLayout>
 	);
 }
 
-Index.layout = (page: JSX.Element) => <AuthenticatedLayout children={page} />;
+Index.layout = (page: React.JSX.Element) => (
+	<AuthenticatedLayout children={page} />
+);

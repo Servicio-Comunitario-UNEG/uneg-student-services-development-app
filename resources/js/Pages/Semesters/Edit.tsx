@@ -25,4 +25,6 @@ export default function Edit({ semester }: PageProps<{ semester: Semester }>) {
 	);
 }
 
-Edit.layout = (page: JSX.Element) => <AuthenticatedLayout children={page} />;
+Edit.layout = (page: React.JSX.Element) => (
+	<AuthenticatedLayout children={page} />
+);

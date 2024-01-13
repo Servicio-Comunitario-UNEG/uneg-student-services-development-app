@@ -2,7 +2,11 @@ import BaseLayout from "./BaseLayout";
 import NavBar from "./Partials/NavBar";
 import SideBar from "./Partials/SideBar";
 
-export function AuthenticatedLayout({ children }: { children: JSX.Element }) {
+export function AuthenticatedLayout({
+	children,
+}: {
+	children: React.JSX.Element;
+}) {
 	return (
 		<BaseLayout>
 			<div className="relative mx-auto flex min-h-screen w-full max-w-screen-2xl">

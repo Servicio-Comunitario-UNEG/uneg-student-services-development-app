@@ -86,11 +86,13 @@ export default function Index({ headquarters }: HeadquarterPageProps) {
 
 			<DataTable
 				columns={columns}
-				paginatedData={headquarters}
+				data={headquarters}
 				toolbar={<DataTableToolbar />}
 			/>
 		</PageLayout>
 	);
 }
 
-Index.layout = (page: JSX.Element) => <AuthenticatedLayout children={page} />;
+Index.layout = (page: React.JSX.Element) => (
+	<AuthenticatedLayout children={page} />
+);

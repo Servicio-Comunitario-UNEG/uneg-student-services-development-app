@@ -73,9 +73,11 @@ export default function Index({ semesters }: SemestersPageProps) {
 		>
 			<Head title="Semestres" />
 
-			<DataTable columns={columns} paginatedData={semesters} />
+			<DataTable columns={columns} data={semesters} />
 		</PageLayout>
 	);
 }
 
-Index.layout = (page: JSX.Element) => <AuthenticatedLayout children={page} />;
+Index.layout = (page: React.JSX.Element) => (
+	<AuthenticatedLayout children={page} />
+);

@@ -22,7 +22,7 @@ interface Props {
 export default function ComboboxField({
 	id,
 	labelProps,
-	comboboxProps,
+	comboboxProps: { buttonProps, ...restOfComboboxProps },
 	description,
 	errorMessage,
 	className,
@@ -49,8 +49,9 @@ export default function ComboboxField({
 					id,
 					"aria-invalid": errorMessage ? true : false,
 					name: id,
+					...buttonProps,
 				}}
-				{...comboboxProps}
+				{...restOfComboboxProps}
 			/>
 
 			<InputError message={errorMessage} />

@@ -32,4 +32,6 @@ export default function Edit({
 	);
 }
 
-Edit.layout = (page: JSX.Element) => <AuthenticatedLayout children={page} />;
+Edit.layout = (page: React.JSX.Element) => (
+	<AuthenticatedLayout children={page} />
+);

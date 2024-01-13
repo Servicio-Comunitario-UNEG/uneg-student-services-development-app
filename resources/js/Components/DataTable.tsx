@@ -12,6 +12,7 @@ import {
 	getSortedRowModel,
 	useReactTable,
 	getPaginationRowModel,
+	TableOptions,
 } from "@tanstack/react-table";
 import { useState } from "react";
 
@@ -32,47 +33,47 @@ import {
 
 interface DataTableProps<TData, TValue> {
 	columns: ColumnDef<TData, TValue>[];
+	data: TData[] | Paginated<TData>;
 	initialState?: InitialTableState;
-	data?: TData[];
-	paginatedData?: Paginated<TData>;
-	toolbar?: JSX.Element;
+	toolbar?: React.JSX.Element;
+	getRowId?: TableOptions<TData>["getRowId"];
+	getIsSelected?: (value: TData) => boolean;
 }
 
 export function DataTable<TData, TValue>({
 	columns,
 	data,
-	paginatedData,
 	initialState,
 	toolbar,
+	getRowId,
+	getIsSelected,
 }: DataTableProps<TData, TValue>) {
-	if (!data && !paginatedData) {
-		throw new Error("Data or Paginated Data must be provided");
-	}
+	const isPaginated = !Array.isArray(data);
 
 	const [columnVisibility, setColumnVisibility] = useState<VisibilityState>(
 		{},
 	);
-
 	const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
-
 	const [sorting, setSorting] = useState<SortingState>([]);
 
 	const table = useReactTable({
-		data: paginatedData ? paginatedData.data : data!,
+		data: isPaginated ? data.data : data,
 		columns,
 		state: {
 			sorting,
 			columnVisibility,
 			columnFilters,
 		},
-		initialState: initialState,
-		manualPagination: Boolean(paginatedData),
+		initialState,
+		manualPagination: isPaginated,
+		pageCount: isPaginated ? data.last_page : undefined,
+		getRowId,
 		onSortingChange: setSorting,
 		onColumnFiltersChange: setColumnFilters,
 		onColumnVisibilityChange: setColumnVisibility,
 		getCoreRowModel: getCoreRowModel(),
 		getFilteredRowModel: getFilteredRowModel(),
-		getPaginationRowModel: paginatedData
+		getPaginationRowModel: isPaginated
 			? undefined
 			: getPaginationRowModel(),
 		getSortedRowModel: getSortedRowModel(),
@@ -117,13 +118,16 @@ export function DataTable<TData, TValue>({
 							</TableRow>
 						))}
 					</TableHeader>
+
 					<TableBody>
 						{table.getRowModel().rows?.length ? (
 							table.getRowModel().rows.map((row) => (
 								<TableRow
 									key={row.id}
 									data-state={
-										row.getIsSelected() && "selected"
+										(row.getIsSelected() ||
+											getIsSelected?.(row.original)) &&
+										"selected"
 									}
 								>
 									{row.getVisibleCells().map((cell) => (
@@ -150,8 +154,8 @@ export function DataTable<TData, TValue>({
 				</Table>
 			</div>
 
-			{paginatedData ? (
-				<DataTableManualPagination paginatedData={paginatedData} />
+			{isPaginated ? (
+				<DataTableManualPagination paginatedData={data} />
 			) : (
 				<DataTablePagination table={table} />
 			)}

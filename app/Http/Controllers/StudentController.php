@@ -81,10 +81,14 @@ class StudentController extends Controller {
 						->orWhere("email", "like", "%$search%")
 						->orWhere("identity_card", "like", "%$search%");
 				})
-				->orderByRaw("first_name COLLATE NOCASE ASC")
+				->orderByRaw("UPPER(first_name)")
 				->paginate($perPage),
-			"careers" => Career::all(["id", "name"]),
-			"headquarters" => Headquarter::all(["id", "name"]),
+			"careers" => Career::query()
+				->orderByRaw("UPPER(name)")
+				->get(),
+			"headquarters" => Headquarter::query()
+				->orderByRaw("UPPER(name)")
+				->get(["id", "name"]),
 			"filters" => [
 				"careers" => $selectedCareers,
 				"headquarters" => $selectedHeadquarters,

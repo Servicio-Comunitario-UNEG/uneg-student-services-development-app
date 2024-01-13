@@ -37,12 +37,12 @@ class CareerController extends Controller {
 
 		return Inertia::render("Careers/Index", [
 			"careers" => Career::query()
+				->with("headquarters:id,name")
 				->when($search, function (Builder $query, string $search) {
 					// Filter by name.
 					$query->where("name", "like", "%$search%");
 				})
-				->orderByRaw("name COLLATE NOCASE ASC")
-				->with("headquarters:id,name")
+				->orderByRaw("UPPER(name)")
 				->paginate($perPage)
 				->withQueryString(),
 			"filters" => [
@@ -58,7 +58,9 @@ class CareerController extends Controller {
 	 */
 	public function create() {
 		return Inertia::render("Careers/Create", [
-			"headquarters" => Headquarter::all(["id", "name"]),
+			"headquarters" => Headquarter::query()
+				->orderByRaw("UPPER(name)")
+				->get(["id", "name"]),
 		]);
 	}
 
@@ -90,7 +92,9 @@ class CareerController extends Controller {
 	public function edit(Career $career) {
 		return Inertia::render("Careers/Edit", [
 			"career" => $career,
-			"headquarters" => Headquarter::all(["id", "name"]),
+			"headquarters" => Headquarter::query()
+				->orderByRaw("UPPER(name)")
+				->get(["id", "name"]),
 		]);
 	}
 

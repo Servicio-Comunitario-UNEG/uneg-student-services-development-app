@@ -46,6 +46,9 @@ export type PageProps<
 	auth: {
 		user: User;
 	};
+	ziggy: {
+		full_url: string;
+	};
 	flash: {
 		message: string | null;
 	};
@@ -154,4 +157,38 @@ export interface Support {
 	date: string;
 	type: "medical" | "psychological";
 	description: string;
+}
+
+/**
+ * The benefits the univerisity offers.
+ */
+export interface Benefit {
+	id: number;
+	created_at: string;
+	updated_at: string;
+	name: string;
+}
+
+/**
+ * The relation between a benefit and a semester.
+ */
+export interface BenefitSemester {
+	id: number;
+	created_at: string;
+	updated_at: string;
+	benefit_id: number;
+	semester_id: number;
+	amount: number;
+}
+
+/**
+ * The relation between a benefit in a semester in a headquarter.
+ */
+export interface BenefitSemesterHeadquarter {
+	id: number;
+	created_at: string;
+	updated_at: string;
+	benefit_semester_id: number;
+	headquarter_id: number;
+	amount: number;
 }

@@ -72,4 +72,6 @@ export default function Support({
 	);
 }
 
-Support.layout = (page: JSX.Element) => <AuthenticatedLayout children={page} />;
+Support.layout = (page: React.JSX.Element) => (
+	<AuthenticatedLayout children={page} />
+);

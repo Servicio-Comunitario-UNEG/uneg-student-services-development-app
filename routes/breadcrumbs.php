@@ -2,6 +2,8 @@
 
 // Note: Laravel will automatically resolve `Breadcrumbs::` without
 // this import. This is nice for IDE syntax and refactoring.
+use App\Models\Benefit;
+use App\Models\BenefitSemester;
 use App\Models\Career;
 use App\Models\Headquarter;
 use App\Models\Semester;
@@ -147,4 +149,61 @@ Breadcrumbs::for("supports.show", function (
 ) {
 	$trail->parent("supports.index");
 	$trail->push("Apoyo", route("supports.show", $support));
+});
+
+//* Benefits
+Breadcrumbs::for("benefits.index", function (BreadcrumbTrail $trail) {
+	$trail->push("Beneficios", route("benefits.index"));
+});
+
+// Benefits > Create
+Breadcrumbs::for("benefits.create", function (BreadcrumbTrail $trail) {
+	$trail->parent("benefits.index");
+	$trail->push("Crear", route("benefits.create"));
+});
+
+// Benefits > Edit
+Breadcrumbs::for("benefits.edit", function (
+	BreadcrumbTrail $trail,
+	Benefit $benefit,
+) {
+	$trail->parent("benefits.index");
+	$trail->push("Editar", route("benefits.edit", $benefit));
+});
+
+//* Benefits Semesters
+Breadcrumbs::for("benefits-semesters.index", function (BreadcrumbTrail $trail) {
+	$trail->push("Beneficio por Semestre", route("benefits-semesters.index"));
+});
+
+// Benefits Semestes > Create
+Breadcrumbs::for("benefits-semesters.create", function (
+	BreadcrumbTrail $trail,
+) {
+	$trail->parent("benefits-semesters.index");
+	$trail->push("Asignar", route("benefits-semesters.create"));
+});
+
+// Benefits Semestes > Edit
+Breadcrumbs::for("benefits-semesters.edit", function (
+	BreadcrumbTrail $trail,
+	BenefitSemester $benefits_semester,
+) {
+	$trail->parent("benefits-semesters.index");
+	$trail->push(
+		"Editar",
+		route("benefits-semesters.edit", $benefits_semester),
+	);
+});
+
+// Benefits Semestes > Details
+Breadcrumbs::for("benefits-semesters.show", function (
+	BreadcrumbTrail $trail,
+	BenefitSemester $benefits_semester,
+) {
+	$trail->parent("benefits-semesters.index");
+	$trail->push(
+		"Detalle",
+		route("benefits-semesters.show", $benefits_semester),
+	);
 });

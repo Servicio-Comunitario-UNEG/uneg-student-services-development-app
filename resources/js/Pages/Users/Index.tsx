@@ -99,10 +99,12 @@ export default function Index({ users }: UserPageProps) {
 			<DataTable
 				toolbar={<DataTableToolbar />}
 				columns={columns}
-				paginatedData={users}
+				data={users}
 			/>
 		</PageLayout>
 	);
 }
 
-Index.layout = (page: JSX.Element) => <AuthenticatedLayout children={page} />;
+Index.layout = (page: React.JSX.Element) => (
+	<AuthenticatedLayout children={page} />
+);

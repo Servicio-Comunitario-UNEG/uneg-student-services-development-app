@@ -91,11 +91,13 @@ export default function Index({ careers }: CareerPageProps) {
 
 			<DataTable
 				columns={columns}
-				paginatedData={careers}
+				data={careers}
 				toolbar={<DataTableToolbar />}
 			/>
 		</PageLayout>
 	);
 }
 
-Index.layout = (page: JSX.Element) => <AuthenticatedLayout children={page} />;
+Index.layout = (page: React.JSX.Element) => (
+	<AuthenticatedLayout children={page} />
+);

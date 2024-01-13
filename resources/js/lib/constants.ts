@@ -5,21 +5,25 @@ import {
 	Calendar,
 	GraduationCap,
 	HeartHandshake,
+	HelpingHand,
 	LucideIcon,
 	Users,
 } from "lucide-react";
 
-/**
- * The pages links when the user is authed.
- */
-export const links: {
+export type MenuLink = {
 	title: string;
 	to: string;
 	permission?: string;
-	isMobileOnly?: boolean;
 	Icon?: LucideIcon;
 	urlStartsWith?: string;
-}[] = [
+	sublinksParentTitle?: string;
+	sublinks?: Omit<MenuLink, "sublinks">[];
+};
+
+/**
+ * The pages links when the user is authed.
+ */
+export const links: MenuLink[] = [
 	{
 		title: "Dashboard",
 		to: "dashboard",
@@ -68,8 +72,25 @@ export const links: {
 		urlStartsWith: "/supports",
 	},
 	{
-		title: "Perfil",
-		to: "profile.edit",
-		isMobileOnly: true,
+		title: "Beneficios",
+		permission: "view benefits",
+		to: "benefits.index",
+		Icon: HelpingHand,
+		urlStartsWith: "/benefits",
+		sublinksParentTitle: "Todos",
+		sublinks: [
+			{
+				title: "Por Semestre",
+				permission: "view benefits",
+				urlStartsWith: "/benefits-semesters",
+				to: "benefits-semesters.index",
+			},
+			{
+				title: "Por Estudiante",
+				permission: "view benefits",
+				urlStartsWith: "/benefits-headquarters",
+				to: "benefits-headquarters.index",
+			},
+		],
 	},
 ];
