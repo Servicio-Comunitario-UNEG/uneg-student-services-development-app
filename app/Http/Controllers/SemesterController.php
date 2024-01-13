@@ -33,9 +33,7 @@ class SemesterController extends Controller {
 		}
 
 		return Inertia::render("Semesters/Index", [
-			"semesters" => Semester::orderBy("year", "desc")->paginate(
-				$perPage,
-			),
+			"semesters" => Semester::orderByDesc("year")->paginate($perPage),
 			"filters" => [
 				"page" => $page,
 				"per_page" => $perPage,

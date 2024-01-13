@@ -93,7 +93,9 @@ class BenefitSemesterHeadquarterController extends Controller {
 			: BenefitSemesterHeadquarter::find($benefit);
 
 		return Inertia::render("Benefits/Students/Index", [
-			"semesters" => Semester::all()->sortByDesc("year"),
+			"semesters" => Semester::query()
+				->orderByDesc("year")
+				->get(),
 			"headquarters" => Headquarter::query()
 				->orderByRaw("UPPER(name)")
 				->get(),
