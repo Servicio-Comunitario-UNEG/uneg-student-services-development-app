@@ -37,12 +37,12 @@ class CareerController extends Controller {
 
 		return Inertia::render("Careers/Index", [
 			"careers" => Career::query()
+				->with("headquarters:id,name")
 				->when($search, function (Builder $query, string $search) {
 					// Filter by name.
 					$query->where("name", "like", "%$search%");
 				})
-				->orderByRaw("name COLLATE NOCASE ASC")
-				->with("headquarters:id,name")
+				->orderByRaw("UPPER(name)")
 				->paginate($perPage)
 				->withQueryString(),
 			"filters" => [

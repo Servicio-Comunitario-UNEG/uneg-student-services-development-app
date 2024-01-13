@@ -40,7 +40,7 @@ class HeadquarterController extends Controller {
 					// Filter by name.
 					$query->where("name", "like", "%$search%");
 				})
-				->orderByRaw("name COLLATE NOCASE ASC")
+				->orderByRaw("UPPER(name)")
 				->paginate($perPage),
 			"filters" => [
 				"search" => $search,

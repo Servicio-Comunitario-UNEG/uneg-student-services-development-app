@@ -82,7 +82,7 @@ class UserController extends Controller {
 					),
 				);
 			})
-			->orderByRaw("name COLLATE NOCASE ASC")
+			->orderByRaw("UPPER(name)")
 			->paginate($perPage)
 			->withQueryString();
 
