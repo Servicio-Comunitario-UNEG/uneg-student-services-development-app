@@ -77,7 +77,7 @@ class BenefitSemesterController extends Controller {
 				})
 				->paginate($perPage),
 			"benefits" => Benefit::all(),
-			"semesters" => Semester::all(),
+			"semesters" => Semester::all()->sortByDesc("year"),
 			"filters" => [
 				"page" => $page,
 				"per_page" => $perPage,
@@ -96,8 +96,10 @@ class BenefitSemesterController extends Controller {
 
 		return Inertia::render("Benefits/Semesters/Create", [
 			"benefits" => Benefit::all(),
-			"semesters" => Semester::all(),
-			"headquarters" => Headquarter::all(),
+			"semesters" => Semester::all()->sortByDesc("year"),
+			"headquarters" => Headquarter::query()
+				->orderByRaw("UPPER(name)")
+				->get(),
 		]);
 	}
 
@@ -144,8 +146,10 @@ class BenefitSemesterController extends Controller {
 				"benefit_semester_headquarters",
 			),
 			"benefits" => Benefit::all(),
-			"semesters" => Semester::all(),
-			"headquarters" => Headquarter::all(),
+			"semesters" => Semester::all()->sortByDesc("year"),
+			"headquarters" => Headquarter::query()
+				->orderByRaw("UPPER(name)")
+				->get(),
 		]);
 	}
 

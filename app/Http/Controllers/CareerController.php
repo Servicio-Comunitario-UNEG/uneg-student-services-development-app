@@ -58,7 +58,9 @@ class CareerController extends Controller {
 	 */
 	public function create() {
 		return Inertia::render("Careers/Create", [
-			"headquarters" => Headquarter::all(["id", "name"]),
+			"headquarters" => Headquarter::query()
+				->orderByRaw("UPPER(name)")
+				->get(["id", "name"]),
 		]);
 	}
 
@@ -90,7 +92,9 @@ class CareerController extends Controller {
 	public function edit(Career $career) {
 		return Inertia::render("Careers/Edit", [
 			"career" => $career,
-			"headquarters" => Headquarter::all(["id", "name"]),
+			"headquarters" => Headquarter::query()
+				->orderByRaw("UPPER(name)")
+				->get(["id", "name"]),
 		]);
 	}
 

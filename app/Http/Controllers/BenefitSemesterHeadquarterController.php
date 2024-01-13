@@ -94,9 +94,9 @@ class BenefitSemesterHeadquarterController extends Controller {
 
 		return Inertia::render("Benefits/Students/Index", [
 			"semesters" => Semester::all()->sortByDesc("year"),
-			"headquarters" => Headquarter::all()
-				->sortBy("name")
-				->values(),
+			"headquarters" => Headquarter::query()
+				->orderByRaw("UPPER(name)")
+				->get(),
 			"benefits" =>
 				is_null($semester) || is_null($headquarter)
 					? []
@@ -146,9 +146,8 @@ class BenefitSemesterHeadquarterController extends Controller {
 					->paginate($perPage)
 					->withQueryString(),
 			"careers" => Career::query()
-				->orderBy("name")
-				->get()
-				->sortBy("name", SORT_NATURAL | SORT_FLAG_CASE),
+				->orderByRaw("UPPER(name)")
+				->get(),
 			"current_benefit" => is_null($currentBenefit)
 				? null
 				: [
