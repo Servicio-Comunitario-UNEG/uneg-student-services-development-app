@@ -105,11 +105,11 @@ export default function MultiSelectCombobox({
 															(s) =>
 																s.value !==
 																option.value,
-													  )
+														)
 													: [
 															...selectedValues,
 															option,
-													  ],
+														],
 											);
 										}}
 									>
