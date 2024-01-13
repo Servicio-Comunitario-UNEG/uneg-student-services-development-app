@@ -8,6 +8,8 @@ import {
 	Benefit,
 	BenefitSemester,
 	BenefitSemesterHeadquarter,
+	Career,
+	CareerHeadquarter,
 	Headquarter,
 	PageProps,
 	Paginated,
@@ -29,6 +31,7 @@ import { cn, getFullName } from "@/lib/utils";
 import BenefitCell from "./Partials/BenefitCell";
 import BenefitOfferFilter from "./Partials/BenefitOfferFilter";
 import CheckboxHeaderAction from "./Partials/CheckboxHeaderAction";
+import { DataTableToolbar } from "./Partials/DataTableToolbar";
 
 const columns: ColumnDef<StudentWithBenefits>[] = [
 	{
@@ -70,6 +73,23 @@ const columns: ColumnDef<StudentWithBenefits>[] = [
 		enableSorting: false,
 	},
 	{
+		accessorKey: "career_headquarter",
+		header: ({ column }) => (
+			<DataTableColumnHeader column={column} title="Carrera" />
+		),
+		cell: ({ row }) => {
+			const {
+				career: { name },
+			} = row.getValue(
+				"career_headquarter",
+			) as StudentWithBenefits["career_headquarter"];
+
+			return name;
+		},
+		enableHiding: false,
+		enableSorting: false,
+	},
+	{
 		accessorKey: "benefits",
 		header: ({ column }) => (
 			<DataTableColumnHeader column={column} title="Beneficio" />
@@ -81,6 +101,9 @@ const columns: ColumnDef<StudentWithBenefits>[] = [
 ];
 
 export type StudentWithBenefits = Student & {
+	career_headquarter: CareerHeadquarter & {
+		career: Career;
+	};
 	benefits: Array<
 		BenefitSemesterHeadquarter & {
 			benefit_semester: BenefitSemester & { benefit: Benefit };
@@ -102,8 +125,11 @@ export type BenefitsStudentsPageProps = PageProps<{
 	} | null;
 	students: Paginated<StudentWithBenefits>;
 	default_selected_students: number[];
+	careers: Career[];
 	filters: {
+		search: string;
 		semester: string | null;
+		careers: string[];
 		headquarter: string | null;
 		benefit: string | null;
 		page: number;
@@ -166,38 +192,40 @@ export default function Index({
 		>
 			<Head title="Beneficios por Estudiante" />
 
-			<DataTable
-				columns={columns}
-				data={students}
-				toolbar={
-					<div className="space-y-2">
-						<BenefitOfferFilter />
+			<div className="space-y-6">
+				<div className="space-y-2">
+					<BenefitOfferFilter />
 
-						{current_benefit ? (
-							<div className="flex items-center gap-2">
-								<span
-									className={cn(
-										"flex h-2 w-2 rounded-full",
-										availableBenefits > 0
-											? "bg-green-500"
-											: "bg-red-500",
-									)}
-								/>
+					{current_benefit ? (
+						<div className="flex items-center gap-2">
+							<span
+								className={cn(
+									"flex h-2 w-2 rounded-full",
+									availableBenefits > 0
+										? "bg-green-500"
+										: "bg-red-500",
+								)}
+							/>
 
-								<p className="text-muted-foreground">
-									Hay {availableBenefits} de{" "}
-									{current_benefit.benefit.amount} beneficios
-									disponibles
-								</p>
-							</div>
-						) : null}
-					</div>
-				}
-				getRowId={(row) => String(row.id)}
-				getIsSelected={(row) =>
-					selection.data.selected.includes(row.id)
-				}
-			/>
+							<p className="text-muted-foreground">
+								Hay {availableBenefits} de{" "}
+								{current_benefit.benefit.amount} beneficios
+								disponibles
+							</p>
+						</div>
+					) : null}
+				</div>
+
+				<DataTable
+					columns={columns}
+					data={students}
+					toolbar={<DataTableToolbar />}
+					getRowId={(row) => String(row.id)}
+					getIsSelected={(row) =>
+						selection.data.selected.includes(row.id)
+					}
+				/>
+			</div>
 		</PageLayout>
 	);
 }

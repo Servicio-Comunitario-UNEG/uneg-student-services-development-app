@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\BenefitSemester;
 use App\Models\BenefitSemesterHeadquarter;
+use App\Models\Career;
 use App\Models\Headquarter;
 use App\Models\Semester;
 use App\Models\Student;
@@ -23,6 +24,8 @@ class BenefitSemesterHeadquarterController extends Controller {
 		$semester = $request->query("semester");
 		$headquarter = $request->query("headquarter");
 		$benefit = $request->query("benefit");
+		$search = $request->query("search", "");
+		$selectedCareers = $request->query("careers", []);
 		$page = $request->query("page");
 		$perPage = $request->query("per_page");
 
@@ -104,7 +107,11 @@ class BenefitSemesterHeadquarterController extends Controller {
 						->load("benefit_semester.benefit"),
 			"students" => is_null($headquarter)
 				? []
-				: Student::with("benefits.benefit_semester.benefit")
+				: Student::query()
+					->with([
+						"benefits.benefit_semester.benefit",
+						"career_headquarter.career",
+					])
 					->whereHas(
 						"career_headquarter",
 						fn(Builder $query) => $query->where(
@@ -113,8 +120,35 @@ class BenefitSemesterHeadquarterController extends Controller {
 							$headquarter,
 						),
 					)
+					->when($search, function (Builder $query, string $search) {
+						// Filter by full name, email or identity card.
+						$query
+							->where("first_name", "like", "%$search%")
+							->orWhere("second_name", "like", "%$search%")
+							->orWhere("last_name", "like", "%$search%")
+							->orWhere("second_last_name", "like", "%$search%")
+							->orWhere("email", "like", "%$search%")
+							->orWhere("identity_card", "like", "%$search%");
+					})
+					->when($selectedCareers, function (
+						Builder $query,
+						array $selectedCareers,
+					) {
+						// Filter by career.
+						$query->whereHas(
+							"career_headquarter",
+							fn(Builder $query) => $query->whereIn(
+								"career_id",
+								$selectedCareers,
+							),
+						);
+					})
 					->paginate($perPage)
 					->withQueryString(),
+			"careers" => Career::query()
+				->orderBy("name")
+				->get()
+				->sortBy("name", SORT_NATURAL | SORT_FLAG_CASE),
 			"current_benefit" => is_null($currentBenefit)
 				? null
 				: [
