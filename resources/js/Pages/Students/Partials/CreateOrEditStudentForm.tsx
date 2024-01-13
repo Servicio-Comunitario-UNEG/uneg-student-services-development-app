@@ -219,7 +219,7 @@ export default function CreateOrEditStudentForm({
 				</div>
 
 				<ComboboxField
-					id="career_by_headquarter"
+					id="career_headquarter_id"
 					labelProps={{
 						children: "Carrera",
 					}}
