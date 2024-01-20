@@ -11,8 +11,19 @@ class HeadquarterSeeder extends Seeder {
 	 * Run the database seeds.
 	 */
 	public function run(): void {
-		Headquarter::factory()
-			->count(20)
-			->create();
+		$headquarters = [
+			"Ciudad Universitaria",
+			"Guasipati",
+			"Jardín Botánico",
+			"El Palmar",
+			"El Callao",
+			"Villa Asia",
+		];
+
+		foreach ($headquarters as $headquarter) {
+			Headquarter::firstOrCreate([
+				"name" => $headquarter,
+			]);
+		}
 	}
 }
