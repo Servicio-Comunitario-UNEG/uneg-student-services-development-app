@@ -84,10 +84,7 @@ export default function Index({ users }: UserPageProps) {
 			headerProps={{
 				title: "Usuarios",
 				description: "Administra los usuarios que acceden al sistema.",
-				actions: gate.any([
-					"create users",
-					"create non admin users",
-				]) ? (
+				actions: gate.allows("create users") ? (
 					<Button asChild>
 						<Link href={route("users.create")}>Crear</Link>
 					</Button>
