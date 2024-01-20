@@ -92,7 +92,7 @@ export default function Index({
 				title: "Beneficios por Semestre",
 				description:
 					"Administra los beneficios para cada semestre y su cantidad.",
-				actions: gate.allows("create benefits") ? (
+				actions: gate.allows("assign benefits") ? (
 					<Button asChild>
 						<Link href={route("benefits-semesters.create")}>
 							Asignar

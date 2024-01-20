@@ -3,6 +3,7 @@ import { CellContext } from "@tanstack/react-table";
 
 import { Checkbox } from "@/Components/ui/checkbox";
 
+import { useGate } from "@/hooks/useGate";
 import { useSelection } from "@/hooks/useSelection";
 
 import { BenefitsStudentsPageProps, StudentWithBenefits } from "../Index";
@@ -10,12 +11,15 @@ import { BenefitsStudentsPageProps, StudentWithBenefits } from "../Index";
 export default function CheckboxCellAction({
 	row,
 }: CellContext<StudentWithBenefits, unknown>) {
+	const gate = useGate();
 	const {
 		current_benefit,
 		filters: { semester },
 	} = usePage<BenefitsStudentsPageProps>().props;
 	const selection = useSelection();
 	const studentWithBenefits = row.original;
+
+	if (!gate.allows("assign benefits")) return null;
 
 	// Wether it has any benefit assigned in the semester.
 	const hasAnotherBenefitAssigned = Boolean(

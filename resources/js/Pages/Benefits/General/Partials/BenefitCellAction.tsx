@@ -12,10 +12,15 @@ import {
 	DropdownMenuTrigger,
 } from "@/Components/ui/dropdown-menu";
 
+import { useGate } from "@/hooks/useGate";
+
 export default function BenefitCellAction({
 	row,
 }: CellContext<Benefit, unknown>) {
 	const benefit = row.original;
+	const gate = useGate();
+
+	if (!gate.any(["edit benefits", "delete benefits"])) return null;
 
 	return (
 		<div className="flex justify-end">
@@ -28,31 +33,39 @@ export default function BenefitCellAction({
 				</DropdownMenuTrigger>
 
 				<DropdownMenuContent align="end">
-					<DropdownMenuItem asChild>
-						<Link href={route("benefits.edit", benefit.id)}>
-							<Pencil className="mr-2 h-4 w-4" />
-							<span>Editar</span>
-						</Link>
-					</DropdownMenuItem>
+					{gate.allows("edit benefits") ? (
+						<DropdownMenuItem asChild>
+							<Link href={route("benefits.edit", benefit.id)}>
+								<Pencil className="mr-2 h-4 w-4" />
+								<span>Editar</span>
+							</Link>
+						</DropdownMenuItem>
+					) : null}
 
-					<DropdownMenuItem className="text-destructive" asChild>
-						<Link
-							className="w-full"
-							as="button"
-							href={route("benefits.destroy", benefit.id)}
-							onClick={(e) => {
-								if (!confirm("¿Desea eliminar el beneficio?")) {
-									e.preventDefault();
-								}
-							}}
-							method="delete"
-							preserveScroll
-						>
-							<Trash className="mr-2 h-4 w-4" />
+					{gate.allows("delete benefits") ? (
+						<DropdownMenuItem className="text-destructive" asChild>
+							<Link
+								className="w-full"
+								as="button"
+								href={route("benefits.destroy", benefit.id)}
+								onClick={(e) => {
+									if (
+										!confirm(
+											"¿Desea eliminar el beneficio?",
+										)
+									) {
+										e.preventDefault();
+									}
+								}}
+								method="delete"
+								preserveScroll
+							>
+								<Trash className="mr-2 h-4 w-4" />
 
-							<span>Eliminar</span>
-						</Link>
-					</DropdownMenuItem>
+								<span>Eliminar</span>
+							</Link>
+						</DropdownMenuItem>
+					) : null}
 				</DropdownMenuContent>
 			</DropdownMenu>
 		</div>

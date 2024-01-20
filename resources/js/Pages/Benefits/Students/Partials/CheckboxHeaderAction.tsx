@@ -3,6 +3,7 @@ import { HeaderContext } from "@tanstack/react-table";
 
 import { Checkbox } from "@/Components/ui/checkbox";
 
+import { useGate } from "@/hooks/useGate";
 import { useSelection } from "@/hooks/useSelection";
 
 import { BenefitsStudentsPageProps, StudentWithBenefits } from "../Index";
@@ -10,11 +11,14 @@ import { BenefitsStudentsPageProps, StudentWithBenefits } from "../Index";
 export default function CheckboxHeaderAction({
 	table,
 }: HeaderContext<StudentWithBenefits, unknown>) {
+	const gate = useGate();
 	const selection = useSelection();
 	const {
 		current_benefit,
 		filters: { semester },
 	} = usePage<BenefitsStudentsPageProps>().props;
+
+	if (!gate.allows("assign benefits")) return null;
 
 	const ids = table
 		.getCoreRowModel()

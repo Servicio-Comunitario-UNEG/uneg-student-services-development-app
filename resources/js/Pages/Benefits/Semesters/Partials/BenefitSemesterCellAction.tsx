@@ -10,12 +10,17 @@ import {
 	DropdownMenuTrigger,
 } from "@/Components/ui/dropdown-menu";
 
+import { useGate } from "@/hooks/useGate";
+
 import { BenefitSemesterWithRelation } from "../Index";
 
 export default function BenefitSemesterCellAction({
 	row,
 }: CellContext<BenefitSemesterWithRelation, unknown>) {
+	const gate = useGate();
 	const benefitSemester = row.original;
+
+	if (!gate.any(["view benefits", "assign benefits"])) return null;
 
 	return (
 		<div className="flex justify-end">
@@ -28,55 +33,61 @@ export default function BenefitSemesterCellAction({
 				</DropdownMenuTrigger>
 
 				<DropdownMenuContent align="end">
-					<DropdownMenuItem asChild>
-						<Link
-							href={route(
-								"benefits-semesters.show",
-								benefitSemester.id,
-							)}
-						>
-							<Eye className="mr-2 h-4 w-4" />
-							<span>Ver</span>
-						</Link>
-					</DropdownMenuItem>
+					{gate.allows("view benefits") ? (
+						<DropdownMenuItem asChild>
+							<Link
+								href={route(
+									"benefits-semesters.show",
+									benefitSemester.id,
+								)}
+							>
+								<Eye className="mr-2 h-4 w-4" />
+								<span>Ver</span>
+							</Link>
+						</DropdownMenuItem>
+					) : null}
 
-					<DropdownMenuItem asChild>
-						<Link
-							href={route(
-								"benefits-semesters.edit",
-								benefitSemester.id,
-							)}
-						>
-							<Pencil className="mr-2 h-4 w-4" />
-							<span>Editar</span>
-						</Link>
-					</DropdownMenuItem>
+					{gate.allows("assign benefits") ? (
+						<DropdownMenuItem asChild>
+							<Link
+								href={route(
+									"benefits-semesters.edit",
+									benefitSemester.id,
+								)}
+							>
+								<Pencil className="mr-2 h-4 w-4" />
+								<span>Editar</span>
+							</Link>
+						</DropdownMenuItem>
+					) : null}
 
-					<DropdownMenuItem className="text-destructive" asChild>
-						<Link
-							className="w-full"
-							as="button"
-							href={route(
-								"benefits-semesters.destroy",
-								benefitSemester.id,
-							)}
-							onClick={(e) => {
-								if (
-									!confirm(
-										"¿Desea desasignar el beneficio al semestre?",
-									)
-								) {
-									e.preventDefault();
-								}
-							}}
-							method="delete"
-							preserveScroll
-						>
-							<Trash className="mr-2 h-4 w-4" />
+					{gate.allows("assign benefits") ? (
+						<DropdownMenuItem className="text-destructive" asChild>
+							<Link
+								className="w-full"
+								as="button"
+								href={route(
+									"benefits-semesters.destroy",
+									benefitSemester.id,
+								)}
+								onClick={(e) => {
+									if (
+										!confirm(
+											"¿Desea desasignar el beneficio al semestre?",
+										)
+									) {
+										e.preventDefault();
+									}
+								}}
+								method="delete"
+								preserveScroll
+							>
+								<Trash className="mr-2 h-4 w-4" />
 
-							<span>Eliminar</span>
-						</Link>
-					</DropdownMenuItem>
+								<span>Eliminar</span>
+							</Link>
+						</DropdownMenuItem>
+					) : null}
 				</DropdownMenuContent>
 			</DropdownMenu>
 		</div>

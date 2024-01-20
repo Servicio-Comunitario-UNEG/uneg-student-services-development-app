@@ -17,6 +17,8 @@ import { DataTable } from "@/Components/DataTable";
 import { DataTableColumnHeader } from "@/Components/DataTableColumnHeader";
 import { Button } from "@/Components/ui/button";
 
+import { useGate } from "@/hooks/useGate";
+
 import { getFullName } from "@/lib/utils";
 
 import { DataTableToolbar } from "./Partials/DataTableToolbar";
@@ -120,16 +122,18 @@ export type StudentsPageProps = PageProps<{
 }>;
 
 export default function Index({ students }: StudentsPageProps) {
+	const gate = useGate();
+
 	return (
 		<PageLayout
 			headerProps={{
 				title: "Estudiantes",
 				description: "Los estudiantes inscritos en la universidad.",
-				actions: (
+				actions: gate.allows("create students") ? (
 					<Button asChild>
 						<Link href={route("students.create")}>Crear</Link>
 					</Button>
-				),
+				) : null,
 			}}
 		>
 			<Head title="Estudiantes" />
