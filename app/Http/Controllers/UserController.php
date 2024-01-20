@@ -20,18 +20,13 @@ class UserController extends Controller {
 	 * Returns the roles the user can assign
 	 */
 	private function getAssignableRoles(User $user) {
-		// Get the roles the user can assign.
-		$roles = [];
-
-		if ($user->hasPermissionTo("create users")) {
-			$roles = Role::all();
+		if (!$user->hasPermissionTo("create users")) {
+			return [];
 		}
 
-		if ($user->hasPermissionTo("create non admin users")) {
-			$roles = Role::where("name", "!=", "admin")->get();
-		}
-
-		return $roles;
+		return $user->hasRole("admin")
+			? Role::all()
+			: Role::where("name", "!=", "admin")->get();
 	}
 
 	/**

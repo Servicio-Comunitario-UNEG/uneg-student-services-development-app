@@ -24,6 +24,7 @@ import { DataTable } from "@/Components/DataTable";
 import { DataTableColumnHeader } from "@/Components/DataTableColumnHeader";
 import { Button } from "@/Components/ui/button";
 
+import { useGate } from "@/hooks/useGate";
 import { useSelection } from "@/hooks/useSelection";
 
 import { cn, getFullName } from "@/lib/utils";
@@ -144,6 +145,7 @@ export default function Index({
 	current_benefit,
 	default_selected_students,
 }: BenefitsStudentsPageProps) {
+	const gate = useGate();
 	const selection = useSelection();
 
 	useEffect(() => {
@@ -165,6 +167,7 @@ export default function Index({
 				description:
 					"Administra los beneficios asignados a cada estudiante.",
 				actions:
+					gate.allows("assign benefits") &&
 					(selection.data.selected.length ||
 						selection.data.unselected.length) &&
 					filters.benefit &&

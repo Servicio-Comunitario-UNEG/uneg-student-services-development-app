@@ -11,6 +11,8 @@ import { DataTableColumnHeader } from "@/Components/DataTableColumnHeader";
 import { Badge } from "@/Components/ui/badge";
 import { Button } from "@/Components/ui/button";
 
+import { useGate } from "@/hooks/useGate";
+
 import CareerCellAction from "./Partials/CareerCellAction";
 import { DataTableToolbar } from "./Partials/DataTableToolbar";
 
@@ -75,16 +77,18 @@ export type CareerPageProps = PageProps<{
 }>;
 
 export default function Index({ careers }: CareerPageProps) {
+	const gate = useGate();
+
 	return (
 		<PageLayout
 			headerProps={{
 				title: "Carreras",
 				description: "Las carreras que los estudiantes pueden cursar.",
-				actions: (
+				actions: gate.allows("create careers") ? (
 					<Button asChild>
 						<Link href={route("careers.create")}>Crear</Link>
 					</Button>
-				),
+				) : null,
 			}}
 		>
 			<Head title="Carreras" />

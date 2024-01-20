@@ -21,7 +21,6 @@ class RolesAndPermissionsSeeder extends Seeder {
 		$permissionNames = [
 			// Users.
 			"create users",
-			"create non admin users",
 			"view users",
 			"edit users",
 			"delete users",
@@ -71,16 +70,6 @@ class RolesAndPermissionsSeeder extends Seeder {
 			]);
 		}
 
-		// Returns all the permissions but the skipped ones.
-		$skipPermissions = function (array $permissionsToSkip) use (
-			$permissionNames,
-		) {
-			return array_filter(
-				$permissionNames,
-				fn($permission) => !in_array($permission, $permissionsToSkip),
-			);
-		};
-
 		// Create or update the roles.
 		Role::updateOrCreate(
 			["name" => "admin"],
@@ -88,7 +77,7 @@ class RolesAndPermissionsSeeder extends Seeder {
 				"name" => "admin",
 				"description" => "Administrador",
 			],
-		)->syncPermissions($skipPermissions(["create non admin users"]));
+		)->syncPermissions($permissionNames);
 
 		Role::updateOrCreate(
 			["name" => "coordinator"],
@@ -96,9 +85,7 @@ class RolesAndPermissionsSeeder extends Seeder {
 				"name" => "coordinator",
 				"description" => "Coordinador",
 			],
-		)->syncPermissions(
-			$skipPermissions(["create users", "edit users", "delete users"]),
-		);
+		)->syncPermissions($permissionNames);
 
 		Role::updateOrCreate(
 			["name" => "representative"],

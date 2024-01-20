@@ -10,12 +10,17 @@ import {
 	DropdownMenuTrigger,
 } from "@/Components/ui/dropdown-menu";
 
+import { useGate } from "@/hooks/useGate";
+
 import { HeadquarterWithRepresentative } from "../Index";
 
 export default function HeadquarterCellAction({
 	row,
 }: CellContext<HeadquarterWithRepresentative, unknown>) {
+	const gate = useGate();
 	const headquarter = row.original;
+
+	if (!gate.any(["edit headquarters", "delete headquarters"])) return null;
 
 	return (
 		<div className="flex justify-end">
@@ -28,14 +33,21 @@ export default function HeadquarterCellAction({
 				</DropdownMenuTrigger>
 
 				<DropdownMenuContent align="end">
-					<DropdownMenuItem asChild>
-						<Link href={route("headquarters.edit", headquarter.id)}>
-							<Pencil className="mr-2 h-4 w-4" />
-							<span>Editar</span>
-						</Link>
-					</DropdownMenuItem>
+					{gate.allows("edit headquarters") ? (
+						<DropdownMenuItem asChild>
+							<Link
+								href={route(
+									"headquarters.edit",
+									headquarter.id,
+								)}
+							>
+								<Pencil className="mr-2 h-4 w-4" />
+								<span>Editar</span>
+							</Link>
+						</DropdownMenuItem>
+					) : null}
 
-					{headquarter.user ? (
+					{headquarter.user && gate.allows("edit headquarters") ? (
 						<DropdownMenuItem asChild>
 							<Link
 								className="w-full"
@@ -63,24 +75,29 @@ export default function HeadquarterCellAction({
 						</DropdownMenuItem>
 					) : null}
 
-					<DropdownMenuItem className="text-destructive" asChild>
-						<Link
-							className="w-full"
-							as="button"
-							href={route("headquarters.destroy", headquarter.id)}
-							onClick={(e) => {
-								if (!confirm("¿Desea eliminar la sede?")) {
-									e.preventDefault();
-								}
-							}}
-							method="delete"
-							preserveScroll
-						>
-							<Trash className="mr-2 h-4 w-4" />
+					{gate.allows("delete headquarters") ? (
+						<DropdownMenuItem className="text-destructive" asChild>
+							<Link
+								className="w-full"
+								as="button"
+								href={route(
+									"headquarters.destroy",
+									headquarter.id,
+								)}
+								onClick={(e) => {
+									if (!confirm("¿Desea eliminar la sede?")) {
+										e.preventDefault();
+									}
+								}}
+								method="delete"
+								preserveScroll
+							>
+								<Trash className="mr-2 h-4 w-4" />
 
-							<span>Eliminar</span>
-						</Link>
-					</DropdownMenuItem>
+								<span>Eliminar</span>
+							</Link>
+						</DropdownMenuItem>
+					) : null}
 				</DropdownMenuContent>
 			</DropdownMenu>
 		</div>

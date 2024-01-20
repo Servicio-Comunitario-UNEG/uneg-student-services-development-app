@@ -13,7 +13,7 @@ import { Button } from "@/Components/ui/button";
 
 import { useGate } from "@/hooks/useGate";
 
-import SemesterCellAction from "./Partials/CareerCellAction";
+import SemesterCellAction from "./Partials/SemesterCellAction";
 
 const columns: ColumnDef<Semester>[] = [
 	{

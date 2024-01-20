@@ -1,5 +1,4 @@
 import {
-	BarChart3,
 	BookCopy,
 	Building,
 	Calendar,
@@ -24,11 +23,6 @@ export type MenuLink = {
  * The pages links when the user is authed.
  */
 export const links: MenuLink[] = [
-	{
-		title: "Dashboard",
-		to: "dashboard",
-		Icon: BarChart3,
-	},
 	{
 		title: "Usuarios",
 		permission: "view users",

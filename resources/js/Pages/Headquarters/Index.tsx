@@ -10,6 +10,8 @@ import { DataTable } from "@/Components/DataTable";
 import { DataTableColumnHeader } from "@/Components/DataTableColumnHeader";
 import { Button } from "@/Components/ui/button";
 
+import { useGate } from "@/hooks/useGate";
+
 import { DataTableToolbar } from "./Partials/DataTableToolbar";
 import HeadquarterCellAction from "./Partials/HeadquartersCellAction";
 
@@ -69,17 +71,19 @@ export type HeadquarterPageProps = PageProps<{
 }>;
 
 export default function Index({ headquarters }: HeadquarterPageProps) {
+	const gate = useGate();
+
 	return (
 		<PageLayout
 			headerProps={{
 				title: "Sedes",
 				description:
 					"Las sedes son los lugares donde se encuentra la universidad.",
-				actions: (
+				actions: gate.allows("create headquarters") ? (
 					<Button asChild>
 						<Link href={route("headquarters.create")}>Crear</Link>
 					</Button>
-				),
+				) : null,
 			}}
 		>
 			<Head title="Sedes" />

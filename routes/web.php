@@ -25,20 +25,13 @@ use Inertia\Inertia;
 |
 */
 
-Route::get("/", function () {
-	return Inertia::render("Welcome", [
-		"canLogin" => Route::has("login"),
-		"canRegister" => Route::has("register"),
-		"laravelVersion" => Application::VERSION,
-		"phpVersion" => PHP_VERSION,
-	]);
-});
+Route::get("/", fn() => redirect("/login"));
 
-Route::get("/dashboard", function () {
-	return Inertia::render("Dashboard");
+Route::get("/home", function () {
+	return Inertia::render("Home");
 })
 	->middleware(["auth", "verified"])
-	->name("dashboard");
+	->name("home");
 
 Route::middleware("auth")->group(function () {
 	Route::get("/profile", [ProfileController::class, "edit"])->name(
