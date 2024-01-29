@@ -283,7 +283,6 @@ return [
 
 		/** Custom attributes. */
 		"benefit_id" => "beneficio",
-		"benefit_semester_headquarter_id" => "beneficio",
 		"benefit_semester_headquarters.*.headquarter_id" => "sede",
 		"benefit_semester_id" => "beneficio",
 		"birth_date" => "fecha de nacimiento",

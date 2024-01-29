@@ -72,7 +72,7 @@ class Student extends Model {
 			BenefitSemesterHeadquarter::class,
 			"benefit_semester_headquarter_student",
 			"student_id",
-			"benefit_semester_headquarter_id",
+			"benefit_id",
 		);
 	}
 }
