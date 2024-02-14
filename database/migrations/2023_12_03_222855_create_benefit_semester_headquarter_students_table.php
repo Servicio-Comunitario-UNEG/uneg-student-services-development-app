@@ -15,14 +15,17 @@ return new class extends Migration {
 			$table->id();
 			$table->timestamps();
 			$table
-				->foreignId("benefit_semester_headquarter_id")
+				->foreignId("benefit_id")
 				->constrained("benefit_semester_headquarter")
 				->cascadeOnDelete();
 			$table
 				->foreignId("student_id")
 				->constrained()
 				->cascadeOnDelete();
-			$table->unique(["benefit_semester_headquarter_id", "student_id"]);
+			$table->unique(
+				["benefit_id", "student_id"],
+				"benefit_semester_headquarter_student_unique",
+			);
 		});
 	}
 

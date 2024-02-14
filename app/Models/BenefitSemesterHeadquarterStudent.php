@@ -16,7 +16,7 @@ class BenefitSemesterHeadquarterStudent extends Model {
 	 *
 	 * @var array<int, string>
 	 */
-	protected $fillable = ["benefit_semester_headquarter_id", "student_id"];
+	protected $fillable = ["benefit_id", "student_id"];
 
 	/**
 	 * The benefit given in a specific semester and headquarter to an student.
@@ -25,7 +25,7 @@ class BenefitSemesterHeadquarterStudent extends Model {
 		return $this->hasOne(
 			BenefitSemesterHeadquarter::class,
 			"id",
-			"benefit_semester_headquarter_id",
+			"benefit_id",
 		);
 	}
 

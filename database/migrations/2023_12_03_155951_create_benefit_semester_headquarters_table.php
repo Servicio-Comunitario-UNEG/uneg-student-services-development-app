@@ -23,7 +23,10 @@ return new class extends Migration {
 				->constrained()
 				->cascadeOnDelete();
 			$table->unsignedInteger("amount")->default(0);
-			$table->unique(["benefit_semester_id", "headquarter_id"]);
+			$table->unique(
+				["benefit_semester_id", "headquarter_id"],
+				"benefit_semester_headquarter_unique",
+			);
 		});
 	}
 
