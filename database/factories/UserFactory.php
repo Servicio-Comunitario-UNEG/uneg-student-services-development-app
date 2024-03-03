@@ -19,8 +19,9 @@ class UserFactory extends Factory {
 				fake()->randomElement([
 					"admin",
 					"coordinator",
+					"secretary",
 					"representative",
-					"nurse",
+					"medical-staff",
 				]),
 			]);
 		});

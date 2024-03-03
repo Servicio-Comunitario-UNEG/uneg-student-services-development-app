@@ -302,5 +302,6 @@ return [
 		"total_headquarters_amount" => "total de beneficios por sedes",
 		"type" => "tipo",
 		"user_id" => "usuario",
+		"city_id" => "ciudad",
 	],
 ];

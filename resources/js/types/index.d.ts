@@ -82,6 +82,7 @@ export type Paginated<T> = {
  */
 export interface Headquarter {
 	id: number;
+	city_id: number;
 	name: string;
 	created_at: string;
 	updated_at: string;
@@ -191,4 +192,14 @@ export interface BenefitSemesterHeadquarter {
 	benefit_semester_id: number;
 	headquarter_id: number;
 	amount: number;
+}
+
+/**
+ * The city where is located a headquarter.
+ */
+export interface City {
+	id: number;
+	created_at: string;
+	updated_at: string;
+	name: string;
 }

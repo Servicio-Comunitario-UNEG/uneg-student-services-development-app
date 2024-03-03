@@ -15,13 +15,20 @@ class Headquarter extends Model {
 	 *
 	 * @var array<int, string>
 	 */
-	protected $fillable = ["name", "user_id"];
+	protected $fillable = ["name"];
 
 	/**
 	 * Get the user that represents this headquarter.
 	 */
 	public function user(): BelongsTo {
 		return $this->belongsTo(User::class);
+	}
+
+	/**
+	 * The city where is located this headquarter.
+	 */
+	public function city(): BelongsTo {
+		return $this->belongsTo(City::class);
 	}
 
 	/**

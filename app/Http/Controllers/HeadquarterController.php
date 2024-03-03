@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreHeadquarterRequest;
 use App\Http\Requests\UpdateHeadquarterRequest;
+use App\Models\City;
 use App\Models\Headquarter;
 use App\Models\User;
 use Illuminate\Contracts\Database\Eloquent\Builder;
@@ -35,7 +36,10 @@ class HeadquarterController extends Controller {
 		}
 
 		return Inertia::render("Headquarters/Index", [
-			"headquarters" => Headquarter::with("user:id,name,identity_card")
+			"headquarters" => Headquarter::with([
+				"user:id,name,identity_card",
+				"city:id,name",
+			])
 				->when($search, function (Builder $query, string $search) {
 					// Filter by name.
 					$query->where("name", "like", "%$search%");
@@ -57,6 +61,9 @@ class HeadquarterController extends Controller {
 		$this->authorize("create", User::class);
 
 		return Inertia::render("Headquarters/Create", [
+			"cities" => City::query()
+				->orderBy("name")
+				->get(),
 			// Get the available representatives.
 			"representatives" => User::role("representative")
 				->doesntHave("headquarter")
@@ -76,7 +83,18 @@ class HeadquarterController extends Controller {
 	 * Store a newly created resource in storage.
 	 */
 	public function store(StoreHeadquarterRequest $request) {
-		Headquarter::create($request->validated());
+		$headquarter = City::find($request->validated("city_id"))
+			->headquarters()
+			->create([
+				"name" => $request->validated("name"),
+			]);
+
+		$userId = $request->validated("user_id");
+
+		if (!is_null($userId)) {
+			$headquarter->user()->associate($userId);
+			$headquarter->save();
+		}
 
 		return redirect(route("headquarters.index"))->with(
 			"message",
@@ -98,6 +116,9 @@ class HeadquarterController extends Controller {
 		$this->authorize("update", $headquarters);
 
 		return Inertia::render("Headquarters/Edit", [
+			"cities" => City::query()
+				->orderBy("name")
+				->get(),
 			// Get the available representatives and the current
 			// headquarter's representative.
 			"representatives" => User::role("representative")
@@ -123,7 +144,18 @@ class HeadquarterController extends Controller {
 		UpdateHeadquarterRequest $request,
 		Headquarter $headquarters,
 	) {
-		$headquarters->update($request->validated());
+		$headquarters->update(["name" => $request->validated("name")]);
+		$headquarters->city()->associate($request->validated("city_id"));
+		$userId = $request->validated("user_id");
+
+		// Associate or disassociate the coordinator.
+		if (is_null($userId)) {
+			$headquarters->user()->disassociate();
+		} else {
+			$headquarters->user()->associate($userId);
+		}
+
+		$headquarters->save();
 
 		return redirect(route("headquarters.index"))->with(
 			"message",

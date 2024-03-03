@@ -12,32 +12,65 @@ class CareerSeeder extends Seeder {
 	 */
 	public function run(): void {
 		$careers = [
-			"Administración De Empresas",
-			"Administración Mención Banca Y Finanzas",
-			"Ciencias Ambientales",
-			"Ciencias Fiscales",
-			"Contaduría Pública",
-			"Educación En Ciencias: Física, Química Y Biología",
-			"Educación Integral",
-			"Educación. Mención Educación Física Deporte Y Recreación",
-			"Educación. Mención Educación Física, Deporte Y Recreación",
-			"Educación. Mención Lengua Y Literatura",
-			"Educación. Mención Matemática",
-			"Ingeniería De Producción Animal",
-			"Ingeniería En Industrias Forestales",
-			"Ingeniería En Informática",
-			"Ingeniería En Materiales",
-			"Ingeniería Industrial",
-			"Licenciatura En Gestión De Alojamiento Turístico",
-			"T.S.U. Empresa De Alojamiento Turístico",
-			"T.S.U. Turismo",
-			"Tecnología En Producción Agropecuaria",
+			["name" => "Administración De Empresas", "headquarters" => [1]],
+			[
+				"name" => "Administración Mención Banca Y Finanzas",
+				"headquarters" => [1, 5],
+			],
+			["name" => "Ciencias Ambientales", "headquarters" => []],
+			["name" => "Ciencias Fiscales", "headquarters" => [4, 5, 7, 8, 9]],
+			[
+				"name" => "Contaduría Pública",
+				"headquarters" => [1, 4, 5, 6, 7, 8, 9],
+			],
+			[
+				"name" => "Educación En Ciencias: Física, Química Y Biología",
+				"headquarters" => [],
+			],
+			["name" => "Educación Integral", "headquarters" => [1, 5, 6, 9]],
+			[
+				"name" =>
+					"Educación. Mención Educación Física, Deporte Y Recreación",
+				"headquarters" => [5, 6, 9],
+			],
+			[
+				"name" => "Educación. Mención Lengua Y Literatura",
+				"headquarters" => [5, 6],
+			],
+			[
+				"name" => "Educación. Mención Matemática",
+				"headquarters" => [3, 5],
+			],
+			[
+				"name" => "Ingeniería De Producción Animal",
+				"headquarters" => [4],
+			],
+			[
+				"name" => "Ingeniería En Industrias Forestales",
+				"headquarters" => [4],
+			],
+			["name" => "Ingeniería En Informática", "headquarters" => [1]],
+			["name" => "Ingeniería En Materiales", "headquarters" => []],
+			["name" => "Ingeniería Industrial", "headquarters" => [2, 6]],
+			[
+				"name" => "Licenciatura En Gestión De Alojamiento Turístico",
+				"headquarters" => [5, 8, 9],
+			],
+			[
+				"name" => "T.S.U. Empresa De Alojamiento Turístico",
+				"headquarters" => [5],
+			],
+			["name" => "T.S.U. Turismo", "headquarters" => [5]],
+			[
+				"name" => "Tecnología En Producción Agropecuaria",
+				"headquarters" => [4, 8, 10],
+			],
 		];
 
 		foreach ($careers as $career) {
-			Career::firstOrCreate([
-				"name" => $career,
-			]);
+			Career::firstOrCreate(["name" => $career["name"]])
+				->headquarters()
+				->sync($career["headquarters"]);
 		}
 	}
 }

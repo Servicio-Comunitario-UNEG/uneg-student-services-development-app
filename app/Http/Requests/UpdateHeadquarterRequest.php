@@ -30,6 +30,7 @@ class UpdateHeadquarterRequest extends FormRequest {
 				Rule::unique("headquarters")->ignore($this->headquarters->id),
 				"max:255",
 			],
+			"city_id" => "required|numeric|exists:cities,id",
 			"user_id" => array_merge([
 				"nullable",
 				"numeric",

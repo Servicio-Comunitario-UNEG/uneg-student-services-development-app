@@ -88,6 +88,14 @@ class RolesAndPermissionsSeeder extends Seeder {
 		)->syncPermissions($permissionNames);
 
 		Role::updateOrCreate(
+			["name" => "secretary"],
+			[
+				"name" => "secretary",
+				"description" => "Secretario",
+			],
+		)->syncPermissions($permissionNames);
+
+		Role::updateOrCreate(
 			["name" => "representative"],
 			[
 				"name" => "representative",
@@ -108,10 +116,10 @@ class RolesAndPermissionsSeeder extends Seeder {
 		]);
 
 		Role::updateOrCreate(
-			["name" => "nurse"],
+			["name" => "medical-staff"],
 			[
-				"name" => "nurse",
-				"description" => "Enfermero (a)",
+				"name" => "medical-staff",
+				"description" => "Personal Médico",
 			],
 		)->syncPermissions([
 			// Students.
