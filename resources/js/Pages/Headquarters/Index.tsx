@@ -72,11 +72,13 @@ export type HeadquarterWithRepresentative = Headquarter & {
 };
 
 export type HeadquarterPageProps = PageProps<{
+	cities: Pick<City, "id" | "name">[];
 	headquarters: Paginated<HeadquarterWithRepresentative>;
 	filters: {
 		search: string;
 		page: string;
 		per_page: string;
+		cities: string[];
 	};
 }>;
 

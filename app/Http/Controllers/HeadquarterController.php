@@ -26,6 +26,7 @@ class HeadquarterController extends Controller {
 		$search = $request->query("search", "");
 		$page = $request->query("page");
 		$perPage = $request->query("per_page");
+		$selectedCities = $request->query("cities", []);
 
 		if (is_null($page) || !is_numeric($page)) {
 			$page = 1;
@@ -36,6 +37,9 @@ class HeadquarterController extends Controller {
 		}
 
 		return Inertia::render("Headquarters/Index", [
+			"cities" => City::query()
+				->orderBy("name")
+				->get(["id", "name"]),
 			"headquarters" => Headquarter::with([
 				"user:id,name,identity_card",
 				"city:id,name",
@@ -44,12 +48,20 @@ class HeadquarterController extends Controller {
 					// Filter by name.
 					$query->where("name", "like", "%$search%");
 				})
+				->when($selectedCities, function (
+					Builder $query,
+					array $selectedCities,
+				) {
+					// Filter by cities.
+					$query->whereIn("city_id", $selectedCities);
+				})
 				->orderByRaw("UPPER(name)")
 				->paginate($perPage),
 			"filters" => [
 				"search" => $search,
 				"page" => $page,
 				"per_page" => $perPage,
+				"cities" => $selectedCities,
 			],
 		]);
 	}
