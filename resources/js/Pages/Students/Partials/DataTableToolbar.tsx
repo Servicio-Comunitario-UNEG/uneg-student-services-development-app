@@ -83,7 +83,7 @@ export function DataTableToolbar() {
 	}, [onSearchTermChange, onSelectCareerChange, onSelectHeadquarterChange]);
 
 	return (
-		<div className="flex flex-1 items-center space-x-2">
+		<div className="flex flex-1 flex-col items-center gap-2 sm:flex-row">
 			<Input
 				id="students-search"
 				defaultValue={filters.search}
@@ -93,25 +93,27 @@ export function DataTableToolbar() {
 				className="h-8 w-full sm:max-w-xs"
 			/>
 
-			<DataTableFacetedFilter
-				defaultValues={filters.careers}
-				onChange={onSelectCareerChange}
-				title="Carreras"
-				options={careers.map((career) => ({
-					label: career.name,
-					value: String(career.id),
-				}))}
-			/>
+			<div className="grid w-full grid-cols-2 gap-2 sm:flex">
+				<DataTableFacetedFilter
+					defaultValues={filters.careers}
+					onChange={onSelectCareerChange}
+					title="Carreras"
+					options={careers.map((career) => ({
+						label: career.name,
+						value: String(career.id),
+					}))}
+				/>
 
-			<DataTableFacetedFilter
-				defaultValues={filters.headquarters}
-				onChange={onSelectHeadquarterChange}
-				title="Sedes"
-				options={headquarters.map((headquarter) => ({
-					label: headquarter.name,
-					value: String(headquarter.id),
-				}))}
-			/>
+				<DataTableFacetedFilter
+					defaultValues={filters.headquarters}
+					onChange={onSelectHeadquarterChange}
+					title="Sedes"
+					options={headquarters.map((headquarter) => ({
+						label: headquarter.name,
+						value: String(headquarter.id),
+					}))}
+				/>
+			</div>
 		</div>
 	);
 }

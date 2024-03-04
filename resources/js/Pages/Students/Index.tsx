@@ -1,5 +1,6 @@
 import { Head, Link } from "@inertiajs/react";
 import { ColumnDef } from "@tanstack/react-table";
+import { Check } from "lucide-react";
 
 import {
 	Career,
@@ -31,6 +32,15 @@ const columns: ColumnDef<StudentWithCareerHeadquarter>[] = [
 			<DataTableColumnHeader column={column} title="Nombre Completo" />
 		),
 		cell: ({ row }) => getFullName(row.original),
+	},
+	{
+		accessorKey: "sex",
+		header: ({ column }) => (
+			<DataTableColumnHeader column={column} title="Sexo" />
+		),
+		cell: ({ row }) => row.getValue("sex"),
+		enableHiding: false,
+		enableSorting: false,
 	},
 	{
 		accessorKey: "identity_card",
@@ -75,22 +85,28 @@ const columns: ColumnDef<StudentWithCareerHeadquarter>[] = [
 
 			if (!career_headquarter) return null;
 
-			return career_headquarter.career.name;
+			return (
+				<div className="space-y-2 whitespace-nowrap">
+					<p>{career_headquarter?.career.name}</p>
+
+					<p className="text-muted-foreground">
+						{career_headquarter?.headquarter.name}
+					</p>
+				</div>
+			);
 		},
 		enableHiding: false,
 		enableSorting: false,
 	},
 	{
-		id: "headquarter",
+		accessorKey: "is_disabled",
 		header: ({ column }) => (
-			<DataTableColumnHeader column={column} title="Sede" />
+			<DataTableColumnHeader column={column} title="Discapacitado" />
 		),
 		cell: ({ row }) => {
-			const { career_headquarter } = row.original;
+			const { is_disabled } = row.original;
 
-			if (!career_headquarter) return null;
-
-			return career_headquarter.headquarter.name;
+			return is_disabled ? <Check className="h-4 w-4" /> : null;
 		},
 		enableHiding: false,
 		enableSorting: false,

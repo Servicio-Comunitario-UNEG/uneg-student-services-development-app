@@ -72,7 +72,7 @@ Route::put("/headquarter/{headquarters}/unassign", [
 
 // Careers routes.
 Route::resource("careers", CareerController::class)
-	->only(["index", "store", "destroy", "update", "create", "edit"])
+	->only(["index", "store", "destroy", "update", "create", "edit", "show"])
 	->middleware(["auth", "verified"]);
 
 // Students routes.

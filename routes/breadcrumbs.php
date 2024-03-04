@@ -73,6 +73,15 @@ Breadcrumbs::for("careers.edit", function (
 	$trail->push("Editar", route("careers.edit", $career));
 });
 
+// Students > Show
+Breadcrumbs::for("careers.show", function (
+	BreadcrumbTrail $trail,
+	Career $career,
+) {
+	$trail->parent("careers.index");
+	$trail->push("Carrera", route("careers.show", $career));
+});
+
 //* Students
 Breadcrumbs::for("students.index", function (BreadcrumbTrail $trail) {
 	$trail->push("Estudiantes", route("students.index"));
