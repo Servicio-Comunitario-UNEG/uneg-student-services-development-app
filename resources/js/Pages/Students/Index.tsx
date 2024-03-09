@@ -134,6 +134,9 @@ export type StudentsPageProps = PageProps<{
 		search: string;
 		page: number;
 		per_page: number;
+		sex: string[];
+		is_senior_only: boolean;
+		is_disabled_only: boolean;
 	};
 }>;
 

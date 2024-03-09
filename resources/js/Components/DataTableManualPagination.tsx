@@ -55,9 +55,13 @@ export function DataTableManualPagination<TData>({
 
 	return (
 		<div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-end sm:gap-4">
+			<p className="flex-1 text-sm text-muted-foreground">
+				{paginatedData.total}{" "}
+				{paginatedData.total === 1 ? "resultado" : "resultados"}
+			</p>
+
 			<div className="flex items-center justify-between space-x-2 sm:justify-start">
 				<p className="text-sm font-medium">Filas por página</p>
-
 				<Select
 					value={`${paginatedData.per_page}`}
 					onValueChange={onPerPageChange}

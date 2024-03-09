@@ -344,7 +344,7 @@ export default function CreateOrEditStudentForm({
 						children: "¿Posee una discapacidad?",
 					}}
 					checkboxProps={{
-						checked: data.is_disabled,
+						defaultChecked: data.is_disabled,
 						onCheckedChange(checked) {
 							setData("is_disabled", Boolean(checked));
 						},
@@ -357,7 +357,7 @@ export default function CreateOrEditStudentForm({
 						children: "¿Es indigena?",
 					}}
 					checkboxProps={{
-						checked: data.is_indigenous,
+						defaultChecked: data.is_indigenous,
 						onCheckedChange(checked) {
 							setData("is_indigenous", Boolean(checked));
 						},
