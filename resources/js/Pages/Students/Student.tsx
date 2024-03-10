@@ -87,8 +87,20 @@ export default function Student({
 						children: student.is_disabled ? "Si" : "No",
 					},
 					{
+						title: "Tipo de Discapacidad",
+						children: student.type_of_disability ?? "No aplica",
+					},
+					{
 						title: "¿Es indigena?",
 						children: student.is_indigenous ? "Si" : "No",
+					},
+					{
+						title: "Etnia",
+						children: student.ethnic ?? "No aplica",
+					},
+					{
+						title: "Usos del Comedor",
+						children: student.scheduled_dining_room_use,
 					},
 					{
 						title: "Graffar",

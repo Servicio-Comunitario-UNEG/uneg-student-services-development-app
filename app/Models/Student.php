@@ -28,12 +28,15 @@ class Student extends Model {
 		"birth_date",
 		"is_indigenous",
 		"is_disabled",
+		"scheduled_dining_room_use",
 		"second_name",
 		"second_last_name",
 		"room_phone",
 		"address",
 		"graffar",
 		"socioeconomic_situation",
+		"ethnic",
+		"type_of_disability",
 	];
 
 	/**

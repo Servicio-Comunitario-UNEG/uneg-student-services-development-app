@@ -27,12 +27,17 @@ return new class extends Migration {
 			$table->date("birth_date");
 			$table->boolean("is_indigenous")->default(false);
 			$table->boolean("is_disabled")->default(false);
+			$table
+				->integer("scheduled_dining_room_use", false, true)
+				->default(0);
 			$table->string("second_name")->nullable();
 			$table->string("second_last_name")->nullable();
 			$table->string("room_phone")->nullable();
 			$table->string("address")->nullable();
 			$table->unsignedInteger("graffar")->nullable();
 			$table->string("socioeconomic_situation")->nullable();
+			$table->string("ethnic")->nullable();
+			$table->string("type_of_disability")->nullable();
 		});
 	}
 

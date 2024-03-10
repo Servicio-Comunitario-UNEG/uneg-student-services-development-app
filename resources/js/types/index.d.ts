@@ -130,8 +130,11 @@ export interface Student {
 	address: string | null;
 	is_indigenous: boolean;
 	is_disabled: boolean;
+	scheduled_dining_room_use: number;
 	graffar: number | null;
 	socioeconomic_situation: string | null;
+	ethnic: string | null;
+	type_of_disability: string | null;
 }
 
 /**
