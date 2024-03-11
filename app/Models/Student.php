@@ -61,10 +61,10 @@ class Student extends Model {
 	}
 
 	/**
-	 * The supports this student has received.
+	 * The services this student has received.
 	 */
-	public function supports(): HasMany {
-		return $this->hasMany(Support::class);
+	public function services(): HasMany {
+		return $this->hasMany(Service::class);
 	}
 
 	/**

@@ -4,13 +4,24 @@ namespace App\Http\Requests;
 
 use Auth;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
-class UpdateSupportRequest extends FormRequest {
+class UpdateServiceRequest extends FormRequest {
 	/**
 	 * Determine if the user is authorized to make this request.
 	 */
 	public function authorize(): bool {
-		return Auth::user()->can("update", $this->support);
+		return Auth::user()->can("update", $this->service);
+	}
+
+	/**
+	 * Prepare the data for validation.
+	 */
+	protected function prepareForValidation(): void {
+		$this->merge([
+			"professional_id" =>
+				$this->type !== "economical" ? $this->professional_id : null,
+		]);
 	}
 
 	/**
@@ -23,9 +34,15 @@ class UpdateSupportRequest extends FormRequest {
 			"date" =>
 				"required|date|before_or_equal:" .
 				(new \DateTime("now"))->format("Y-m-d"),
+			"professional_id" => [
+				Rule::requiredIf($this->type != "economical"),
+				"nullable",
+				"integer",
+				"exists:users,id",
+			],
 			"student_id" => "required|integer|exists:students,id",
 			"description" => "required|string|min:1|max:255",
-			"type" => "in:medical,psychological",
+			"type" => "in:medical,psychosocial,economical",
 		];
 	}
 }

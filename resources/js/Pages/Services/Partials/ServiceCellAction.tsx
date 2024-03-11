@@ -2,7 +2,7 @@ import { Link, usePage } from "@inertiajs/react";
 import { type CellContext } from "@tanstack/react-table";
 import { Eye, MoreHorizontal, Pencil, Trash } from "lucide-react";
 
-import { PageProps, Role } from "@/types";
+import { PageProps } from "@/types";
 
 import { Button } from "@/Components/ui/button";
 import {
@@ -14,24 +14,25 @@ import {
 
 import { useGate } from "@/hooks/useGate";
 
-import type { SupportWithUserAndStudent } from "../Index";
+import type { ServiceWithUserAndStudent } from "../Index";
 
 export default function SupportCellAction({
 	row,
-}: CellContext<SupportWithUserAndStudent, unknown>) {
+}: CellContext<ServiceWithUserAndStudent, unknown>) {
 	const { user } = usePage<PageProps>().props.auth;
 	const gate = useGate();
 	const support = row.original;
 
-	// Allowed roles to override the author only.
-	const roles: Role["name"][] = ["admin", "coordinator"];
+	const canEdit =
+		(gate.allows("edit services") && support.user_id === user.id) ||
+		gate.allows("edit any service");
 
-	// Wether is the author of this support or has an authorized role.
-	const isAuthorized =
-		user.id === support.user_id || roles.includes(user.current_role.name);
+	const canDelete =
+		(gate.allows("delete services") && support.user_id === user.id) ||
+		gate.allows("delete any service");
 
 	// Must have at least one permission.
-	if (!gate.any(["view supports", "edit supports", "delete supports"])) {
+	if (!gate.allows("view services") && !canEdit && !canDelete) {
 		return null;
 	}
 
@@ -46,32 +47,34 @@ export default function SupportCellAction({
 				</DropdownMenuTrigger>
 
 				<DropdownMenuContent align="end">
-					{gate.allows("view supports") ? (
+					{gate.allows("view services") ? (
 						<DropdownMenuItem asChild>
-							<Link href={route("supports.show", support.id)}>
+							<Link href={route("services.show", support.id)}>
 								<Eye className="mr-2 h-4 w-4" />
 								<span>Ver</span>
 							</Link>
 						</DropdownMenuItem>
 					) : null}
 
-					{gate.allows("edit supports") && isAuthorized ? (
+					{canEdit ? (
 						<DropdownMenuItem asChild>
-							<Link href={route("supports.edit", support.id)}>
+							<Link href={route("services.edit", support.id)}>
 								<Pencil className="mr-2 h-4 w-4" />
 								<span>Editar</span>
 							</Link>
 						</DropdownMenuItem>
 					) : null}
 
-					{gate.allows("delete supports") && isAuthorized ? (
+					{canDelete ? (
 						<DropdownMenuItem className="text-destructive" asChild>
 							<Link
 								className="w-full"
 								as="button"
-								href={route("supports.destroy", support.id)}
+								href={route("services.destroy", support.id)}
 								onClick={(e) => {
-									if (!confirm("¿Desea eliminar el apoyo?")) {
+									if (
+										!confirm("¿Desea eliminar el servicio?")
+									) {
 										e.preventDefault();
 									}
 								}}

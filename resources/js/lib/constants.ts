@@ -9,6 +9,8 @@ import {
 	Users,
 } from "lucide-react";
 
+import { Service, Student } from "@/types";
+
 export type MenuLink = {
 	title: string;
 	to: string;
@@ -17,6 +19,23 @@ export type MenuLink = {
 	urlStartsWith?: string;
 	sublinksParentTitle?: string;
 	sublinks?: Omit<MenuLink, "sublinks">[];
+};
+
+/** The sex labels. */
+export const sexLabel: {
+	[key in Student["sex"]]: string;
+} = {
+	M: "Masculino",
+	F: "Femenino",
+};
+
+/** The service type labels. */
+export const serviceTypeLabel: {
+	[key in Service["type"]]: string;
+} = {
+	medical: "Médico",
+	economical: "Económico",
+	psychosocial: "Psicosocial",
 };
 
 /**
@@ -59,11 +78,11 @@ export const links: MenuLink[] = [
 		urlStartsWith: "/semesters",
 	},
 	{
-		title: "Apoyos",
-		permission: "view supports",
-		to: "supports.index",
+		title: "Servicios",
+		permission: "view services",
+		to: "services.index",
 		Icon: HeartHandshake,
-		urlStartsWith: "/supports",
+		urlStartsWith: "/services",
 	},
 	{
 		title: "Beneficios",

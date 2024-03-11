@@ -13,6 +13,7 @@ import PageLayout from "@/Layouts/PageLayout";
 
 import { DescriptionList } from "@/Components/DescriptionList";
 
+import { sexLabel } from "@/lib/constants";
 import { getFullName } from "@/lib/utils";
 
 export default function Student({
@@ -55,8 +56,7 @@ export default function Student({
 					},
 					{
 						title: "Sexo",
-						children:
-							student.sex === "M" ? "Masculino" : "Femenino",
+						children: sexLabel[student.sex],
 					},
 					{
 						title: "Carrera",

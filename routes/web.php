@@ -8,9 +8,8 @@ use App\Http\Controllers\HeadquarterController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\SemesterController;
 use App\Http\Controllers\StudentController;
-use App\Http\Controllers\SupportController;
+use App\Http\Controllers\ServiceController;
 use App\Http\Controllers\UserController;
-use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
@@ -101,8 +100,8 @@ Route::put("/semesters/{semester}/activate", [
 	"activate",
 ])->name("semesters.activate");
 
-// Supports routes.
-Route::resource("supports", SupportController::class)->only([
+// Services routes.
+Route::resource("services", ServiceController::class)->only([
 	"index",
 	"create",
 	"store",

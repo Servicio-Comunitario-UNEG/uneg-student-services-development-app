@@ -60,9 +60,10 @@ class StoreStudentRequest extends FormRequest {
 			"address" => "nullable|string|max:255",
 			"graffar" => "nullable|integer|min:1|max:5",
 			"socioeconomic_situation" => "nullable|string|max:255",
-			"ethnic" => "required_if_accepted:is_indigenous|string|max:255",
+			"ethnic" =>
+				"required_if_accepted:is_indigenous|nullable|string|max:255",
 			"type_of_disability" =>
-				"required_if_accepted:is_disabled|string|max:255",
+				"required_if_accepted:is_disabled|nullable|string|max:255",
 		];
 	}
 }

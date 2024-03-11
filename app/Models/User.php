@@ -97,9 +97,16 @@ class User extends Authenticatable {
 	}
 
 	/**
-	 * The supports this user has given.
+	 * The services this user has registered.
 	 */
-	public function supports(): HasMany {
-		return $this->hasMany(Support::class);
+	public function services_registered(): HasMany {
+		return $this->hasMany(Service::class, "user_id", "id");
+	}
+
+	/**
+	 * The services this user has provided.
+	 */
+	public function services_provided(): HasMany {
+		return $this->hasMany(Service::class, "professional_id", "id");
 	}
 }

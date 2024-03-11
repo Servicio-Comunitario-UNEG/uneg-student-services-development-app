@@ -387,7 +387,7 @@ export default function CreateOrEditStudentForm({
 							value: data.ethnic ?? "",
 							onChange: (e) => setData("ethnic", e.target.value),
 						}}
-						errorMessage={errors.type_of_disability}
+						errorMessage={errors.ethnic}
 					/>
 				) : null}
 

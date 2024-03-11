@@ -1,17 +1,18 @@
 <?php
 
 namespace App\Http\Controllers;
+use App\Http\Requests\StoreServiceRequest;
+use Auth;
 use Illuminate\Contracts\Database\Eloquent\Builder;
 
-use App\Http\Requests\StoreSupportRequest;
-use App\Http\Requests\UpdateSupportRequest;
+use App\Http\Requests\UpdateServiceRequest;
 use App\Models\Student;
-use App\Models\Support;
+use App\Models\Service;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 
-class SupportController extends Controller {
+class ServiceController extends Controller {
 	public function __construct() {
 		$this->middleware(["auth", "verified"]);
 	}
@@ -39,10 +40,11 @@ class SupportController extends Controller {
 			$perPage = 10;
 		}
 
-		return Inertia::render("Supports/Index", [
-			"supports" => Support::with([
+		return Inertia::render("Services/Index", [
+			"services" => Service::with([
 				"student:id,first_name,last_name,identity_card",
 				"user:id,name,identity_card",
+				"professional:id,name,identity_card",
 			])
 				->when($from, function (Builder $query, string $from) {
 					// Get all where the date is equal or after from.
@@ -76,40 +78,44 @@ class SupportController extends Controller {
 	public function create() {
 		$this->authorize("create", User::class);
 
-		return Inertia::render("Supports/Create", [
+		return Inertia::render("Services/Create", [
 			"students" => Student::all([
 				"id",
 				"first_name",
 				"last_name",
 				"identity_card",
 			]),
+			"professionals" => User::query()
+				->where("id", "!=", Auth::user()->id)
+				->get(["id", "name", "identity_card"]),
 		]);
 	}
 
 	/**
 	 * Store a newly created resource in storage.
 	 */
-	public function store(StoreSupportRequest $request) {
+	public function store(StoreServiceRequest $request) {
 		$request
 			->user()
-			->supports()
+			->services_registered()
 			->create($request->validated());
 
-		return redirect(route("supports.index"))->with(
+		return redirect(route("services.index"))->with(
 			"message",
-			"Apoyo creado con éxito",
+			"Servicio creado con éxito",
 		);
 	}
 
 	/**
 	 * Display the specified resource.
 	 */
-	public function show(Support $support) {
-		$this->authorize("view", $support);
+	public function show(Service $service) {
+		$this->authorize("view", $service);
 
-		return Inertia::render("Supports/Support", [
-			"support" => $support->load([
-				"user",
+		return Inertia::render("Services/Service", [
+			"service" => $service->load([
+				"user:id,name,identity_card",
+				"professional:id,name,identity_card",
 				"student:id,first_name,last_name,identity_card",
 			]),
 		]);
@@ -118,43 +124,46 @@ class SupportController extends Controller {
 	/**
 	 * Show the form for editing the specified resource.
 	 */
-	public function edit(Support $support) {
-		$this->authorize("update", $support);
+	public function edit(Service $service) {
+		$this->authorize("update", $service);
 
-		return Inertia::render("Supports/Edit", [
-			"support" => $support,
+		return Inertia::render("Services/Edit", [
+			"service" => $service,
 			"students" => Student::all([
 				"id",
 				"first_name",
 				"last_name",
 				"identity_card",
 			]),
+			"professionals" => User::query()
+				->where("id", "!=", Auth::user()->id)
+				->get(["id", "name", "identity_card"]),
 		]);
 	}
 
 	/**
 	 * Update the specified resource in storage.
 	 */
-	public function update(UpdateSupportRequest $request, Support $support) {
-		$support->update($request->validated());
+	public function update(UpdateServiceRequest $request, Service $service) {
+		$service->update($request->validated());
 
-		return redirect(route("supports.index"))->with(
+		return redirect(route("services.index"))->with(
 			"message",
-			"Apoyo editado con éxito",
+			"Servicio editado con éxito",
 		);
 	}
 
 	/**
 	 * Remove the specified resource from storage.
 	 */
-	public function destroy(Support $support) {
-		$this->authorize("delete", $support);
+	public function destroy(Service $service) {
+		$this->authorize("delete", $service);
 
-		$support->delete();
+		$service->delete();
 
 		return redirect(url()->previous())->with(
 			"message",
-			"Apoyo eliminado con éxito",
+			"Servicio eliminado con éxito",
 		);
 	}
 }

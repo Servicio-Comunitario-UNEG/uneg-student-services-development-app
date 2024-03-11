@@ -50,10 +50,15 @@ class RolesAndPermissionsSeeder extends Seeder {
 			"delete semesters",
 
 			// Supports.
-			"create supports",
-			"view supports",
-			"edit supports",
-			"delete supports",
+			"create services",
+			"view services",
+			"edit services",
+			"edit any service",
+			"delete services",
+			"delete any service",
+			"assign economical support",
+			"assign psychosocial support",
+			"assign medical support",
 
 			// Benefits.
 			"create benefits",
@@ -103,7 +108,7 @@ class RolesAndPermissionsSeeder extends Seeder {
 			],
 		)->syncPermissions([
 			// Supports.
-			"view supports",
+			"view services",
 
 			// Students.
 			"create students",
@@ -126,10 +131,12 @@ class RolesAndPermissionsSeeder extends Seeder {
 			"view students",
 
 			// Supports.
-			"create supports",
-			"view supports",
-			"edit supports",
-			"delete supports",
+			"create services",
+			"view services",
+			"edit services",
+			"delete services",
+			"assign psychosocial support",
+			"assign medical support",
 		]);
 	}
 }

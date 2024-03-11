@@ -150,16 +150,17 @@ export interface Semester {
 }
 
 /**
- * The supports an student has received.
+ * The services an student has received.
  */
-export interface Support {
+export interface Service {
 	id: number;
 	created_at: string;
 	updated_at: string;
 	user_id: number;
+	professional_id: number | null;
 	student_id: number;
 	date: string;
-	type: "medical" | "psychological";
+	type: "medical" | "psychosocial" | "economical";
 	description: string;
 }
 

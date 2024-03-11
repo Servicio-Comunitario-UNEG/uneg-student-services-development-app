@@ -2,7 +2,7 @@ import { Head, Link } from "@inertiajs/react";
 import { ColumnDef } from "@tanstack/react-table";
 import dayjs from "dayjs";
 
-import { PageProps, Paginated, Student, Support, User } from "@/types";
+import { PageProps, Paginated, Student, Service, User } from "@/types";
 
 import { AuthenticatedLayout } from "@/Layouts/AuthenticatedLayout";
 import PageLayout from "@/Layouts/PageLayout";
@@ -13,10 +13,12 @@ import { Button } from "@/Components/ui/button";
 
 import { useGate } from "@/hooks/useGate";
 
-import { DataTableToolbar } from "./Partials/DataTableToolbar";
-import SupportCellAction from "./Partials/SupportCellAction";
+import { serviceTypeLabel } from "@/lib/constants";
 
-const columns: ColumnDef<SupportWithUserAndStudent>[] = [
+import { DataTableToolbar } from "./Partials/DataTableToolbar";
+import SupportCellAction from "./Partials/ServiceCellAction";
+
+const columns: ColumnDef<ServiceWithUserAndStudent>[] = [
 	{
 		accessorKey: "date",
 		header: ({ column }) => (
@@ -30,17 +32,36 @@ const columns: ColumnDef<SupportWithUserAndStudent>[] = [
 		header: ({ column }) => (
 			<DataTableColumnHeader column={column} title="Tipo" />
 		),
+		cell: ({ row }) => serviceTypeLabel[row.original.type],
+		enableSorting: false,
+	},
+	{
+		accessorKey: "professional",
+		header: ({ column }) => (
+			<DataTableColumnHeader column={column} title="Profesional" />
+		),
 		cell: ({ row }) => {
-			const { type } = row.original;
+			const { professional } = row.original;
 
-			return type === "medical" ? "Médico" : "Psicológico";
+			if (!professional) return "No aplica";
+
+			return (
+				<div className="space-y-2">
+					<p>{professional.name}</p>
+
+					<p className="text-muted-foreground">
+						{professional.identity_card.nationality}
+						{professional.identity_card.serial}
+					</p>
+				</div>
+			);
 		},
 		enableSorting: false,
 	},
 	{
 		accessorKey: "user",
 		header: ({ column }) => (
-			<DataTableColumnHeader column={column} title="Profesional" />
+			<DataTableColumnHeader column={column} title="Creador" />
 		),
 		cell: ({ row }) => {
 			const { user } = row.original;
@@ -87,13 +108,14 @@ const columns: ColumnDef<SupportWithUserAndStudent>[] = [
 	},
 ];
 
-export type SupportWithUserAndStudent = Support & {
+export type ServiceWithUserAndStudent = Service & {
 	user: Omit<User, "email_verified_at">;
+	professional: Omit<User, "email_verified_at"> | null;
 	student: Pick<Student, "id" | "first_name" | "last_name" | "identity_card">;
 };
 
-export type SupportsPageProps = PageProps<{
-	supports: Paginated<SupportWithUserAndStudent>;
+export type ServicesPageProps = PageProps<{
+	services: Paginated<ServiceWithUserAndStudent>;
 	filters: {
 		page: number;
 		per_page: number;
@@ -105,27 +127,27 @@ export type SupportsPageProps = PageProps<{
 	};
 }>;
 
-export default function Index({ supports }: SupportsPageProps) {
+export default function Index({ services }: ServicesPageProps) {
 	const gate = useGate();
 
 	return (
 		<PageLayout
 			headerProps={{
-				title: "Apoyos",
+				title: "Servicios",
 				description:
-					"Administra los apoyos que reciben los estudiantes.",
-				actions: gate.allows("create supports") ? (
+					"Administra los servicios que reciben los estudiantes.",
+				actions: gate.allows("create services") ? (
 					<Button asChild>
-						<Link href={route("supports.create")}>Crear</Link>
+						<Link href={route("services.create")}>Crear</Link>
 					</Button>
 				) : null,
 			}}
 		>
-			<Head title="Apoyos" />
+			<Head title="Servicios" />
 
 			<DataTable
 				columns={columns}
-				data={supports}
+				data={services}
 				toolbar={<DataTableToolbar />}
 			/>
 		</PageLayout>
