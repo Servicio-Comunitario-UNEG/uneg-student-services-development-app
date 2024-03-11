@@ -307,5 +307,6 @@ return [
 		"is_disabled" => "discapacitado",
 		"type_of_disability" => "tipo de discapacidad",
 		"ethnic" => "etnia",
+		"professional_id" => "profesional",
 	],
 ];
