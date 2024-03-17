@@ -1,26 +1,28 @@
 import { Head } from "@inertiajs/react";
 
-import { PageProps, Student } from "@/types";
+import { PageProps, Student, User } from "@/types";
 
 import { AuthenticatedLayout } from "@/Layouts/AuthenticatedLayout";
 import PageLayout from "@/Layouts/PageLayout";
 
-import CreateOrEditSupportForm from "./Partials/CreateOrEditSupport";
+import CreateOrEditServiceForm from "./Partials/CreateOrEditService";
 
 export default function Create({
 	students,
+	professionals,
 }: PageProps<{
 	students: Student[];
+	professionals: User[];
 }>) {
 	return (
 		<PageLayout
 			headerProps={{
-				title: "Crear Apoyo",
+				title: "Crear Servicio",
 			}}
 		>
-			<Head title="Crear Apoyo" />
+			<Head title="Crear Servicio" />
 
-			<CreateOrEditSupportForm
+			<CreateOrEditServiceForm
 				callToAction="Crear"
 				initialValues={{
 					date: "",
@@ -28,6 +30,7 @@ export default function Create({
 					type: "medical",
 				}}
 				students={students}
+				professionals={professionals}
 			/>
 		</PageLayout>
 	);

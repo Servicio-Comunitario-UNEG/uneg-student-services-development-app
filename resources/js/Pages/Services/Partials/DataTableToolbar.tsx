@@ -4,28 +4,32 @@ import debounce from "lodash.debounce";
 import { useEffect, useMemo } from "react";
 import { DateRange } from "react-day-picker";
 
-import { Support } from "@/types";
+import { Service } from "@/types";
 
 import { DataTableFacetedFilter } from "@/Components/DataTableFacetedFilter";
 import { DatePickerWithRange } from "@/Components/DateRangePicker";
 
-import { SupportsPageProps } from "../Index";
+import { ServicesPageProps } from "../Index";
 
 export function DataTableToolbar() {
-	const { filters } = usePage<SupportsPageProps>().props;
+	const { filters } = usePage<ServicesPageProps>().props;
 
 	// The types.
 	const types: {
 		label: string;
-		value: Support["type"];
+		value: Service["type"];
 	}[] = [
 		{
 			label: "Médico",
 			value: "medical",
 		},
 		{
-			label: "Psicológico",
-			value: "psychological",
+			label: "Psicosocial",
+			value: "psychosocial",
+		},
+		{
+			label: "Económico",
+			value: "economical",
 		},
 	];
 
@@ -41,7 +45,7 @@ export function DataTableToolbar() {
 		() =>
 			debounce((range?: DateRange) => {
 				router.get(
-					route("supports.index"),
+					route("services.index"),
 					{
 						...filters,
 						page: 1,
@@ -57,7 +61,7 @@ export function DataTableToolbar() {
 					{
 						preserveState: true,
 						replace: true,
-						only: ["supports", "filters"],
+						only: ["services", "filters"],
 					},
 				);
 			}, 500),
@@ -69,7 +73,7 @@ export function DataTableToolbar() {
 		() =>
 			debounce((selectedValues: Set<string>) => {
 				router.get(
-					route("supports.index"),
+					route("services.index"),
 					{
 						...filters,
 						page: 1,
@@ -78,7 +82,7 @@ export function DataTableToolbar() {
 					{
 						preserveState: true,
 						replace: true,
-						only: ["supports", "filters"],
+						only: ["services", "filters"],
 					},
 				);
 			}, 500),

@@ -50,10 +50,15 @@ class RolesAndPermissionsSeeder extends Seeder {
 			"delete semesters",
 
 			// Supports.
-			"create supports",
-			"view supports",
-			"edit supports",
-			"delete supports",
+			"create services",
+			"view services",
+			"edit services",
+			"edit any service",
+			"delete services",
+			"delete any service",
+			"assign economical support",
+			"assign psychosocial support",
+			"assign medical support",
 
 			// Benefits.
 			"create benefits",
@@ -88,6 +93,14 @@ class RolesAndPermissionsSeeder extends Seeder {
 		)->syncPermissions($permissionNames);
 
 		Role::updateOrCreate(
+			["name" => "secretary"],
+			[
+				"name" => "secretary",
+				"description" => "Secretario",
+			],
+		)->syncPermissions($permissionNames);
+
+		Role::updateOrCreate(
 			["name" => "representative"],
 			[
 				"name" => "representative",
@@ -95,7 +108,7 @@ class RolesAndPermissionsSeeder extends Seeder {
 			],
 		)->syncPermissions([
 			// Supports.
-			"view supports",
+			"view services",
 
 			// Students.
 			"create students",
@@ -108,20 +121,22 @@ class RolesAndPermissionsSeeder extends Seeder {
 		]);
 
 		Role::updateOrCreate(
-			["name" => "nurse"],
+			["name" => "medical-staff"],
 			[
-				"name" => "nurse",
-				"description" => "Enfermero (a)",
+				"name" => "medical-staff",
+				"description" => "Personal Médico",
 			],
 		)->syncPermissions([
 			// Students.
 			"view students",
 
 			// Supports.
-			"create supports",
-			"view supports",
-			"edit supports",
-			"delete supports",
+			"create services",
+			"view services",
+			"edit services",
+			"delete services",
+			"assign psychosocial support",
+			"assign medical support",
 		]);
 	}
 }

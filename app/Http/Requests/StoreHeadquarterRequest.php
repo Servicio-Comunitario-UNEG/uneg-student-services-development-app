@@ -23,6 +23,7 @@ class StoreHeadquarterRequest extends FormRequest {
 	public function rules(): array {
 		return [
 			"name" => "required|string|max:255|unique:" . Headquarter::class,
+			"city_id" => "required|numeric|exists:cities,id",
 			"user_id" =>
 				"nullable|numeric|exists:users,id|unique:" . Headquarter::class,
 		];

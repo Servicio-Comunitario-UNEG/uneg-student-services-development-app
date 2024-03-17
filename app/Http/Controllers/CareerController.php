@@ -83,7 +83,9 @@ class CareerController extends Controller {
 	 * Display the specified resource.
 	 */
 	public function show(Career $career) {
-		//
+		return Inertia::render("Careers/Career", [
+			"career" => $career->load("headquarters"),
+		]);
 	}
 
 	/**

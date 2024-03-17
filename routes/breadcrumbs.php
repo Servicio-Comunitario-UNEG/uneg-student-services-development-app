@@ -8,7 +8,7 @@ use App\Models\Career;
 use App\Models\Headquarter;
 use App\Models\Semester;
 use App\Models\Student;
-use App\Models\Support;
+use App\Models\Service;
 use App\Models\User;
 use Diglactic\Breadcrumbs\Breadcrumbs;
 
@@ -73,6 +73,15 @@ Breadcrumbs::for("careers.edit", function (
 	$trail->push("Editar", route("careers.edit", $career));
 });
 
+// Students > Show
+Breadcrumbs::for("careers.show", function (
+	BreadcrumbTrail $trail,
+	Career $career,
+) {
+	$trail->parent("careers.index");
+	$trail->push("Carrera", route("careers.show", $career));
+});
+
 //* Students
 Breadcrumbs::for("students.index", function (BreadcrumbTrail $trail) {
 	$trail->push("Estudiantes", route("students.index"));
@@ -122,33 +131,33 @@ Breadcrumbs::for("semesters.edit", function (
 	$trail->push("Editar", route("semesters.edit", $semester));
 });
 
-//* Supports
-Breadcrumbs::for("supports.index", function (BreadcrumbTrail $trail) {
-	$trail->push("Apoyos", route("supports.index"));
+//* Services
+Breadcrumbs::for("services.index", function (BreadcrumbTrail $trail) {
+	$trail->push("Servicios", route("services.index"));
 });
 
-// Supports > Create
-Breadcrumbs::for("supports.create", function (BreadcrumbTrail $trail) {
-	$trail->parent("supports.index");
-	$trail->push("Crear", route("supports.create"));
+// Services > Create
+Breadcrumbs::for("services.create", function (BreadcrumbTrail $trail) {
+	$trail->parent("services.index");
+	$trail->push("Crear", route("services.create"));
 });
 
-// Supports > Edit
-Breadcrumbs::for("supports.edit", function (
+// Services > Edit
+Breadcrumbs::for("services.edit", function (
 	BreadcrumbTrail $trail,
-	Support $support,
+	Service $service,
 ) {
-	$trail->parent("supports.index");
-	$trail->push("Editar", route("supports.edit", $support));
+	$trail->parent("services.index");
+	$trail->push("Editar", route("services.edit", $service));
 });
 
-// Supports > Show
-Breadcrumbs::for("supports.show", function (
+// Services > Show
+Breadcrumbs::for("services.show", function (
 	BreadcrumbTrail $trail,
-	Support $support,
+	Service $service,
 ) {
-	$trail->parent("supports.index");
-	$trail->push("Apoyo", route("supports.show", $support));
+	$trail->parent("services.index");
+	$trail->push("Servicio", route("services.show", $service));
 });
 
 //* Benefits

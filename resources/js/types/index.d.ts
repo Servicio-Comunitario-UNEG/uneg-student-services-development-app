@@ -82,6 +82,7 @@ export type Paginated<T> = {
  */
 export interface Headquarter {
 	id: number;
+	city_id: number;
 	name: string;
 	created_at: string;
 	updated_at: string;
@@ -129,8 +130,11 @@ export interface Student {
 	address: string | null;
 	is_indigenous: boolean;
 	is_disabled: boolean;
+	scheduled_dining_room_use: number;
 	graffar: number | null;
 	socioeconomic_situation: string | null;
+	ethnic: string | null;
+	type_of_disability: string | null;
 }
 
 /**
@@ -146,16 +150,17 @@ export interface Semester {
 }
 
 /**
- * The supports an student has received.
+ * The services an student has received.
  */
-export interface Support {
+export interface Service {
 	id: number;
 	created_at: string;
 	updated_at: string;
 	user_id: number;
+	professional_id: number | null;
 	student_id: number;
 	date: string;
-	type: "medical" | "psychological";
+	type: "medical" | "psychosocial" | "economical";
 	description: string;
 }
 
@@ -191,4 +196,14 @@ export interface BenefitSemesterHeadquarter {
 	benefit_semester_id: number;
 	headquarter_id: number;
 	amount: number;
+}
+
+/**
+ * The city where is located a headquarter.
+ */
+export interface City {
+	id: number;
+	created_at: string;
+	updated_at: string;
+	name: string;
 }

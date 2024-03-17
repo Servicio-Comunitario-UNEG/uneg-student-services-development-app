@@ -1,6 +1,6 @@
 import { Head } from "@inertiajs/react";
 
-import { PageProps } from "@/types";
+import { City, PageProps } from "@/types";
 
 import { AuthenticatedLayout } from "@/Layouts/AuthenticatedLayout";
 import PageLayout from "@/Layouts/PageLayout";
@@ -11,7 +11,8 @@ import CreateOrEditHeadquarterForm, {
 
 export default function Create({
 	representatives,
-}: PageProps<{ representatives: Representative[] }>) {
+	cities,
+}: PageProps<{ representatives: Representative[]; cities: City[] }>) {
 	return (
 		<PageLayout
 			headerProps={{
@@ -27,6 +28,7 @@ export default function Create({
 					user_id: null,
 				}}
 				representatives={representatives}
+				cities={cities}
 			/>
 		</PageLayout>
 	);

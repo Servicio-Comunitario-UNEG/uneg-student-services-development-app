@@ -2,7 +2,7 @@ import { Link, useForm } from "@inertiajs/react";
 import { Loader2 } from "lucide-react";
 import { FormEventHandler } from "react";
 
-import { Headquarter, User } from "@/types";
+import { City, Headquarter, User } from "@/types";
 
 import ComboboxField from "@/Components/ComboboxField";
 import TextField from "@/Components/TextField";
@@ -15,11 +15,15 @@ export default function CreateOrEditHeadquarterForm({
 	isUpdate = false,
 	callToAction,
 	representatives,
+	cities,
 }: {
-	initialValues: Partial<Pick<Headquarter, "id" | "name" | "user_id">>;
+	initialValues: Partial<
+		Pick<Headquarter, "id" | "name" | "user_id" | "city_id">
+	>;
 	isUpdate?: boolean;
 	callToAction: string;
 	representatives: Representative[];
+	cities: City[];
 }) {
 	const { data, setData, errors, processing, post, put } =
 		useForm(initialValues);
@@ -55,6 +59,23 @@ export default function CreateOrEditHeadquarterForm({
 				/>
 
 				<ComboboxField
+					id="city"
+					labelProps={{
+						children: "Ciudad",
+					}}
+					comboboxProps={{
+						placeholder: "Seleccione una ciudad",
+						value: data.city_id ? String(data.city_id) : "",
+						setValue: (id) => setData("city_id", Number(id)),
+						options: cities.map((city) => ({
+							label: city.name,
+							value: String(city.id),
+						})),
+					}}
+					errorMessage={errors.city_id}
+				/>
+
+				<ComboboxField
 					id="representative"
 					labelProps={{
 						children: "Representante",
@@ -62,7 +83,9 @@ export default function CreateOrEditHeadquarterForm({
 					comboboxProps={{
 						placeholder: "Seleccione un representante",
 						value: data.user_id ? String(data.user_id) : "",
-						setValue: (id) => setData("user_id", Number(id)),
+						setValue: (id) => {
+							setData("user_id", id ? Number(id) : null);
+						},
 						options: representatives.map(
 							({ id, name, identity_card }) => ({
 								label: `${name} (${identity_card.nationality}${identity_card.serial})`,

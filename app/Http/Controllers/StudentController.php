@@ -28,6 +28,15 @@ class StudentController extends Controller {
 		// Get search queries.
 		$selectedCareers = $request->query("careers", []);
 		$selectedHeadquarters = $request->query("headquarters", []);
+		$isSeniorOnly = filter_var(
+			$request->query("is_senior_only", false),
+			FILTER_VALIDATE_BOOLEAN,
+		);
+		$isDisabledOnly = filter_var(
+			$request->query("is_disabled_only", false),
+			FILTER_VALIDATE_BOOLEAN,
+		);
+		$sex = $request->query("sex", []);
 		$search = $request->query("search", "");
 		$page = $request->query("page");
 		$perPage = $request->query("per_page");
@@ -45,6 +54,27 @@ class StudentController extends Controller {
 				"career_headquarter.career",
 				"career_headquarter.headquarter",
 			)
+				->when($isDisabledOnly, function (
+					Builder $query,
+					bool $isDisabledOnly,
+				) {
+					// Filter by age.
+					$query->where("is_disabled", "=", true);
+				})
+				->when($isSeniorOnly, function (
+					Builder $query,
+					bool $isSeniorOnly,
+				) {
+					// Filter by age.
+					$query->whereRaw(
+						"DATE_FORMAT(FROM_DAYS(DATEDIFF(NOW(), birth_date)), '%Y') + 0 > ?",
+						[60],
+					);
+				})
+				->when($sex, function (Builder $query, array $sex) {
+					// Filter by sex.
+					$query->whereIn("sex", $sex);
+				})
 				->when($selectedCareers, function (
 					Builder $query,
 					array $selectedCareers,
@@ -95,6 +125,9 @@ class StudentController extends Controller {
 				"search" => $search,
 				"page" => $page,
 				"per_page" => $perPage,
+				"is_senior_only" => $isSeniorOnly,
+				"is_disabled_only" => $isDisabledOnly,
+				"sex" => $sex,
 			],
 		]);
 	}

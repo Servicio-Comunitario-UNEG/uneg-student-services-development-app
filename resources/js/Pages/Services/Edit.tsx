@@ -1,31 +1,34 @@
 import { Head } from "@inertiajs/react";
 
-import { PageProps, Student, Support } from "@/types";
+import { PageProps, Student, Service, User } from "@/types";
 
 import { AuthenticatedLayout } from "@/Layouts/AuthenticatedLayout";
 import PageLayout from "@/Layouts/PageLayout";
 
-import CreateOrEditSupportForm from "./Partials/CreateOrEditSupport";
+import CreateOrEditServiceForm from "./Partials/CreateOrEditService";
 
 export default function Edit({
-	support,
+	service,
 	students,
+	professionals,
 }: PageProps<{
-	support: Support;
+	service: Service;
 	students: Student[];
+	professionals: User[];
 }>) {
 	return (
 		<PageLayout
 			headerProps={{
-				title: "Editar Apoyo",
+				title: "Editar Servicio",
 			}}
 		>
-			<Head title="Editar Apoyo" />
+			<Head title="Editar Servicio" />
 
-			<CreateOrEditSupportForm
+			<CreateOrEditServiceForm
 				callToAction="Guardar cambios"
-				initialValues={support}
+				initialValues={service}
 				students={students}
+				professionals={professionals}
 				isUpdate
 			/>
 		</PageLayout>

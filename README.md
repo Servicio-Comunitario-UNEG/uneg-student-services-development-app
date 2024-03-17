@@ -32,4 +32,4 @@
 The following resources are the diagrams/designs used to build the app.
 
 -   [UI Design](https://www.figma.com/file/U0KVn4vpCbFtkqnh6CQ5x9/UNEG-Student-Services-Development-App?type=design&node-id=0%3A1&mode=design&t=F7ajhJ7pdMoA0pZ7-1)
--   [Database Diagram](https://dbdiagram.io/d/UNEG-Student-Services-Development-App-650d9339ffbf5169f04faa7e)
+-   [ER Diagram](https://drive.google.com/file/d/1uv09FZUJexlQ2uNA2_5Ho6d7M9uE6WfU/view?usp=sharing)

@@ -43,14 +43,12 @@ export default function CreateOrEditSemesterForm({
 						autoComplete: "off",
 						autoFocus: true,
 						onChange: (e) => {
-							// Reset value.
-							if (!e.target.value) {
-								return setData("year", undefined);
-							}
+							const year = parseInt(e.target.value);
 
-							const year = Number(e.target.value);
-
-							if (!Number.isNaN(year)) setData("year", year);
+							setData(
+								"year",
+								Number.isNaN(year) ? undefined : year,
+							);
 						},
 						type: "number",
 						placeholder: "ej: 2020",
@@ -68,14 +66,12 @@ export default function CreateOrEditSemesterForm({
 					inputProps={{
 						autoComplete: "off",
 						onChange: (e) => {
-							// Reset value.
-							if (!e.target.value) {
-								return setData("lapse", undefined);
-							}
+							const lapse = parseInt(e.target.value);
 
-							const lapse = Number(e.target.value);
-
-							if (!Number.isNaN(lapse)) setData("lapse", lapse);
+							setData(
+								"lapse",
+								Number.isNaN(lapse) ? undefined : lapse,
+							);
 						},
 						min: 1,
 						max: 2,

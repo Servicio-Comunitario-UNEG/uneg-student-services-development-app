@@ -8,21 +8,23 @@ import PageLayout from "@/Layouts/PageLayout";
 
 import { DescriptionList } from "@/Components/DescriptionList";
 
-import { SupportWithUserAndStudent } from "./Index";
+import { serviceTypeLabel } from "@/lib/constants";
 
-export default function Support({
-	support: { date, student, user, type, description },
+import { ServiceWithUserAndStudent } from "./Index";
+
+export default function Service({
+	service: { date, student, user, professional, type, description },
 }: PageProps<{
-	support: SupportWithUserAndStudent;
+	service: ServiceWithUserAndStudent;
 }>) {
 	return (
 		<PageLayout
 			headerProps={{
-				title: "Apoyo",
-				description: "Detalle del apoyo suministrado.",
+				title: "Servicio",
+				description: "Detalle del servicio suministrado.",
 			}}
 		>
-			<Head title="Apoyo" />
+			<Head title="Servicio" />
 
 			<DescriptionList
 				items={[
@@ -32,10 +34,10 @@ export default function Support({
 					},
 					{
 						title: "Tipo",
-						children: type === "medical" ? "Médico" : "Psicológico",
+						children: serviceTypeLabel[type],
 					},
 					{
-						title: "Profesional",
+						title: "Creador",
 						children: (
 							<div className="space-y-2">
 								<p>{user.name}</p>
@@ -45,6 +47,21 @@ export default function Support({
 									{user.identity_card.serial}
 								</p>
 							</div>
+						),
+					},
+					{
+						title: "Profesional",
+						children: professional ? (
+							<div className="space-y-2">
+								<p>{professional.name}</p>
+
+								<p>
+									{professional.identity_card.nationality}
+									{professional.identity_card.serial}
+								</p>
+							</div>
+						) : (
+							"No aplica"
 						),
 					},
 					{
@@ -72,6 +89,6 @@ export default function Support({
 	);
 }
 
-Support.layout = (page: React.JSX.Element) => (
+Service.layout = (page: React.JSX.Element) => (
 	<AuthenticatedLayout children={page} />
 );

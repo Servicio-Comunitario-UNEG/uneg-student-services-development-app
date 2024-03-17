@@ -1,6 +1,6 @@
 import { Head } from "@inertiajs/react";
 
-import { Headquarter, PageProps } from "@/types";
+import { City, Headquarter, PageProps } from "@/types";
 
 import { AuthenticatedLayout } from "@/Layouts/AuthenticatedLayout";
 import PageLayout from "@/Layouts/PageLayout";
@@ -12,7 +12,12 @@ import CreateOrEditHeadquarterForm, {
 export default function Edit({
 	representatives,
 	headquarter,
-}: PageProps<{ headquarter: Headquarter; representatives: Representative[] }>) {
+	cities,
+}: PageProps<{
+	headquarter: Headquarter;
+	representatives: Representative[];
+	cities: City[];
+}>) {
 	return (
 		<PageLayout
 			headerProps={{
@@ -25,6 +30,7 @@ export default function Edit({
 				callToAction="Guardar cambios"
 				initialValues={headquarter}
 				representatives={representatives}
+				cities={cities}
 				isUpdate
 			/>
 		</PageLayout>

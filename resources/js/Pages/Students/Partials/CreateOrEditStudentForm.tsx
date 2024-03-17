@@ -344,12 +344,26 @@ export default function CreateOrEditStudentForm({
 						children: "¿Posee una discapacidad?",
 					}}
 					checkboxProps={{
-						checked: data.is_disabled,
+						defaultChecked: data.is_disabled,
 						onCheckedChange(checked) {
 							setData("is_disabled", Boolean(checked));
 						},
 					}}
 				/>
+
+				{data.is_disabled ? (
+					<TextField
+						id="type_of_disability"
+						labelProps={{ children: "Tipo de disapacidad" }}
+						inputProps={{
+							placeholder: "ej: Invidente",
+							value: data.type_of_disability ?? "",
+							onChange: (e) =>
+								setData("type_of_disability", e.target.value),
+						}}
+						errorMessage={errors.type_of_disability}
+					/>
+				) : null}
 
 				<CheckboxField
 					id="is_indigenous"
@@ -357,11 +371,48 @@ export default function CreateOrEditStudentForm({
 						children: "¿Es indigena?",
 					}}
 					checkboxProps={{
-						checked: data.is_indigenous,
+						defaultChecked: data.is_indigenous,
 						onCheckedChange(checked) {
 							setData("is_indigenous", Boolean(checked));
 						},
 					}}
+				/>
+
+				{data.is_indigenous ? (
+					<TextField
+						id="ethnic"
+						labelProps={{ children: "Etnia" }}
+						inputProps={{
+							placeholder: "ej: Pemón",
+							value: data.ethnic ?? "",
+							onChange: (e) => setData("ethnic", e.target.value),
+						}}
+						errorMessage={errors.ethnic}
+					/>
+				) : null}
+
+				<TextField
+					id="scheduled_dining_room_use"
+					labelProps={{
+						children: "Usos del comedor",
+					}}
+					inputProps={{
+						type: "number",
+						min: 0,
+						max: 5,
+						placeholder: "ej: 1",
+						value: data.scheduled_dining_room_use ?? "",
+						onChange: (e) => {
+							const uses = parseInt(e.target.value);
+
+							setData(
+								"scheduled_dining_room_use",
+								Number.isNaN(uses) ? undefined : uses,
+							);
+						},
+					}}
+					errorMessage={errors.scheduled_dining_room_use}
+					isOptional
 				/>
 
 				<TextField
@@ -376,11 +427,12 @@ export default function CreateOrEditStudentForm({
 						placeholder: "ej: 1",
 						value: data.graffar ?? "",
 						onChange: (e) => {
-							const graffar = Number(e.target.value);
+							const graffar = parseInt(e.target.value);
 
-							if (!Number.isNaN(graffar)) {
-								setData("graffar", graffar);
-							}
+							setData(
+								"graffar",
+								Number.isNaN(graffar) ? null : graffar,
+							);
 						},
 					}}
 					errorMessage={errors.graffar}

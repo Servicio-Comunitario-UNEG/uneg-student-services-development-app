@@ -8,7 +8,6 @@ import PageLayout from "@/Layouts/PageLayout";
 
 import { DataTable } from "@/Components/DataTable";
 import { DataTableColumnHeader } from "@/Components/DataTableColumnHeader";
-import { Badge } from "@/Components/ui/badge";
 import { Button } from "@/Components/ui/button";
 
 import { useGate } from "@/hooks/useGate";
@@ -34,29 +33,6 @@ const columns: ColumnDef<CareerWithHeadquarters>[] = [
 			<DataTableColumnHeader column={column} title="Nombre" />
 		),
 		cell: ({ row }) => row.getValue("name"),
-		enableHiding: false,
-		enableSorting: false,
-	},
-	{
-		accessorKey: "headquarters",
-		header: ({ column }) => (
-			<DataTableColumnHeader column={column} title="Sedes" />
-		),
-		cell: ({ row }) => {
-			const headquarters = row.getValue(
-				"headquarters",
-			) as CareerWithHeadquarters["headquarters"];
-
-			return (
-				<div className="flex flex-wrap gap-1">
-					{headquarters.map((headquarter) => (
-						<Badge variant="secondary" key={headquarter.id}>
-							{headquarter.name}
-						</Badge>
-					))}
-				</div>
-			);
-		},
 		enableHiding: false,
 		enableSorting: false,
 	},

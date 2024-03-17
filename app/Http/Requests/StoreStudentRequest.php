@@ -7,6 +7,7 @@ use App\Models\Student;
 use App\Models\User;
 use Auth;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class StoreStudentRequest extends FormRequest {
 	/**
@@ -52,12 +53,17 @@ class StoreStudentRequest extends FormRequest {
 				Utils::getMaximumEnrollableBirthDate(),
 			"is_indigenous" => "required|boolean",
 			"is_disabled" => "required|boolean",
+			"scheduled_dining_room_use" => "nullable|integer|min:0|max:5",
 			"second_name" => "nullable|string|max:255",
 			"second_last_name" => "nullable|string|max:255",
 			"room_phone" => "nullable|string|min:10",
 			"address" => "nullable|string|max:255",
 			"graffar" => "nullable|integer|min:1|max:5",
 			"socioeconomic_situation" => "nullable|string|max:255",
+			"ethnic" =>
+				"required_if_accepted:is_indigenous|nullable|string|max:255",
+			"type_of_disability" =>
+				"required_if_accepted:is_disabled|nullable|string|max:255",
 		];
 	}
 }

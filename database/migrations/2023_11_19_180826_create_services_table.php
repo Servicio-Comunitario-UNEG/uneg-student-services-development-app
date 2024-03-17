@@ -9,19 +9,24 @@ return new class extends Migration {
 	 * Run the migrations.
 	 */
 	public function up(): void {
-		Schema::create("supports", function (Blueprint $table) {
+		Schema::create("services", function (Blueprint $table) {
 			$table->id();
 			$table->timestamps();
 			$table
 				->foreignId("user_id")
 				->constrained()
-				->cascadeOnDelete();
+				->restrictOnDelete();
+			$table
+				->foreignId("professional_id")
+				->nullable()
+				->constrained("users")
+				->restrictOnDelete();
 			$table
 				->foreignId("student_id")
 				->constrained()
-				->cascadeOnDelete();
+				->restrictOnDelete();
 			$table->date("date");
-			$table->enum("type", ["medical", "psychological"]);
+			$table->enum("type", ["medical", "psychosocial", "economical"]);
 			$table->string("description");
 		});
 	}
@@ -30,6 +35,6 @@ return new class extends Migration {
 	 * Reverse the migrations.
 	 */
 	public function down(): void {
-		Schema::dropIfExists("supports");
+		Schema::dropIfExists("services");
 	}
 };

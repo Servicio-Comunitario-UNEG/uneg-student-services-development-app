@@ -1,9 +1,9 @@
 import { Link, useForm } from "@inertiajs/react";
 import dayjs from "dayjs";
-import { Brain, Loader2, Stethoscope } from "lucide-react";
+import { Brain, CircleDollarSign, Loader2, Stethoscope } from "lucide-react";
 import { FormEventHandler } from "react";
 
-import { Student, Support } from "@/types";
+import { Student, Service, User } from "@/types";
 
 import CardRadioGroupField from "@/Components/CardRadioGroupField";
 import ComboboxField from "@/Components/ComboboxField";
@@ -11,20 +11,26 @@ import TextField from "@/Components/TextField";
 import TextareaField from "@/Components/TextareaField";
 import { Button } from "@/Components/ui/button";
 
-export default function CreateOrEditSupportForm({
+import { useGate } from "@/hooks/useGate";
+
+export default function CreateOrEditServiceForm({
 	initialValues,
 	isUpdate = false,
 	callToAction,
 	students,
+	professionals,
 }: {
-	initialValues: Partial<Omit<Support, "created_at" | "updated_at">>;
+	initialValues: Partial<Omit<Service, "created_at" | "updated_at">>;
 	isUpdate?: boolean;
 	callToAction: string;
 	students: Pick<
 		Student,
 		"id" | "first_name" | "last_name" | "identity_card"
 	>[];
+	professionals: Pick<User, "id" | "name" | "identity_card">[];
 }) {
+	const gate = useGate();
+
 	const { data, setData, errors, processing, post, put } =
 		useForm(initialValues);
 
@@ -36,16 +42,38 @@ export default function CreateOrEditSupportForm({
 
 		// Create or update the support.
 		isUpdate
-			? put(route("supports.update", initialValues.id))
-			: post(route("supports.store"));
+			? put(route("services.update", initialValues.id))
+			: post(route("services.store"));
 	};
+
+	// Options of service.
+	const serviceTypes = [
+		{
+			label: "Médico",
+			value: "medical",
+			Icon: Stethoscope,
+			permission: "assign medical support",
+		},
+		{
+			label: "Psicosocial",
+			value: "psychosocial",
+			Icon: Brain,
+			permission: "assign psychosocial support",
+		},
+		{
+			label: "Económico",
+			value: "economical",
+			Icon: CircleDollarSign,
+			permission: "assign economical support",
+		},
+	].filter(({ permission }) => gate.allows(permission));
 
 	return (
 		<form className="space-y-6" onSubmit={onSubmit}>
 			<div className="space-y-4">
 				<TextField
 					id="date"
-					description="Fecha cuando se realizó el apoyo."
+					description="Fecha cuando se realizó el servicio."
 					labelProps={{
 						children: "Fecha",
 					}}
@@ -65,30 +93,44 @@ export default function CreateOrEditSupportForm({
 						children: "Tipo",
 					}}
 					cardRadioGroupProps={{
-						className: "grid-cols-2",
+						className: "grid-cols-3",
 						name: "type",
 						value: data.type ?? "",
-						onValueChange: (value: Support["type"]) =>
+						onValueChange: (value: Service["type"]) =>
 							setData("type", value),
-						options: [
-							{
-								label: "Médico",
-								value: "medical",
-								Icon: Stethoscope,
-							},
-							{
-								label: "Psicológico",
-								value: "psychological",
-								Icon: Brain,
-							},
-						],
+						options: serviceTypes,
 					}}
 					errorMessage={errors.type}
 				/>
 
+				{data.type !== "economical" ? (
+					<ComboboxField
+						id="professional"
+						description="Profesional que realizó el servicio."
+						labelProps={{
+							children: "Profesional",
+						}}
+						comboboxProps={{
+							placeholder: "Seleccione un profesional",
+							value: data.professional_id
+								? String(data.professional_id)
+								: "",
+							setValue: (id) =>
+								setData("professional_id", Number(id)),
+							options: professionals.map(
+								({ id, name, identity_card }) => ({
+									label: `${name} (${identity_card.nationality}${identity_card.serial})`,
+									value: String(id),
+								}),
+							),
+						}}
+						errorMessage={errors.professional_id}
+					/>
+				) : null}
+
 				<ComboboxField
 					id="student"
-					description="El estudiante que recibe el apoyo."
+					description="El estudiante que recibe el servicio."
 					labelProps={{
 						children: "Estudiante",
 					}}
@@ -112,7 +154,7 @@ export default function CreateOrEditSupportForm({
 						children: "Descripción",
 					}}
 					textareaProps={{
-						placeholder: "Detalles del apoyo dado...",
+						placeholder: "Detalles del servicio dado...",
 						className: "h-16",
 						required: true,
 						value: data.description ?? "",
@@ -133,7 +175,7 @@ export default function CreateOrEditSupportForm({
 				</Button>
 
 				<Button disabled={processing} variant="outline" asChild>
-					<Link href={route("supports.index")}>Cancelar</Link>
+					<Link href={route("services.index")}>Cancelar</Link>
 				</Button>
 			</div>
 		</form>

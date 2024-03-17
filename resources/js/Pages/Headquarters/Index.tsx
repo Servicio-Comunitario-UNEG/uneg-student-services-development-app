@@ -1,7 +1,7 @@
 import { Head, Link } from "@inertiajs/react";
 import { type ColumnDef } from "@tanstack/react-table";
 
-import type { Headquarter, PageProps, Paginated, User } from "@/types";
+import type { City, Headquarter, PageProps, Paginated, User } from "@/types";
 
 import { AuthenticatedLayout } from "@/Layouts/AuthenticatedLayout";
 import PageLayout from "@/Layouts/PageLayout";
@@ -23,7 +23,16 @@ const columns: ColumnDef<HeadquarterWithRepresentative>[] = [
 		),
 		cell: ({ row }) => row.getValue("name"),
 		enableHiding: false,
-		enableSorting: true,
+		enableSorting: false,
+	},
+	{
+		accessorKey: "city",
+		header: ({ column }) => (
+			<DataTableColumnHeader column={column} title="Ciudad" />
+		),
+		cell: ({ row }) => row.original.city.name,
+		enableHiding: false,
+		enableSorting: false,
 	},
 	{
 		accessorKey: "user",
@@ -59,14 +68,17 @@ const columns: ColumnDef<HeadquarterWithRepresentative>[] = [
 
 export type HeadquarterWithRepresentative = Headquarter & {
 	user: Omit<User, "email" | "email_verified_at"> | null;
+	city: Pick<City, "id" | "name">;
 };
 
 export type HeadquarterPageProps = PageProps<{
+	cities: Pick<City, "id" | "name">[];
 	headquarters: Paginated<HeadquarterWithRepresentative>;
 	filters: {
 		search: string;
 		page: string;
 		per_page: string;
+		cities: string[];
 	};
 }>;
 

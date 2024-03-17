@@ -302,5 +302,11 @@ return [
 		"total_headquarters_amount" => "total de beneficios por sedes",
 		"type" => "tipo",
 		"user_id" => "usuario",
+		"city_id" => "ciudad",
+		"is_indigenous" => "indigena",
+		"is_disabled" => "discapacitado",
+		"type_of_disability" => "tipo de discapacidad",
+		"ethnic" => "etnia",
+		"professional_id" => "profesional",
 	],
 ];
