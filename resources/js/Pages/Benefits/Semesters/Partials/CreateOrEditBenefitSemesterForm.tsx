@@ -214,10 +214,6 @@ export default function CreateOrEditBenefitSemesterForm({
 					<div className="space-y-2">
 						{data.benefit_semester_headquarters.map(
 							({ headquarter_id, amount }, index) => {
-								const currentHeadquarters = [
-									...data.benefit_semester_headquarters,
-								];
-
 								const idKey = `benefit_semester_headquarters.${index}.headquarter_id`;
 								const amountKey = `benefit_semester_headquarters.${index}.amount`;
 
@@ -228,6 +224,15 @@ export default function CreateOrEditBenefitSemesterForm({
 								// @ts-expect-error: The errors object has a defined type which doesn't contemplate field arrays.
 								// prettier-ignore
 								const amountError = amountKey in errors && errors[amountKey] && typeof errors[amountKey] === "string" ? errors[amountKey] : "";
+
+								// The current selected headquarters.
+								const currentHeadquarters = [
+									...data.benefit_semester_headquarters,
+								];
+
+								// This field selected headquarter.
+								const currentHeadquarter =
+									currentHeadquarters[index].headquarter_id;
 
 								return (
 									<div key={index}>
@@ -270,14 +275,36 @@ export default function CreateOrEditBenefitSemesterForm({
 																currentHeadquarters,
 															);
 														}}
-														options={headquarters.map(
-															({ id, name }) => ({
-																label: name,
-																value: String(
+														options={headquarters
+															.filter(
+																(
+																	headquarter,
+																) => {
+																	// Display this field headquarter and the unselected headquarters.
+																	return (
+																		currentHeadquarter ===
+																			headquarter.id ||
+																		!data.benefit_semester_headquarters.some(
+																			(
+																				item,
+																			) =>
+																				item.headquarter_id ===
+																				headquarter.id,
+																		)
+																	);
+																},
+															)
+															.map(
+																({
 																	id,
-																),
-															}),
-														)}
+																	name,
+																}) => ({
+																	label: name,
+																	value: String(
+																		id,
+																	),
+																}),
+															)}
 													/>
 
 													<InputError
